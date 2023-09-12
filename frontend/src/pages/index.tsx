@@ -3,8 +3,8 @@ import io from 'socket.io-client';
 import { motion, useAnimation } from 'framer-motion';
 
 const Chat = () => {
-	const [roomId, setRoomId] = useState();
-	const [playerName, setPlayerName] = useState();
+	const [roomId, setRoomId] = useState<string>();
+	const [playerName, setPlayerName] = useState<string>();
 	const [connectedToRoom, setConnectedToRoom] = useState(false);
 	const [currentCard, setCurrentCard] = useState();
 	const [nextCard, setNextCard] = useState();
@@ -13,10 +13,10 @@ const Chat = () => {
 	const [totalScore, setTotalScore] = useState(0);
 	const [correct, setCorrect] = useState(null);
 	const [deathStack, setDeathStack] = useState(0);
-	const [socket, setSocket] = useState(null);
+	const [socket, setSocket] = useState<any>();
 	const [turn, setTurn] = useState(undefined);
 	const turnRef = useRef();
-	const playerNameRef = useRef();
+	const playerNameRef = useRef<string>();
 	const currentCardRef = useRef();
 	const nextCardRef = useRef();
 	const thirdCardRef = useRef();
@@ -111,7 +111,7 @@ const Chat = () => {
 	]);
 	useEffect(() => {
 		console.log('Connecting to WebSocket server...');
-		const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER_URL, {
+		const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER_URL!, {
 			transports: ['websocket'],
 		});
 
@@ -225,7 +225,7 @@ const Chat = () => {
 		};
 	}, []);
 
-	const handleJoinRoom = (roomId, playerName) => {
+	const handleJoinRoom = (roomId: any, playerName: any) => {
 		if (socket) {
 			socket.emit('joinRoom', {
 				requestedRoomId: roomId,
@@ -234,12 +234,12 @@ const Chat = () => {
 		}
 	};
 
-	const handleGuess = (guess) => {
+	const handleGuess = (guess: any) => {
 		if (socket) {
 			socket.emit('guess', guess);
 		}
 	};
-	const handlePass = (turnScore) => {
+	const handlePass = (turnScore: any) => {
 		if (socket) {
 			socket.emit('pass', turnScore);
 			setTurnScore(0);
