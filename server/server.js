@@ -63,6 +63,7 @@ io.on('connection', (socket) => {
 		// Store player information (you can use an array, object, or database)
 		const player = { id: socket.id, name: playerName, score: 0 };
 		// Example: store in an array
+
 		io.to(requestedRoomId).emit(
 			'currentCard',
 			rooms[requestedRoomId].currentSuite +
@@ -91,8 +92,8 @@ io.on('connection', (socket) => {
 
 		// Emit an event to the room to update all clients about the new player
 		io.to(requestedRoomId).emit('playerJoined', player.name);
-		console.log(rooms);
-		console.log(requestedRoomId);
+		io.to(requestedRoomId).emit('players', rooms[requestedRoomId].players);
+		console.log('players', rooms[requestedRoomId].players);
 	});
 	socket.on('deathStack', (deathStack) => {
 		let roomId = socket.roomId;
@@ -116,7 +117,7 @@ io.on('connection', (socket) => {
 		let players = rooms[roomId].players;
 		let deathStack = rooms[roomId].deathStack;
 		let turnScore = rooms[roomId].turnScore;
-		console.log(nextNumber, thirdNumber);
+
 		if (
 			(guess == 'purple' &&
 				(nextSuite == 'diamonds' || nextSuite == 'hearts') &&
@@ -124,9 +125,6 @@ io.on('connection', (socket) => {
 			((nextSuite == 'clubs' || nextSuite == 'spades') &&
 				(thirdSuite == 'diamonds' || thirdSuite == 'hearts'))
 		) {
-			console.log('purple');
-			console.log('deathstack', deathStack);
-			console.log('score', players[currentPlayerIndex].score);
 			rooms[roomId].currentNumber = thirdNumber;
 			rooms[roomId].currentSuite = thirdSuite;
 			rooms[roomId].deathStack = deathStack + 2;
@@ -148,8 +146,8 @@ io.on('connection', (socket) => {
 				'thirdCard',
 				thirdSuite + '_' + thirdNumber.toString()
 			);
-			players[currentPlayerIndex].score =
-				players[currentPlayerIndex].score + 2;
+
+			io.to(roomId).emit('players', rooms[roomId].players);
 			io.to(roomId).emit('turn', players[currentPlayerIndex].name);
 			io.to(roomId).emit('turnScore', rooms[roomId].turnScore);
 			io.to(roomId).emit('deathStack', rooms[roomId].deathStack);
@@ -175,6 +173,9 @@ io.on('connection', (socket) => {
 				'thirdCard',
 				thirdSuite + '_' + thirdNumber.toString()
 			);
+			players[currentPlayerIndex].score =
+				players[currentPlayerIndex].score - deathStack - 2;
+			io.to(roomId).emit('players', rooms[roomId].players);
 			io.to(roomId).emit('deathStack', 0);
 			io.to(roomId).emit('turnScore', 0);
 			if (currentPlayerIndex == players.length - 1) {
@@ -213,8 +214,8 @@ io.on('connection', (socket) => {
 				'thirdCard',
 				thirdSuite + '_' + thirdNumber.toString()
 			);
-			players[currentPlayerIndex].score =
-				players[currentPlayerIndex].score + 1;
+
+			io.to(roomId).emit('players', rooms[roomId].players);
 			io.to(roomId).emit('turn', players[currentPlayerIndex].name);
 			io.to(roomId).emit('turnScore', rooms[roomId].turnScore);
 			io.to(roomId).emit('deathStack', rooms[roomId].deathStack);
@@ -240,6 +241,9 @@ io.on('connection', (socket) => {
 				'thirdCard',
 				thirdSuite + '_' + thirdNumber.toString()
 			);
+			players[currentPlayerIndex].score =
+				players[currentPlayerIndex].score - deathStack - 1;
+			io.to(roomId).emit('players', rooms[roomId].players);
 			io.to(roomId).emit('deathStack', 0);
 			io.to(roomId).emit('turnScore', 0);
 			if (currentPlayerIndex == players.length - 1) {
@@ -262,7 +266,8 @@ io.on('connection', (socket) => {
 		let currentPlayerIndex = rooms[roomId].currentPlayerIndex;
 		let players = rooms[roomId].players;
 		let deathStack = rooms[roomId].deathStack;
-
+		players[currentPlayerIndex].score =
+			players[currentPlayerIndex].score + deathStack;
 		rooms[roomId].deathStack = turnScore;
 		rooms[roomId].turnScore = 0;
 		if (currentPlayerIndex == players.length - 1) {
@@ -270,6 +275,7 @@ io.on('connection', (socket) => {
 		} else {
 			rooms[roomId].currentPlayerIndex += 1;
 		}
+		io.to(roomId).emit('players', rooms[roomId].players);
 		io.to(roomId).emit('deathStack', deathStack);
 		io.to(roomId).emit('turnScore', 0);
 		io.to(roomId).emit(

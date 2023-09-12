@@ -5,6 +5,7 @@ import { motion, useAnimation } from 'framer-motion';
 const Chat = () => {
 	const [roomId, setRoomId] = useState<string>();
 	const [playerName, setPlayerName] = useState<string>();
+	const [players, setPlayers] = useState([]);
 	const [connectedToRoom, setConnectedToRoom] = useState(false);
 	const [currentCard, setCurrentCard] = useState();
 	const [nextCard, setNextCard] = useState();
@@ -121,6 +122,10 @@ const Chat = () => {
 		newSocket.on('playerJoined', () => {
 			setConnectedToRoom(true);
 		});
+		newSocket.on('players', (players) => {
+			setPlayers(players);
+			console.log(players);
+		});
 		newSocket.on('currentCard', (currentCard) => {
 			setCurrentCard(currentCard);
 		});
@@ -189,7 +194,8 @@ const Chat = () => {
 				correct === 'false'
 			) {
 				setTotalScore(
-					(prevTotalScore) => prevTotalScore - currentDeathStack - 1
+					(prevTotalScore) =>
+						prevTotalScore - deathStackRef.current - 1
 				);
 
 				setDeathStack(0);
@@ -201,7 +207,8 @@ const Chat = () => {
 				correct === 'purpleFalse'
 			) {
 				setTotalScore(
-					(prevTotalScore) => prevTotalScore - currentDeathStack - 2
+					(prevTotalScore) =>
+						prevTotalScore - deathStackRef.current - 2
 				);
 
 				setDeathStack(0);
@@ -254,7 +261,14 @@ const Chat = () => {
 			<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl '>
 				Purple
 			</h1>
-
+			<div className=''>
+				{players.map((player: any) => (
+					<>
+						<div>{player.name}</div>
+						<div>{player.score}</div>
+					</>
+				))}
+			</div>
 			{!connectedToRoom ? (
 				<div className='max-w-4xl flex flex-col'>
 					<h1>RoomId</h1>
