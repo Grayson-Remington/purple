@@ -27,6 +27,7 @@ const Chat = () => {
 	const controls = useAnimation();
 	const controls2 = useAnimation();
 	const [isAnimating, setIsAnimating] = useState(false);
+
 	const handleFlip = async () => {
 		await controls.start({
 			x: 150,
@@ -94,6 +95,15 @@ const Chat = () => {
 		setIsAnimating(false);
 	};
 	useEffect(() => {
+		let player: any = players.find(
+			(playerObj: any) => playerObj.name === playerName
+		);
+		if (player) {
+			setTotalScore(player.score);
+		}
+	}, [players]);
+
+	useEffect(() => {
 		turnRef.current = turn;
 		playerNameRef.current = playerName;
 		currentCardRef.current = currentCard;
@@ -123,7 +133,10 @@ const Chat = () => {
 			setConnectedToRoom(true);
 		});
 		newSocket.on('players', (players) => {
-			setPlayers(players);
+			let sortedPlayers = players.sort(
+				(a: any, b: any) => b.score - a.score
+			);
+			setPlayers(sortedPlayers);
 			console.log(players);
 		});
 		newSocket.on('currentCard', (currentCard) => {
@@ -193,11 +206,6 @@ const Chat = () => {
 				currentTurn === currentPlayerName &&
 				correct === 'false'
 			) {
-				setTotalScore(
-					(prevTotalScore) =>
-						prevTotalScore - deathStackRef.current - 1
-				);
-
 				setDeathStack(0);
 				setTurnScore(0);
 			}
@@ -206,11 +214,6 @@ const Chat = () => {
 				currentTurn === currentPlayerName &&
 				correct === 'purpleFalse'
 			) {
-				setTotalScore(
-					(prevTotalScore) =>
-						prevTotalScore - deathStackRef.current - 2
-				);
-
 				setDeathStack(0);
 				setTurnScore(0);
 			}
@@ -250,10 +253,6 @@ const Chat = () => {
 		if (socket) {
 			socket.emit('pass', turnScore);
 			setTurnScore(0);
-
-			setTotalScore(
-				(prevTotalScore) => prevTotalScore + turnScoreRef.current
-			);
 		}
 	};
 	return (
@@ -261,14 +260,23 @@ const Chat = () => {
 			<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl '>
 				Purple
 			</h1>
-			<div className=''>
-				{players.map((player: any) => (
-					<>
-						<div>{player.name}</div>
-						<div>{player.score}</div>
-					</>
+			<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl '>
+				{roomId}
+			</h1>
+			<div className='flex  w-full text-center justify-center p-4 gap-4'>
+				{players.slice(0, 3).map((player: any, index: number) => (
+					<div className='flex flex-col text-2xl text-center items-center'>
+						{index == 0 && <h1 className='underline'>1st Place</h1>}
+						{index == 1 && <h1 className='underline'>2nd Place</h1>}
+						{index == 2 && <h1 className='underline'>3rd Place</h1>}
+						<div className='flex w-full text-center justify-center'>
+							{player.name}: {player.score}
+						</div>
+						<div></div>
+					</div>
 				))}
 			</div>
+
 			{!connectedToRoom ? (
 				<div className='max-w-4xl flex flex-col'>
 					<h1>RoomId</h1>

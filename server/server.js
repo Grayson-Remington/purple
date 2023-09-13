@@ -286,9 +286,17 @@ io.on('connection', (socket) => {
 	// Handle disconnection
 	socket.on('disconnect', () => {
 		const roomId = socket.roomId;
+		console.log(rooms);
 		if (rooms[roomId]) {
 			rooms[roomId].removePlayer(socket.id);
-			io.to(roomId).emit('playerLeft', socket.id);
+			io.to(roomId).emit('players', rooms[roomId].players);
+			if (rooms[roomId].players.length === 0) {
+				// If the room is empty, remove it
+				delete rooms[roomId];
+			} else {
+				// If there are still players in the room, notify them about the disconnected player
+				io.to(roomId).emit('playerLeft', socket.id);
+			}
 		}
 		console.log('A user disconnected');
 	});
