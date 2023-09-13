@@ -28,23 +28,73 @@ const Chat = () => {
 	const controls2 = useAnimation();
 	const [isAnimating, setIsAnimating] = useState(false);
 
-	const handleFlip = async () => {
+	const handleFlipHigher = async () => {
 		await controls.start({
 			x: 150,
+			y: 76,
+			scale: 1.5,
 			rotateY: 0,
-			zIndex: 0,
+			zIndex: 20,
 			transition: { duration: 0.5 },
 		});
-
+		await controls.start({
+			x: 150,
+			y: 76,
+			scale: 1.5,
+			rotateY: 0,
+			zIndex: 20,
+			transition: { duration: 0.3 },
+		});
 		// Snap back to the original position
 		await controls.start({
 			x: 0,
+			y: 158.3,
+			scale: 1.0,
+			rotateY: 0,
+			zIndex: 20,
+			transition: { duration: 0.5 },
+		});
+
+		await controls.start({
+			x: 0,
+			y: 0,
+
+			rotateY: 180,
+			zIndex: 0,
+			transition: { duration: 0 },
+		});
+		setIsFlipped(false);
+		setIsAnimating(false);
+	};
+	const handleFlipLower = async () => {
+		await controls.start({
+			x: -150,
+			y: 76,
+			scale: 1.5,
+			rotateY: 0,
+			zIndex: 20,
+			transition: { duration: 0.5 },
+		});
+		await controls.start({
+			x: -150,
+			y: 76,
+			scale: 1.5,
+			rotateY: 0,
+			zIndex: 20,
+			transition: { duration: 0.3 },
+		});
+		// Snap back to the original position
+		await controls.start({
+			x: 0,
+			y: 158.3,
+			scale: 1,
 			rotateY: 0,
 			zIndex: 20,
 			transition: { duration: 0.5 },
 		});
 		await controls.start({
 			x: 0,
+			y: 0,
 			rotateY: 180,
 			zIndex: 0,
 			transition: { duration: 0 },
@@ -53,44 +103,71 @@ const Chat = () => {
 		setIsAnimating(false);
 	};
 	const handleFlip2 = async () => {
-		await controls.start({
-			x: 150,
-			rotateY: 0,
-			zIndex: 0,
-			transition: { duration: 0.5 },
-		});
-		await controls2.start({
-			x: 300,
-			rotateY: 0,
-			zIndex: 0,
-			transition: { duration: 0.5 },
-		});
+		await (controls.start({
+			x: -150,
 
-		// Snap back to the original position
-		await controls.start({
-			x: 0,
-			rotateY: 0,
-			zIndex: 0,
-			transition: { duration: 0.5 },
-		});
-		await controls2.start({
-			x: 0,
+			y: 76,
+			scale: 1.5,
 			rotateY: 0,
 			zIndex: 20,
 			transition: { duration: 0.5 },
-		});
-		await controls.start({
+		}),
+		controls2.start({
+			x: 150,
+			y: 76,
+			scale: 1.5,
+			rotateY: 0,
+			zIndex: 20,
+			transition: { duration: 0.5 },
+		}));
+		await (controls.start({
+			x: -150,
+			y: 76,
+			scale: 1.5,
+			rotateY: 0,
+			zIndex: 20,
+			transition: { duration: 0.3 },
+		}),
+		controls2.start({
+			x: 150,
+			y: 76,
+			scale: 1.5,
+			rotateY: 0,
+			zIndex: 20,
+			transition: { duration: 0.3 },
+		}));
+		// Snap back to the original position
+		await (controls.start({
 			x: 0,
+			y: 158.3,
+			scale: 1,
+			rotateY: 0,
+			zIndex: 20,
+			transition: { duration: 0.5 },
+		}),
+		controls2.start({
+			x: 0,
+			y: 158.3,
+			scale: 1,
+			rotateY: 0,
+			zIndex: 20,
+			transition: { duration: 0.5 },
+		}));
+		await (controls.start({
+			x: 0,
+			y: 0,
 			rotateY: 180,
 			zIndex: 0,
 			transition: { duration: 0 },
-		});
-		await controls2.start({
+		}),
+		controls2.start({
 			x: 0,
+			y: 0,
 			rotateY: 180,
 			zIndex: 0,
 			transition: { duration: 0 },
-		});
+		}));
+
 		setIsFlipped(false);
 		setIsAnimating(false);
 	};
@@ -164,22 +241,34 @@ const Chat = () => {
 					const thirdCard = thirdCardRef.current;
 
 					setCurrentCard(thirdCard);
-				}, 2000);
+				}, 1300);
 				setTimeout(() => {
 					const thirdCard = thirdCardRef.current;
 
 					setCurrentCard(thirdCard);
-				}, 2000);
+				}, 1300);
 			} else {
-				handleFlip();
-				setTimeout(() => {
-					setIsFlipped(true);
-				}, 300);
-				setTimeout(() => {
-					const nextCard = nextCardRef.current;
+				if (guess == 'higher') {
+					handleFlipHigher();
+					setTimeout(() => {
+						setIsFlipped(true);
+					}, 150);
+					setTimeout(() => {
+						const nextCard = nextCardRef.current;
 
-					setCurrentCard(nextCard);
-				}, 1000);
+						setCurrentCard(nextCard);
+					}, 1300);
+				} else if (guess == 'lower') {
+					handleFlipLower();
+					setTimeout(() => {
+						setIsFlipped(true);
+					}, 150);
+					setTimeout(() => {
+						const nextCard = nextCardRef.current;
+
+						setCurrentCard(nextCard);
+					}, 1300);
+				}
 			}
 		});
 		newSocket.on('correct', (correct) => {
@@ -256,96 +345,119 @@ const Chat = () => {
 		}
 	};
 	return (
-		<div className='flex flex-col items-center p-4 gap-4'>
+		<div className=' flex flex-col items-center p-4 gap-4 h-full bg-gradient-to-b from-purple-400 to-purple-800'>
 			<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl '>
 				Purple
 			</h1>
-			<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl '>
-				{roomId}
-			</h1>
-			<div className='flex  w-full text-center justify-center p-4 gap-4'>
-				{players.slice(0, 3).map((player: any, index: number) => (
-					<div
-						key={index}
-						className='flex flex-col text-2xl text-center items-center'
-					>
-						{index == 0 && <h1 className='underline'>1st Place</h1>}
-						{index == 1 && <h1 className='underline'>2nd Place</h1>}
-						{index == 2 && <h1 className='underline'>3rd Place</h1>}
-						<div className='flex w-full text-center justify-center'>
-							{player.name}: {player.score}
-						</div>
-						<div></div>
-					</div>
-				))}
-			</div>
 
 			{!connectedToRoom ? (
-				<div className='max-w-4xl flex flex-col'>
-					<h1>RoomId</h1>
-					<input
-						className='border border-black'
-						type='input'
-						onChange={(e) => setRoomId(e.target.value)}
-					/>
-					<h1>Username</h1>
-					<input
-						className='border border-black'
-						type='input'
-						onChange={(e) => setPlayerName(e.target.value)}
-					/>
-					<button onClick={() => handleJoinRoom(roomId, playerName)}>
+				<div className='max-w-4xl flex flex-col gap-2 uppercase font-bold h-full'>
+					<div className='items-center text-center'>
+						<h1>Room Id</h1>
+						<input
+							className='border border-black text-center'
+							type='input'
+							onChange={(e) => setRoomId(e.target.value)}
+						/>
+					</div>
+					<div className='items-center text-center'>
+						<h1>Username</h1>
+						<input
+							className='border border-black text-center'
+							type='input'
+							onChange={(e) => setPlayerName(e.target.value)}
+						/>
+					</div>
+
+					<button
+						className='uppercase font-bold border rounded-full bg-white text-purple-900 hover:scale-105 p-2 mt-4'
+						onClick={() => handleJoinRoom(roomId, playerName)}
+					>
 						Join
 					</button>
 				</div>
 			) : (
-				<>
-					<div className='flex text-center gap-4'>
-						<div className='font-bold'>
-							<h1>Total Score</h1>
-							<h1 className=' text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl'>
-								{totalScore}
-							</h1>
-						</div>
+				<div className='flex flex-col items-center w-[420px]'>
+					<h1 className='font-bold tracking-tight text-gray-900 text-xl '>
+						Room: {roomId}
+					</h1>
+					<h1 className='font-bold tracking-tight text-gray-900 text-xl '>
+						Username: {playerName}
+					</h1>
+					<div className='flex  w-full text-center justify-center p-4 gap-4'>
+						{players
+							.slice(0, 3)
+							.map((player: any, index: number) => (
+								<div
+									key={index}
+									className='flex flex-col text-2xl text-center items-center'
+								>
+									{index == 0 && (
+										<h1 className='underline'>1st Place</h1>
+									)}
+									{index == 1 && (
+										<h1 className='underline'>2nd Place</h1>
+									)}
+									{index == 2 && (
+										<h1 className='underline'>3rd Place</h1>
+									)}
+									<div className='flex w-full text-center justify-center'>
+										{player.name}: {player.score}
+									</div>
+									<div></div>
+								</div>
+							))}
+					</div>
 
-						<div className='font-bold'>
-							<h1>Turn Score</h1>
-							<h1 className=' text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl'>
-								{turnScore}
-							</h1>
-						</div>
-						<div className='font-bold'>
+					<div className='flex text-center w-full justify-between gap-4'>
+						<div className='font-bold w-full'>
 							<h1>Death Stack</h1>
 							<h1 className=' text-3xl font-semibold tracking-tight text-red-600 sm:text-5xl'>
 								{deathStack}
 							</h1>
 						</div>
-					</div>
-					<div className='flex relative gap-4'>
-						<div className='z-10 flashcard'>
-							<div className='front'>
-								<img
-									className=' h-44'
-									src={`./${currentCard}.svg`}
-									alt=''
-								/>
-							</div>
+
+						<div className='font-bold w-full'>
+							<h1>Turn Score</h1>
+							<h1 className=' text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl'>
+								{turnScore}
+							</h1>
 						</div>
+						<div className='font-bold w-full'>
+							<h1>Total Score</h1>
+							<h1 className=' text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl'>
+								{totalScore}
+							</h1>
+						</div>
+					</div>
+					<div className='flex flex-col items-center relative gap-4 w-full py-4 justify-between'>
+						<img
+							className='z-10 w-[100px]'
+							src={`./blue2.svg`}
+							alt=''
+						/>
+
+						<img
+							className=' w-[100px]'
+							src={`./${currentCard}.svg`}
+							alt=''
+						/>
+
 						<motion.div
-							className='absolute h-44'
+							className='absolute w-[100px]'
 							initial={{ rotateY: 180, x: 0 }}
 							animate={controls}
 						>
 							<div className='front'>
 								{isFlipped ? (
 									<img
-										className=' h-44'
+										className=' w-[100px]'
 										src={`./${nextCard}.svg`}
 										alt=''
 									/>
 								) : (
 									<img
-										className=' h-44'
+										className=' w-[100px]'
 										src={`./blue2.svg`}
 										alt=''
 									/>
@@ -353,20 +465,20 @@ const Chat = () => {
 							</div>
 						</motion.div>
 						<motion.div
-							className='absolute h-44'
+							className='absolute w-[100px]'
 							initial={{ rotateY: 180, x: 0 }}
 							animate={controls2}
 						>
 							<div className='front'>
 								{isFlipped ? (
 									<img
-										className=' h-44'
+										className=' w-[100px]'
 										src={`./${thirdCard}.svg`}
 										alt=''
 									/>
 								) : (
 									<img
-										className=' h-44'
+										className=' w-[100px]'
 										src={`./blue2.svg`}
 										alt=''
 									/>
@@ -376,40 +488,49 @@ const Chat = () => {
 					</div>
 
 					{turn && turn == playerName && (
-						<div className='flex gap-4 p-4'>
+						<div className='grid grid-cols-3 gap-4 p-4'>
 							<button
 								onClick={() => handleGuess('lower')}
 								disabled={isAnimating}
-								className='disabled:bg-red-500 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded'
+								className='disabled:bg-red-500 bg-purple-400 hover:bg-purple-400 text-white font-bold py-2 px-4 border-b-4 border-purple-700 hover:border-purple-500 rounded'
 							>
 								Lower
 							</button>
 							<button
-								onClick={() => handleGuess('higher')}
-								disabled={isAnimating}
-								className='disabled:bg-red-500 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded'
-							>
-								Higher
-							</button>
-							<button
 								onClick={() => handleGuess('purple')}
 								disabled={isAnimating}
-								className='disabled:bg-red-500 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded'
+								className='disabled:bg-red-500 bg-purple-900 hover:bg-purple-400 text-white font-bold text-xl py-2 px-4 border-b-4 border-purple-950 hover:border-purple-500 rounded'
 							>
 								Purple
 							</button>
+							<button
+								onClick={() => handleGuess('higher')}
+								disabled={isAnimating}
+								className='disabled:bg-red-500 bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 border-b-4 border-purple-700 hover:border-purple-500 rounded'
+							>
+								Higher
+							</button>
+							{turn <= 3 && (
+								<button
+									disabled={isAnimating}
+									className='disabled:bg-red-500 invisible bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 border-b-4 border-purple-700 hover:border-purple-500 rounded col-span-3'
+								>
+									Pass
+								</button>
+							)}
+
 							{turnScore >= 3 && (
 								<button
 									onClick={() => handlePass(deathStack)}
 									disabled={isAnimating}
-									className='disabled:bg-red-500 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded'
+									className='disabled:bg-red-500 bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 border-b-4 border-purple-700 hover:border-purple-500 rounded col-span-3'
 								>
 									Pass
 								</button>
 							)}
 						</div>
 					)}
-				</>
+				</div>
 			)}
 		</div>
 	);
