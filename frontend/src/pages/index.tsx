@@ -265,7 +265,10 @@ const Chat = () => {
 			</h1>
 			<div className='flex  w-full text-center justify-center p-4 gap-4'>
 				{players.slice(0, 3).map((player: any, index: number) => (
-					<div className='flex flex-col text-2xl text-center items-center'>
+					<div
+						key={index}
+						className='flex flex-col text-2xl text-center items-center'
+					>
 						{index == 0 && <h1 className='underline'>1st Place</h1>}
 						{index == 1 && <h1 className='underline'>2nd Place</h1>}
 						{index == 2 && <h1 className='underline'>3rd Place</h1>}
