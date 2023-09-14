@@ -349,7 +349,7 @@ const Chat = () => {
 		}
 	};
 	return (
-		<div className='flex flex-col gap-4 w-full items-center h-full bg-gradient-to-b from-purple-400 to-purple-800'>
+		<div className='flex flex-col gap-4 w-full items-center h-full bg-gradient-to-b from-purple-400 to-purple-800 p-4 min-h-screen'>
 			{rules && (
 				<div className='absolute max-w-4xl h-full w-full bg-gradient-to-b from-purple-400 to-purple-800 z-50'>
 					<div className='relative max-w-xl mx-auto p-6 rounded-lg shadow-md'>
@@ -455,7 +455,7 @@ const Chat = () => {
 					</button>
 				</div>
 			) : (
-				<div className='flex flex-col items-center w-full max-w-4xl'>
+				<div className='flex flex-col items-center h-full w-full max-w-4xl'>
 					<h1 className='font-bold tracking-tight text-gray-900 text-xl '>
 						Room: {roomId}
 					</h1>
