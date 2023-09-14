@@ -57,43 +57,54 @@ io.on('connection', (socket) => {
 			rooms[requestedRoomId] = new Room(requestedRoomId);
 		}
 		// Join the specified room
-		socket.join(requestedRoomId);
-		socket.roomId = requestedRoomId;
+		if (
+			rooms[requestedRoomId].players.some(
+				(player) => player.name === playerName
+			)
+		) {
+			io.to(socket.id).emit('usernameAlreadyExists');
+		} else {
+			socket.join(requestedRoomId);
+			socket.roomId = requestedRoomId;
 
-		// Store player information (you can use an array, object, or database)
-		const player = { id: socket.id, name: playerName, score: 0 };
-		// Example: store in an array
+			// Store player information (you can use an array, object, or database)
+			const player = { id: socket.id, name: playerName, score: 0 };
+			// Example: store in an array
 
-		io.to(requestedRoomId).emit(
-			'currentCard',
-			rooms[requestedRoomId].currentSuite +
-				'_' +
-				rooms[requestedRoomId].currentNumber.toString()
-		);
-		io.to(requestedRoomId).emit(
-			'nextCard',
-			rooms[requestedRoomId].nextSuite +
-				'_' +
-				rooms[requestedRoomId].nextNumber.toString()
-		);
-		io.to(requestedRoomId).emit(
-			'thirdCard',
-			rooms[requestedRoomId].thirdSuite +
-				'_' +
-				rooms[requestedRoomId].thirdNumber.toString()
-		);
-		rooms[requestedRoomId].addPlayer(player);
-		io.to(requestedRoomId).emit(
-			'turn',
-			rooms[requestedRoomId].players[
-				rooms[requestedRoomId].currentPlayerIndex
-			].name
-		);
+			io.to(requestedRoomId).emit(
+				'currentCard',
+				rooms[requestedRoomId].currentSuite +
+					'_' +
+					rooms[requestedRoomId].currentNumber.toString()
+			);
+			io.to(requestedRoomId).emit(
+				'nextCard',
+				rooms[requestedRoomId].nextSuite +
+					'_' +
+					rooms[requestedRoomId].nextNumber.toString()
+			);
+			io.to(requestedRoomId).emit(
+				'thirdCard',
+				rooms[requestedRoomId].thirdSuite +
+					'_' +
+					rooms[requestedRoomId].thirdNumber.toString()
+			);
+			rooms[requestedRoomId].addPlayer(player);
+			io.to(requestedRoomId).emit(
+				'turn',
+				rooms[requestedRoomId].players[
+					rooms[requestedRoomId].currentPlayerIndex
+				].name
+			);
 
-		// Emit an event to the room to update all clients about the new player
-		io.to(requestedRoomId).emit('playerJoined', player.name);
-		io.to(requestedRoomId).emit('players', rooms[requestedRoomId].players);
-		console.log('players', rooms[requestedRoomId].players);
+			// Emit an event to the room to update all clients about the new player
+			io.to(requestedRoomId).emit('playerJoined', player.name);
+			io.to(requestedRoomId).emit(
+				'players',
+				rooms[requestedRoomId].players
+			);
+			console.log('players', rooms[requestedRoomId].players);
+		}
 	});
 	socket.on('deathStack', (deathStack) => {
 		let roomId = socket.roomId;

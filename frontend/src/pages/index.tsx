@@ -3,8 +3,10 @@ import io from 'socket.io-client';
 import { motion, useAnimation } from 'framer-motion';
 
 const Chat = () => {
+	const [rules, setRules] = useState(false);
 	const [roomId, setRoomId] = useState<string>();
 	const [playerName, setPlayerName] = useState<string>();
+	const [usernameAlreadyExists, setUsernameAlreadyExists] = useState(false);
 	const [players, setPlayers] = useState([]);
 	const [connectedToRoom, setConnectedToRoom] = useState(false);
 	const [currentCard, setCurrentCard] = useState();
@@ -30,7 +32,7 @@ const Chat = () => {
 
 	const handleFlipHigher = async () => {
 		await controls.start({
-			x: 150,
+			x: 130,
 			y: 76,
 			scale: 1.5,
 			rotateY: 0,
@@ -38,7 +40,7 @@ const Chat = () => {
 			transition: { duration: 0.5 },
 		});
 		await controls.start({
-			x: 150,
+			x: 130,
 			y: 76,
 			scale: 1.5,
 			rotateY: 0,
@@ -68,7 +70,7 @@ const Chat = () => {
 	};
 	const handleFlipLower = async () => {
 		await controls.start({
-			x: -150,
+			x: -130,
 			y: 76,
 			scale: 1.5,
 			rotateY: 0,
@@ -76,7 +78,7 @@ const Chat = () => {
 			transition: { duration: 0.5 },
 		});
 		await controls.start({
-			x: -150,
+			x: -130,
 			y: 76,
 			scale: 1.5,
 			rotateY: 0,
@@ -104,7 +106,7 @@ const Chat = () => {
 	};
 	const handleFlip2 = async () => {
 		await (controls.start({
-			x: -150,
+			x: -130,
 
 			y: 76,
 			scale: 1.5,
@@ -113,7 +115,7 @@ const Chat = () => {
 			transition: { duration: 0.5 },
 		}),
 		controls2.start({
-			x: 150,
+			x: 130,
 			y: 76,
 			scale: 1.5,
 			rotateY: 0,
@@ -121,7 +123,7 @@ const Chat = () => {
 			transition: { duration: 0.5 },
 		}));
 		await (controls.start({
-			x: -150,
+			x: -130,
 			y: 76,
 			scale: 1.5,
 			rotateY: 0,
@@ -129,7 +131,7 @@ const Chat = () => {
 			transition: { duration: 0.3 },
 		}),
 		controls2.start({
-			x: 150,
+			x: 130,
 			y: 76,
 			scale: 1.5,
 			rotateY: 0,
@@ -310,7 +312,9 @@ const Chat = () => {
 		newSocket.on('turn', (turn) => {
 			setTurn(turn);
 		});
-
+		newSocket.on('usernameAlreadyExists', () => {
+			setUsernameAlreadyExists(true);
+		});
 		newSocket.on('playerLeft', (playerId) => {
 			// Handle a player leaving
 			console.log(`Player with ID ${playerId} has left the room.`);
@@ -345,16 +349,81 @@ const Chat = () => {
 		}
 	};
 	return (
-		<div className=' flex flex-col items-center p-4 gap-4 h-full bg-gradient-to-b from-purple-400 to-purple-800'>
+		<div className='flex flex-col gap-4 w-full items-center h-full bg-gradient-to-b from-purple-400 to-purple-800'>
+			{rules && (
+				<div className='absolute max-w-4xl h-full w-full bg-gradient-to-b from-purple-400 to-purple-800 z-50'>
+					<div className='relative max-w-xl mx-auto p-6 rounded-lg shadow-md'>
+						<button
+							className='absolute right-4 top-4'
+							onClick={() => setRules(!rules)}
+						>
+							Close
+						</button>
+						<h1 className='text-2xl font-semibold mb-4'>
+							Purple Instructions
+						</h1>
+						<span className='font-bold'>Guessing</span>
+						<ol className='list-disc pl-5 space-y-2'>
+							<li className='mb-2'>
+								Guessing higher or lower draws ONE card and
+								compares it to the current card. If you get it
+								right, the card goes in the death stack.
+							</li>
+							<li className='mb-2'>
+								Guessing Purple draws TWO cards and compares the
+								two suits. Red and blue need to combine to make
+								purple. If you get it right, both cards goes in
+								the death stack.
+							</li>
+						</ol>
+						<span className='font-bold'>Passing</span>
+						<ol className='list-disc pl-5 space-y-2'>
+							<li className='mb-2'>
+								Add 3 cards to the Death Stack in a row and earn
+								the ability to pass to the Death Stack to the
+								next player.
+							</li>
+							<li className='mb-2'>
+								Passing the Death Stack earns you points equal
+								to the amount of cards in the death stack.
+							</li>
+						</ol>
+						<span className='font-bold'>Earning Points</span>
+						<ol className='list-disc pl-5 space-y-2'>
+							<li className='mb-2'>
+								Add 3 cards to the Death Stack in a row and earn
+								the ability to pass to the death stack to the
+								next player.
+							</li>
+							<li className='mb-2'>
+								Passing the Death Stack earns you points equal
+								to the amount of cards in the death stack.
+							</li>
+						</ol>
+						<span className='font-bold'>Getting it Wrong</span>
+						<ol className='list-disc pl-5 space-y-2'>
+							<li className='mb-2'>
+								Getting it wrong shuffles the deck
+							</li>
+							<li className='mb-2'>
+								When you get one wrong, you lose points equal to
+								the death stack AND the cards you were dealt
+							</li>
+						</ol>
+					</div>
+				</div>
+			)}
+
 			<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl '>
 				Purple
 			</h1>
-
+			<button onClick={() => setRules(!rules)}>Rules</button>
 			{!connectedToRoom ? (
 				<div className='max-w-4xl flex flex-col gap-2 uppercase font-bold h-full'>
 					<div className='items-center text-center'>
 						<h1>Room Id</h1>
 						<input
+							required
 							className='border border-black text-center'
 							type='input'
 							onChange={(e) => setRoomId(e.target.value)}
@@ -363,10 +432,19 @@ const Chat = () => {
 					<div className='items-center text-center'>
 						<h1>Username</h1>
 						<input
+							required
 							className='border border-black text-center'
 							type='input'
-							onChange={(e) => setPlayerName(e.target.value)}
+							onChange={(e) => {
+								setPlayerName(e.target.value);
+								setUsernameAlreadyExists(false);
+							}}
 						/>
+						{usernameAlreadyExists && (
+							<h1 className='text-red-800'>
+								Username Already exists
+							</h1>
+						)}
 					</div>
 
 					<button
@@ -377,7 +455,7 @@ const Chat = () => {
 					</button>
 				</div>
 			) : (
-				<div className='flex flex-col items-center w-[420px]'>
+				<div className='flex flex-col items-center w-full max-w-4xl'>
 					<h1 className='font-bold tracking-tight text-gray-900 text-xl '>
 						Room: {roomId}
 					</h1>
@@ -418,13 +496,7 @@ const Chat = () => {
 						</div>
 
 						<div className='font-bold w-full'>
-							<h1>Turn Score</h1>
-							<h1 className=' text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl'>
-								{turnScore}
-							</h1>
-						</div>
-						<div className='font-bold w-full'>
-							<h1>Total Score</h1>
+							<h1>Your Score</h1>
 							<h1 className=' text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl'>
 								{totalScore}
 							</h1>
