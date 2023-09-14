@@ -286,13 +286,24 @@ io.on('connection', (socket) => {
 		} else {
 			rooms[roomId].currentPlayerIndex += 1;
 		}
-		io.to(roomId).emit('players', rooms[roomId].players);
-		io.to(roomId).emit('deathStack', deathStack);
-		io.to(roomId).emit('turnScore', 0);
-		io.to(roomId).emit(
-			'turn',
-			players[rooms[roomId].currentPlayerIndex].name
-		);
+		if (players.length == 1) {
+			rooms[roomId].deathStack = 0;
+			io.to(roomId).emit('players', rooms[roomId].players);
+			io.to(roomId).emit('deathStack', 0);
+			io.to(roomId).emit('turnScore', 0);
+			io.to(roomId).emit(
+				'turn',
+				players[rooms[roomId].currentPlayerIndex].name
+			);
+		} else {
+			io.to(roomId).emit('players', rooms[roomId].players);
+			io.to(roomId).emit('deathStack', deathStack);
+			io.to(roomId).emit('turnScore', 0);
+			io.to(roomId).emit(
+				'turn',
+				players[rooms[roomId].currentPlayerIndex].name
+			);
+		}
 	});
 	// Handle disconnection
 	socket.on('disconnect', () => {
