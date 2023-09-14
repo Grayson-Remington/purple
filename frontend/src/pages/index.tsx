@@ -414,12 +414,12 @@ const Chat = () => {
 				</div>
 			)}
 
-			<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl '>
-				Purple
-			</h1>
 			<button onClick={() => setRules(!rules)}>Rules</button>
 			{!connectedToRoom ? (
 				<div className='max-w-4xl flex flex-col gap-2 uppercase font-bold h-full'>
+					<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl '>
+						Purple
+					</h1>
 					<div className='items-center text-center'>
 						<h1>Room Id</h1>
 						<input
@@ -456,12 +456,20 @@ const Chat = () => {
 				</div>
 			) : (
 				<div className='flex flex-col items-center h-full w-full max-w-4xl'>
-					<h1 className='font-bold tracking-tight text-gray-900 text-xl '>
-						Room: {roomId}
-					</h1>
-					<h1 className='font-bold tracking-tight text-gray-900 text-xl '>
-						Username: {playerName}
-					</h1>
+					<div className='flex justify-between items-center w-full px-8'>
+						<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl '>
+							Purple
+						</h1>
+						<div>
+							<h1 className='font-bold tracking-tight text-gray-900 text-xl '>
+								Room: {roomId}
+							</h1>
+							<h1 className='font-bold tracking-tight text-gray-900 text-xl '>
+								Username: {playerName}
+							</h1>
+						</div>
+					</div>
+
 					<div className='flex  w-full text-center justify-center p-4 gap-4'>
 						{players
 							.slice(0, 3)
