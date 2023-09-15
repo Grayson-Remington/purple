@@ -1,85 +1,162 @@
 import { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import { motion, useAnimation } from 'framer-motion';
+import next from 'next';
 
 const Chat = () => {
 	const [rules, setRules] = useState(false);
-	const [roomId, setRoomId] = useState<string>();
+	const [roomId, setRoomId] = useState<string>('');
 	const [playerName, setPlayerName] = useState<string>();
 	const [usernameAlreadyExists, setUsernameAlreadyExists] = useState(false);
 	const [players, setPlayers] = useState([]);
 	const [connectedToRoom, setConnectedToRoom] = useState(false);
-	const [currentCard, setCurrentCard] = useState();
-	const [nextCard, setNextCard] = useState();
-	const [thirdCard, setThirdCard] = useState();
+	const [deckSize, setDeckSize] = useState<string>();
+	const [shownCard, setShownCard] = useState<string>('');
+	const [currentCard, setCurrentCard] = useState<string>('');
+	const [nextCard, setNextCard] = useState<string>('');
+	const [thirdCard, setThirdCard] = useState<string>('');
 	const [turnScore, setTurnScore] = useState(0);
 	const [totalScore, setTotalScore] = useState(0);
-	const [correct, setCorrect] = useState(null);
+	const [correct, setCorrect] = useState<string>('');
 	const [deathStack, setDeathStack] = useState(0);
 	const [socket, setSocket] = useState<any>();
 	const [turn, setTurn] = useState(undefined);
 	const turnRef = useRef();
+	const correctRef = useRef<string>();
 	const playerNameRef = useRef<string>();
-	const currentCardRef = useRef();
-	const nextCardRef = useRef();
-	const thirdCardRef = useRef();
+	const shownCardRef = useRef<string>('');
+	const currentCardRef = useRef<string>('');
+	const nextCardRef = useRef<string>('');
+	const thirdCardRef = useRef<string>('');
 	const turnScoreRef = useRef(0);
 	const deathStackRef = useRef(0);
 	const [isFlipped, setIsFlipped] = useState(false);
+	const [isShownFlipped, setIsShownFlipped] = useState(true);
 	const controls = useAnimation();
 	const controls2 = useAnimation();
+	const controls3 = useAnimation();
 	const [isAnimating, setIsAnimating] = useState(false);
-
-	const handleFlipHigher = async () => {
-		await controls.start({
-			x: 130,
-			y: 76,
-			scale: 1.5,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.5 },
-		});
-		await controls.start({
-			x: 130,
-			y: 76,
-			scale: 1.5,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.3 },
-		});
-		// Snap back to the original position
-		await controls.start({
+	const handleSingleFlip = async () => {
+		await controls3.start({
 			x: 0,
-			y: 158.3,
+			y: -144.06,
+			scale: 1.0,
+			rotateY: 180,
+			zIndex: 20,
+			transition: { duration: 0.0 },
+		});
+
+		// Snap back to the original position
+		await controls3.start({
+			x: 0,
+			y: 0,
 			scale: 1.0,
 			rotateY: 0,
 			zIndex: 20,
 			transition: { duration: 0.5 },
 		});
+	};
+	const putAwayCards = async () => {
+		await controls3.start({
+			x: 0,
+			y: -144.06,
+			scale: 1.0,
+			rotateY: 180,
+			zIndex: 0,
+			transition: { duration: 0.5 },
+		});
+
+		// Snap back to the original position
+	};
+	const resetCardPosition = async () => {
+		await controls.start({
+			zIndex: 0,
+			transition: { duration: 0.0 },
+		});
 
 		await controls.start({
 			x: 0,
 			y: 0,
-
+			scale: 1.0,
 			rotateY: 180,
 			zIndex: 0,
-			transition: { duration: 0 },
+			transition: { duration: 0.0 },
 		});
-		setIsFlipped(false);
-		setIsAnimating(false);
+	};
+	const reset2Cards = async () => {
+		await (controls.start({
+			zIndex: 0,
+			transition: { duration: 0.0 },
+		}),
+		controls2.start({
+			zIndex: 0,
+			transition: { duration: 0.0 },
+		}));
+
+		await (controls.start({
+			x: 0,
+			y: 0,
+			scale: 1.0,
+			rotateY: 180,
+			zIndex: 0,
+			transition: { duration: 0.0 },
+		}),
+		controls2.start({
+			x: 0,
+			y: 0,
+			scale: 1.0,
+			rotateY: 180,
+			zIndex: 0,
+			transition: { duration: 0.0 },
+		}));
+	};
+	const handleFlipHigher = async () => {
+		await controls.start({
+			zIndex: 20,
+			transition: { duration: 0.0 },
+		});
+		await controls.start({
+			x: 120,
+			y: 72,
+			scale: 1.5,
+			rotateY: 0,
+			zIndex: 20,
+			transition: { duration: 0.5 },
+		});
+		await controls.start({
+			x: 120,
+			y: 72,
+			scale: 1.5,
+			rotateY: 0,
+			zIndex: 20,
+			transition: { duration: 0.3 },
+		});
+		// Snap back to the original position
+		await controls.start({
+			x: 0,
+			y: 144.06,
+			scale: 1.0,
+			rotateY: 0,
+			zIndex: 20,
+			transition: { duration: 0.5 },
+		});
 	};
 	const handleFlipLower = async () => {
 		await controls.start({
-			x: -130,
-			y: 76,
+			zIndex: 20,
+			transition: { duration: 0.0 },
+		});
+		await controls.start({
+			x: -120,
+			y: 72,
 			scale: 1.5,
 			rotateY: 0,
 			zIndex: 20,
 			transition: { duration: 0.5 },
 		});
 		await controls.start({
-			x: -130,
-			y: 76,
+			x: -120,
+			y: 72,
 			scale: 1.5,
 			rotateY: 0,
 			zIndex: 20,
@@ -88,51 +165,50 @@ const Chat = () => {
 		// Snap back to the original position
 		await controls.start({
 			x: 0,
-			y: 158.3,
-			scale: 1,
+			y: 144.06,
+			scale: 1.0,
 			rotateY: 0,
 			zIndex: 20,
 			transition: { duration: 0.5 },
 		});
-		await controls.start({
-			x: 0,
-			y: 0,
-			rotateY: 180,
-			zIndex: 0,
-			transition: { duration: 0 },
-		});
-		setIsFlipped(false);
-		setIsAnimating(false);
 	};
 	const handleFlip2 = async () => {
 		await (controls.start({
-			x: -130,
+			zIndex: 20,
+			transition: { duration: 0.0 },
+		}),
+		controls2.start({
+			zIndex: 20,
+			transition: { duration: 0.0 },
+		}));
 
-			y: 76,
+		await (controls.start({
+			x: -120,
+			y: 72,
 			scale: 1.5,
 			rotateY: 0,
 			zIndex: 20,
 			transition: { duration: 0.5 },
 		}),
 		controls2.start({
-			x: 130,
-			y: 76,
+			x: 120,
+			y: 72,
 			scale: 1.5,
 			rotateY: 0,
 			zIndex: 20,
 			transition: { duration: 0.5 },
 		}));
 		await (controls.start({
-			x: -130,
-			y: 76,
+			x: -120,
+			y: 72,
 			scale: 1.5,
 			rotateY: 0,
 			zIndex: 20,
 			transition: { duration: 0.3 },
 		}),
 		controls2.start({
-			x: 130,
-			y: 76,
+			x: 120,
+			y: 72,
 			scale: 1.5,
 			rotateY: 0,
 			zIndex: 20,
@@ -141,37 +217,20 @@ const Chat = () => {
 		// Snap back to the original position
 		await (controls.start({
 			x: 0,
-			y: 158.3,
-			scale: 1,
+			y: 144.06,
+			scale: 1.0,
 			rotateY: 0,
 			zIndex: 20,
 			transition: { duration: 0.5 },
 		}),
 		controls2.start({
 			x: 0,
-			y: 158.3,
-			scale: 1,
+			y: 144.06,
+			scale: 1.0,
 			rotateY: 0,
 			zIndex: 20,
 			transition: { duration: 0.5 },
 		}));
-		await (controls.start({
-			x: 0,
-			y: 0,
-			rotateY: 180,
-			zIndex: 0,
-			transition: { duration: 0 },
-		}),
-		controls2.start({
-			x: 0,
-			y: 0,
-			rotateY: 180,
-			zIndex: 0,
-			transition: { duration: 0 },
-		}));
-
-		setIsFlipped(false);
-		setIsAnimating(false);
 	};
 	useEffect(() => {
 		let player: any = players.find(
@@ -185,11 +244,13 @@ const Chat = () => {
 	useEffect(() => {
 		turnRef.current = turn;
 		playerNameRef.current = playerName;
+		shownCardRef.current = shownCard;
 		currentCardRef.current = currentCard;
 		nextCardRef.current = nextCard;
 		thirdCardRef.current = thirdCard;
 		turnScoreRef.current = turnScore;
 		deathStackRef.current = deathStack;
+		correctRef.current = correct;
 	}, [
 		turn,
 		playerName,
@@ -198,6 +259,8 @@ const Chat = () => {
 		turnScore,
 		deathStack,
 		thirdCard,
+		correct,
+		shownCard,
 	]);
 	useEffect(() => {
 		console.log('Connecting to WebSocket server...');
@@ -219,7 +282,17 @@ const Chat = () => {
 			console.log(players);
 		});
 		newSocket.on('currentCard', (currentCard) => {
-			setCurrentCard(currentCard);
+			let localCurrentCardRef = currentCardRef.current;
+
+			if (localCurrentCardRef == '') {
+				setCurrentCard(currentCard);
+				setShownCard(currentCard);
+			} else {
+				setCurrentCard(currentCard);
+			}
+		});
+		newSocket.on('deckSize', (deckSize) => {
+			setDeckSize(deckSize + 2);
 		});
 		newSocket.on('nextCard', (nextCard) => {
 			setNextCard(nextCard);
@@ -233,44 +306,142 @@ const Chat = () => {
 		newSocket.on('turnScore', (turnScore) => {
 			setTurnScore(turnScore);
 		});
-		newSocket.on('guess', (guess) => {
-			if (guess == 'purple') {
-				handleFlip2();
+		newSocket.on('guess', (data) => {
+			const { guess, currentCard, nextCard, thirdCard } = data;
+			let correct = correctRef.current;
+			let localNextCard = nextCardRef.current;
+			let localThirdCard = thirdCardRef.current;
+			if (guess == 'purple' && correct == 'purpleTrue') {
+				console.log(localNextCard, localThirdCard);
 				setTimeout(() => {
 					setIsFlipped(true);
 				}, 150);
+				handleFlip2()
+					.then(() => setShownCard(localThirdCard))
+					.then(() => reset2Cards())
+					.then(() => {
+						setNextCard(nextCard), setThirdCard(thirdCard);
+					})
+					.then(() => {
+						setIsFlipped(false);
+						setIsAnimating(false);
+					});
+			} else if (guess == 'purple' && correct == 'purpleFalse') {
+				console.log(localNextCard, localThirdCard);
 				setTimeout(() => {
-					const thirdCard = thirdCardRef.current;
+					setIsFlipped(true);
+				}, 150);
+				handleFlip2()
+					.then(() => setShownCard(localThirdCard))
+					.then(() => reset2Cards())
 
-					setCurrentCard(thirdCard);
-				}, 1300);
+					.then(() =>
+						setTimeout(() => {
+							setIsShownFlipped(false);
+						}, 150)
+					)
+					.then(() => putAwayCards())
+
+					.then(() => setShownCard(currentCard))
+					.then(() =>
+						setTimeout(() => {
+							setIsShownFlipped(true);
+						}, 150)
+					)
+					.then(() => handleSingleFlip())
+					.then(() => {
+						setNextCard(nextCard), setThirdCard(thirdCard);
+					})
+					.then(() => {
+						setIsFlipped(false);
+						setIsAnimating(false);
+					});
+			}
+			if (guess == 'higher' && correct == 'true') {
 				setTimeout(() => {
-					const thirdCard = thirdCardRef.current;
+					setIsFlipped(true);
+				}, 150);
+				handleFlipHigher()
+					.then(() => setShownCard(localNextCard))
+					.then(() => resetCardPosition())
+					.then(() => {
+						setNextCard(nextCard), setThirdCard(thirdCard);
+					})
+					.then(() => {
+						setIsFlipped(false);
+						setIsAnimating(false);
+					});
+			} else if (guess == 'higher' && correct == 'false') {
+				setTimeout(() => {
+					setIsFlipped(true);
+				}, 150);
+				handleFlipHigher()
+					.then(() => setShownCard(localNextCard))
+					.then(() => resetCardPosition())
+					.then(() =>
+						setTimeout(() => {
+							setIsShownFlipped(false);
+						}, 150)
+					)
+					.then(() => putAwayCards())
 
-					setCurrentCard(thirdCard);
-				}, 1300);
-			} else {
-				if (guess == 'higher') {
-					handleFlipHigher();
-					setTimeout(() => {
-						setIsFlipped(true);
-					}, 150);
-					setTimeout(() => {
-						const nextCard = nextCardRef.current;
+					.then(() =>
+						setTimeout(() => {
+							setIsShownFlipped(true);
+							setShownCard(currentCard);
+						}, 150)
+					)
+					.then(() => handleSingleFlip())
+					.then(() => {
+						setNextCard(nextCard), setThirdCard(thirdCard);
+					})
+					.then(() => {
+						setIsFlipped(false);
+						setIsAnimating(false);
+					});
+			}
+			if (guess == 'lower' && correct == 'true') {
+				setTimeout(() => {
+					setIsFlipped(true);
+				}, 150);
+				handleFlipLower()
+					.then(() => setShownCard(localNextCard))
+					.then(() => resetCardPosition())
+					.then(() => {
+						setNextCard(nextCard), setThirdCard(thirdCard);
+					})
+					.then(() => {
+						setIsFlipped(false);
+						setIsAnimating(false);
+					});
+			} else if (guess == 'lower' && correct == 'false') {
+				setTimeout(() => {
+					setIsFlipped(true);
+				}, 150);
+				handleFlipLower()
+					.then(() => setShownCard(localNextCard))
+					.then(() => resetCardPosition())
+					.then(() =>
+						setTimeout(() => {
+							setIsShownFlipped(false);
+						}, 150)
+					)
+					.then(() => putAwayCards())
 
-						setCurrentCard(nextCard);
-					}, 1300);
-				} else if (guess == 'lower') {
-					handleFlipLower();
-					setTimeout(() => {
-						setIsFlipped(true);
-					}, 150);
-					setTimeout(() => {
-						const nextCard = nextCardRef.current;
-
-						setCurrentCard(nextCard);
-					}, 1300);
-				}
+					.then(() =>
+						setTimeout(() => {
+							setIsShownFlipped(true);
+							setShownCard(currentCard);
+						}, 150)
+					)
+					.then(() => handleSingleFlip())
+					.then(() => {
+						setNextCard(nextCard), setThirdCard(thirdCard);
+					})
+					.then(() => {
+						setIsFlipped(false);
+						setIsAnimating(false);
+					});
 			}
 		});
 		newSocket.on('correct', (correct) => {
@@ -308,6 +479,9 @@ const Chat = () => {
 				setDeathStack(0);
 				setTurnScore(0);
 			}
+		});
+		newSocket.on('currentRoom', (roomId) => {
+			setRoomId(roomId);
 		});
 		newSocket.on('turn', (turn) => {
 			setTurn(turn);
@@ -349,7 +523,7 @@ const Chat = () => {
 		}
 	};
 	return (
-		<div className='flex flex-col gap-4 w-full items-center h-full bg-gradient-to-b from-purple-400 to-purple-800 p-4 min-h-screen'>
+		<div className='flex flex-col gap-4 w-full items-center h-full bg-gradient-to-b from-purple-400   to-purple-800  p-4 min-h-screen'>
 			{rules && (
 				<div className='absolute max-w-4xl h-full w-full bg-gradient-to-b from-purple-400 to-purple-800 z-50'>
 					<div className='relative max-w-xl mx-auto p-6 rounded-lg shadow-md'>
@@ -414,7 +588,6 @@ const Chat = () => {
 				</div>
 			)}
 
-			<button onClick={() => setRules(!rules)}>Rules</button>
 			{!connectedToRoom ? (
 				<div className='max-w-4xl flex flex-col gap-2 uppercase font-bold h-full'>
 					<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl '>
@@ -456,10 +629,12 @@ const Chat = () => {
 				</div>
 			) : (
 				<div className='flex flex-col items-center h-full w-full max-w-4xl'>
+					<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl '>
+						Purple
+					</h1>
 					<div className='flex justify-between items-center w-full px-8'>
-						<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl '>
-							Purple
-						</h1>
+						<button onClick={() => setRules(!rules)}>Rules</button>
+
 						<div>
 							<h1 className='font-bold tracking-tight text-gray-900 text-xl '>
 								Room: {roomId}
@@ -502,7 +677,12 @@ const Chat = () => {
 								{deathStack}
 							</h1>
 						</div>
-
+						<div className='font-bold w-full'>
+							<h1>Cards Left</h1>
+							<h1 className=' text-3xl font-semibold tracking-tight text-red-600 sm:text-5xl'>
+								{deckSize}
+							</h1>
+						</div>
 						<div className='font-bold w-full'>
 							<h1>Your Score</h1>
 							<h1 className=' text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl'>
@@ -512,16 +692,32 @@ const Chat = () => {
 					</div>
 					<div className='flex flex-col items-center relative gap-4 w-full py-4 justify-between'>
 						<img
-							className='z-10 w-[100px]'
+							className='z-10 w-[90px]'
 							src={`./blue2.svg`}
 							alt=''
 						/>
 
-						<img
-							className=' w-[100px]'
-							src={`./${currentCard}.svg`}
-							alt=''
-						/>
+						<motion.div
+							className=' w-[90px]'
+							initial={{}}
+							animate={controls3}
+						>
+							<div className='front'>
+								{isShownFlipped ? (
+									<img
+										className=' w-[90px]'
+										src={`./${shownCard}.svg`}
+										alt=''
+									/>
+								) : (
+									<img
+										className=' w-[90px]'
+										src={`./blue2.svg`}
+										alt=''
+									/>
+								)}
+							</div>
+						</motion.div>
 						{turnScore >= 3 && (
 							<button
 								onClick={() => handlePass(deathStack)}
@@ -532,20 +728,20 @@ const Chat = () => {
 							</button>
 						)}
 						<motion.div
-							className='absolute w-[100px]'
+							className='absolute w-[90px]'
 							initial={{ rotateY: 180, x: 0 }}
 							animate={controls}
 						>
 							<div className='front'>
 								{isFlipped ? (
 									<img
-										className=' w-[100px]'
+										className=' w-[90px]'
 										src={`./${nextCard}.svg`}
 										alt=''
 									/>
 								) : (
 									<img
-										className=' w-[100px]'
+										className=' w-[90px]'
 										src={`./blue2.svg`}
 										alt=''
 									/>
@@ -553,20 +749,20 @@ const Chat = () => {
 							</div>
 						</motion.div>
 						<motion.div
-							className='absolute w-[100px]'
+							className='absolute w-[90px]'
 							initial={{ rotateY: 180, x: 0 }}
 							animate={controls2}
 						>
 							<div className='front'>
 								{isFlipped ? (
 									<img
-										className=' w-[100px]'
+										className=' w-[90px]'
 										src={`./${thirdCard}.svg`}
 										alt=''
 									/>
 								) : (
 									<img
-										className=' w-[100px]'
+										className=' w-[90px]'
 										src={`./blue2.svg`}
 										alt=''
 									/>
