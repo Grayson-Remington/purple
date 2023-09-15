@@ -690,7 +690,10 @@ const Chat = () => {
 							</h1>
 						</div>
 					</div>
-					<div className='flex flex-col items-center relative gap-4 w-full py-4 justify-between'>
+					<div
+						id='motion-container'
+						className='flex flex-col items-center relative gap-4 w-full py-4 justify-between'
+					>
 						<img
 							className='z-10 w-[90px]'
 							src={`./blue2.svg`}
