@@ -70,6 +70,11 @@ const Chat = () => {
 	};
 	const resetCardPosition = async () => {
 		await controls.start({
+			zIndex: 0,
+			transition: { duration: 0.0 },
+		});
+
+		await controls.start({
 			x: 0,
 			y: 0,
 			scale: 1.0,
@@ -79,6 +84,15 @@ const Chat = () => {
 		});
 	};
 	const reset2Cards = async () => {
+		await (controls.start({
+			zIndex: 0,
+			transition: { duration: 0.0 },
+		}),
+		controls2.start({
+			zIndex: 0,
+			transition: { duration: 0.0 },
+		}));
+
 		await (controls.start({
 			x: 0,
 			y: 0,
