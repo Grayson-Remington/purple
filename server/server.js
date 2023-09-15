@@ -85,7 +85,7 @@ io.on('connection', (socket) => {
 	console.log('A user connected');
 	socket.on('joinRoom', (data) => {
 		const { requestedRoomId, playerName } = data;
-		let roomId = requestedRoomId;
+		let roomId;
 		if (!rooms[requestedRoomId] && requestedRoomId == '') {
 			let randomCode = generateRandomCode();
 			roomId = randomCode;
@@ -279,7 +279,7 @@ io.on('connection', (socket) => {
 		);
 		io.to(roomId).emit('deckSize', rooms[roomId].deck.length);
 		// Broadcast the message to all connected clients
-		io.emit('guess', {
+		io.to(roomId).emit('guess', {
 			guess: guess,
 			currentCard:
 				rooms[roomId].currentSuite +
