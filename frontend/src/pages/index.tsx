@@ -327,6 +327,7 @@ const Chat = () => {
 						setIsAnimating(false);
 					});
 			} else if (guess == 'purple' && correct == 'purpleFalse') {
+				setIsAnimating(true);
 				console.log(localNextCard, localThirdCard);
 				setTimeout(() => {
 					setIsFlipped(true);
@@ -447,7 +448,6 @@ const Chat = () => {
 		newSocket.on('correct', (correct) => {
 			console.log('Received correct:', correct);
 			setCorrect(correct);
-			setIsAnimating(true);
 
 			const currentTurn = turnRef.current;
 			const currentPlayerName = playerNameRef.current;
