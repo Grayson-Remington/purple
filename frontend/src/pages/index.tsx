@@ -311,6 +311,7 @@ const Chat = () => {
 			let correct = correctRef.current;
 			let localNextCard = nextCardRef.current;
 			let localThirdCard = thirdCardRef.current;
+			setIsAnimating(true);
 			if (guess == 'purple' && correct == 'purpleTrue') {
 				console.log(localNextCard, localThirdCard);
 				setTimeout(() => {
@@ -327,7 +328,6 @@ const Chat = () => {
 						setIsAnimating(false);
 					});
 			} else if (guess == 'purple' && correct == 'purpleFalse') {
-				setIsAnimating(true);
 				console.log(localNextCard, localThirdCard);
 				setTimeout(() => {
 					setIsFlipped(true);
