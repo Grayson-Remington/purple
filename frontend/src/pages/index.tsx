@@ -699,7 +699,13 @@ const Chat = () => {
 
 						<motion.div
 							className=' w-[90px]'
-							initial={{}}
+							initial={{
+								x: 0,
+								y: 0,
+								scale: 1.0,
+								rotateY: 0,
+								zIndex: 0,
+							}}
 							animate={controls3}
 						>
 							<div className='front'>
@@ -729,7 +735,13 @@ const Chat = () => {
 						)}
 						<motion.div
 							className='absolute w-[90px]'
-							initial={{ rotateY: 180, x: 0 }}
+							initial={{
+								x: 0,
+								y: 0,
+								scale: 1.0,
+								rotateY: 180,
+								zIndex: 0,
+							}}
 							animate={controls}
 						>
 							<div className='front'>
@@ -750,7 +762,13 @@ const Chat = () => {
 						</motion.div>
 						<motion.div
 							className='absolute w-[90px]'
-							initial={{ rotateY: 180, x: 0 }}
+							initial={{
+								x: 0,
+								y: 0,
+								scale: 1.0,
+								rotateY: 180,
+								zIndex: 0,
+							}}
 							animate={controls2}
 						>
 							<div className='front'>
