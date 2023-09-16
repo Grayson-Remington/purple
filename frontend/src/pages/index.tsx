@@ -392,7 +392,7 @@ const Chat = () => {
 			let correct = correctRef.current;
 			let localNextCard = nextCardRef.current;
 			let localThirdCard = thirdCardRef.current;
-			setIsAnimating(true);
+
 			if (guess == 'purple' && correct == 'purpleTrue') {
 				console.log(localNextCard, localThirdCard);
 				setTimeout(() => {
@@ -594,6 +594,7 @@ const Chat = () => {
 
 	const handleGuess = (guess: any) => {
 		if (socket) {
+			setIsAnimating(true);
 			socket.emit('guess', guess);
 		}
 	};
