@@ -39,6 +39,25 @@ const Chat = () => {
 	const [scope, animate] = useAnimate();
 	const [scope2, animate2] = useAnimate();
 	const [scope3, animate3] = useAnimate();
+	const [scope4, animate4] = useAnimate();
+	const handleZStack = async () => {
+		await animate4(
+			scope4.current,
+			{
+				zIndex: 10,
+			},
+			{ ease: 'linear', duration: 0.5 }
+		);
+		await animate4(
+			scope4.current,
+			{
+				zIndex: 20,
+			},
+			{ ease: 'linear', duration: 0.5 }
+		);
+
+		// Snap back to the original position
+	};
 	const handleSingleFlip = async () => {
 		await animate3(
 			scope3.current,
@@ -98,7 +117,7 @@ const Chat = () => {
 			{ ease: 'linear', duration: 0 }
 		);
 		await animate2(
-			scope.current,
+			scope2.current,
 			{
 				zIndex: 0,
 			},
@@ -117,7 +136,7 @@ const Chat = () => {
 		);
 
 		await animate2(
-			scope.current,
+			scope2.current,
 			{
 				x: 0,
 				y: 0,
@@ -756,11 +775,17 @@ const Chat = () => {
 						id='motion-container'
 						className='flex flex-col items-center relative gap-4 w-full py-4 justify-between'
 					>
-						<img
-							className='z-10 w-[90px]'
-							src={`./blue2.svg`}
-							alt=''
-						/>
+						<motion.div
+							className=' w-[90px]'
+							ref={scope4}
+							initial={{ zIndex: 20 }}
+						>
+							<img
+								className=' w-[90px]'
+								src={`./blue2.svg`}
+								alt=''
+							/>
+						</motion.div>
 
 						<motion.div
 							className=' w-[90px]'
