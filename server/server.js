@@ -81,20 +81,35 @@ function generateRandomCode() {
 
 	return code;
 }
+function generateRandomNumber() {
+	const characters = '0123456789';
+	let numbers = '';
+
+	for (let i = 0; i < 4; i++) {
+		const randomIndex = Math.floor(Math.random() * characters.length);
+		numbers += characters.charAt(randomIndex);
+	}
+
+	return numbers;
+}
+function generateRandomName() {
+	let randomNumbers = generateRandomNumber();
+	let name = 'anon' + randomNumbers;
+
+	return name;
+}
 io.on('connection', (socket) => {
 	console.log('A user connected');
 	socket.on('joinRoom', (data) => {
 		const { requestedRoomId, playerName } = data;
-		let roomId;
-		if (!rooms[requestedRoomId] && requestedRoomId == '') {
+		let roomId = requestedRoomId;
+		if (!rooms[roomId] && roomId == '') {
 			let randomCode = generateRandomCode();
 			roomId = randomCode;
-			rooms[randomCode] = new Room(randomCode);
-		} else if (!rooms[requestedRoomId]) {
-			roomId = requestedRoomId;
-			rooms[requestedRoomId] = new Room(requestedRoomId);
+			rooms[roomId] = new Room(roomId);
+		} else if (!rooms[roomId] && !roomId == '') {
+			rooms[roomId] = new Room(roomId);
 		}
-		// Join the specified room
 		if (
 			rooms[roomId].players.some((player) => player.name === playerName)
 		) {
@@ -106,36 +121,40 @@ io.on('connection', (socket) => {
 			// Store player information (you can use an array, object, or database)
 			const player = { id: socket.id, name: playerName, score: 0 };
 			// Example: store in an array
+			if (player.name == '') {
+				player.name = generateRandomName();
+			}
+			console.log(player.name);
+			io.to(socket.id).emit('playerName', player.name);
 			io.to(socket.id).emit('currentRoom', roomId);
-			io.to(roomId).emit(
+			io.to(socket.id).emit(
 				'currentCard',
 				rooms[roomId].currentSuite +
 					'_' +
 					rooms[roomId].currentNumber.toString()
 			);
-			io.to(roomId).emit(
+			io.to(socket.id).emit(
 				'nextCard',
 				rooms[roomId].nextSuite +
 					'_' +
 					rooms[roomId].nextNumber.toString()
 			);
-			io.to(roomId).emit(
+			io.to(socket.id).emit(
 				'thirdCard',
 				rooms[roomId].thirdSuite +
 					'_' +
 					rooms[roomId].thirdNumber.toString()
 			);
 			rooms[roomId].addPlayer(player);
-			io.to(roomId).emit(
+			io.to(socket.id).emit(
 				'turn',
 				rooms[roomId].players[rooms[roomId].currentPlayerIndex].name
 			);
 
 			// Emit an event to the room to update all clients about the new player
-			io.to(roomId).emit('deckSize', rooms[roomId].deck.length);
+			io.to(socket.id).emit('deckSize', rooms[roomId].deck.length);
 			io.to(roomId).emit('playerJoined', player.name);
 			io.to(roomId).emit('players', rooms[roomId].players);
-			console.log('players', rooms[roomId].players);
 		}
 	});
 	socket.on('deathStack', (deathStack) => {

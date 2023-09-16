@@ -6,7 +6,7 @@ import next from 'next';
 const Chat = () => {
 	const [rules, setRules] = useState(false);
 	const [roomId, setRoomId] = useState<string>('');
-	const [playerName, setPlayerName] = useState<string>();
+	const [playerName, setPlayerName] = useState<string>('');
 	const [usernameAlreadyExists, setUsernameAlreadyExists] = useState(false);
 	const [players, setPlayers] = useState([]);
 	const [connectedToRoom, setConnectedToRoom] = useState(false);
@@ -273,6 +273,9 @@ const Chat = () => {
 		});
 		newSocket.on('playerJoined', () => {
 			setConnectedToRoom(true);
+		});
+		newSocket.on('playerName', (playerName) => {
+			setPlayerName(playerName);
 		});
 		newSocket.on('players', (players) => {
 			let sortedPlayers = players.sort(
