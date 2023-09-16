@@ -58,7 +58,7 @@ const Chat = () => {
 
 		// Snap back to the original position
 	};
-	const handleSingleFlip = async () => {
+	async function handleSingleFlip() {
 		await animate3(
 			scope3.current,
 			{
@@ -72,8 +72,8 @@ const Chat = () => {
 		);
 
 		// Snap back to the original position
-	};
-	const putAwayCards = async () => {
+	}
+	async function putAwayCards() {
 		await animate3(
 			scope3.current,
 			{
@@ -87,8 +87,8 @@ const Chat = () => {
 		);
 
 		// Snap back to the original position
-	};
-	const resetCardPosition = async () => {
+	}
+	async function resetCardPosition() {
 		await animate(
 			scope.current,
 			{
@@ -107,8 +107,8 @@ const Chat = () => {
 			},
 			{ ease: 'linear', duration: 0 }
 		);
-	};
-	const reset2Cards = async () => {
+	}
+	async function reset2Cards() {
 		await animate(
 			scope.current,
 			{
@@ -146,8 +146,8 @@ const Chat = () => {
 			},
 			{ ease: 'linear', duration: 0 }
 		);
-	};
-	const handleFlipHigher = async () => {
+	}
+	async function handleFlipHigher() {
 		await animate(
 			scope.current,
 			{ zIndex: 20 },
@@ -188,8 +188,8 @@ const Chat = () => {
 		);
 
 		// Snap back to the original position
-	};
-	const handleFlipLower = async () => {
+	}
+	async function handleFlipLower() {
 		await animate(
 			scope.current,
 			{
@@ -224,8 +224,8 @@ const Chat = () => {
 			{ ease: 'linear', duration: 0.5 }
 		);
 		// Snap back to the original position
-	};
-	const handleFlip2 = async () => {
+	}
+	async function handleFlip2() {
 		await (animate(
 			scope.current,
 			{
@@ -309,7 +309,7 @@ const Chat = () => {
 		));
 
 		// Snap back to the original position
-	};
+	}
 	useEffect(() => {
 		let player: any = players.find(
 			(playerObj: any) => playerObj.name === playerName
