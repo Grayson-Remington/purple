@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
-import { motion, useAnimation } from 'framer-motion';
+import { motion, useAnimate, useAnimation } from 'framer-motion';
 import next from 'next';
 
 const Chat = () => {
@@ -36,201 +36,260 @@ const Chat = () => {
 	const controls2 = useAnimation();
 	const controls3 = useAnimation();
 	const [isAnimating, setIsAnimating] = useState(false);
+	const [scope, animate] = useAnimate();
+	const [scope2, animate2] = useAnimate();
+	const [scope3, animate3] = useAnimate();
 	const handleSingleFlip = async () => {
-		await controls3.start({
-			x: 0,
-			y: -144.06,
-			scale: 1.0,
-			rotateY: 180,
-			zIndex: 20,
-			transition: { duration: 0.0 },
-		});
+		await animate3(
+			scope3.current,
+			{
+				x: 0,
+				y: 0,
+				scale: 1.0,
+				rotateY: 0,
+				zIndex: 20,
+			},
+			{ ease: 'linear', duration: 0.5 }
+		);
 
 		// Snap back to the original position
-		await controls3.start({
-			x: 0,
-			y: 0,
-			scale: 1.0,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.5 },
-		});
 	};
 	const putAwayCards = async () => {
-		await controls3.start({
-			x: 0,
-			y: -144.06,
-			scale: 1.0,
-			rotateY: 180,
-			zIndex: 0,
-			transition: { duration: 0.5 },
-		});
+		await animate3(
+			scope3.current,
+			{
+				x: 0,
+				y: -144.06,
+				scale: 1.0,
+				rotateY: 180,
+				zIndex: 0,
+			},
+			{ ease: 'linear', duration: 0.5 }
+		);
 
 		// Snap back to the original position
 	};
 	const resetCardPosition = async () => {
-		await controls.start({
-			zIndex: 0,
-			transition: { duration: 0.0 },
-		});
-
-		await controls.start({
-			x: 0,
-			y: 0,
-			scale: 1.0,
-			rotateY: 180,
-			zIndex: 0,
-			transition: { duration: 0.0 },
-		});
+		await animate(
+			scope.current,
+			{
+				zIndex: 0,
+			},
+			{ ease: 'linear', duration: 0 }
+		);
+		await animate(
+			scope.current,
+			{
+				x: 0,
+				y: 0,
+				scale: 1.0,
+				rotateY: 180,
+				zIndex: 0,
+			},
+			{ ease: 'linear', duration: 0 }
+		);
 	};
 	const reset2Cards = async () => {
-		await (controls.start({
-			zIndex: 0,
-			transition: { duration: 0.0 },
-		}),
-		controls2.start({
-			zIndex: 0,
-			transition: { duration: 0.0 },
-		}));
+		await animate(
+			scope.current,
+			{
+				zIndex: 0,
+			},
+			{ ease: 'linear', duration: 0 }
+		);
+		await animate2(
+			scope.current,
+			{
+				zIndex: 0,
+			},
+			{ ease: 'linear', duration: 0 }
+		);
+		await animate(
+			scope.current,
+			{
+				x: 0,
+				y: 0,
+				scale: 1.0,
+				rotateY: 180,
+				zIndex: 0,
+			},
+			{ ease: 'linear', duration: 0 }
+		);
 
-		await (controls.start({
-			x: 0,
-			y: 0,
-			scale: 1.0,
-			rotateY: 180,
-			zIndex: 0,
-			transition: { duration: 0.0 },
-		}),
-		controls2.start({
-			x: 0,
-			y: 0,
-			scale: 1.0,
-			rotateY: 180,
-			zIndex: 0,
-			transition: { duration: 0.0 },
-		}));
+		await animate2(
+			scope.current,
+			{
+				x: 0,
+				y: 0,
+				scale: 1.0,
+				rotateY: 180,
+				zIndex: 0,
+			},
+			{ ease: 'linear', duration: 0 }
+		);
 	};
 	const handleFlipHigher = async () => {
-		await controls.start({
-			zIndex: 20,
-			transition: { duration: 0.0 },
-		});
-		await controls.start({
-			x: 120,
-			y: 72,
-			scale: 1.5,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.5 },
-		});
-		await controls.start({
-			x: 120,
-			y: 72,
-			scale: 1.5,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.3 },
-		});
+		await animate(
+			scope.current,
+			{ zIndex: 20 },
+			{ ease: 'linear', duration: 0 }
+		);
+		await animate(
+			scope.current,
+			{
+				x: 120,
+				y: 72,
+				scale: 1.5,
+				rotateY: 0,
+				zIndex: 20,
+			},
+			{ ease: 'linear', duration: 0.5 }
+		);
+		await animate(
+			scope.current,
+			{
+				x: 120,
+				y: 72,
+				scale: 1.5,
+				rotateY: 0,
+				zIndex: 20,
+			},
+			{ ease: 'linear', duration: 0.3 }
+		);
+		await animate(
+			scope.current,
+			{
+				x: 0,
+				y: 144.06,
+				scale: 1.0,
+				rotateY: 0,
+				zIndex: 20,
+			},
+			{ ease: 'linear', duration: 0.5 }
+		);
+
 		// Snap back to the original position
-		await controls.start({
-			x: 0,
-			y: 144.06,
-			scale: 1.0,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.5 },
-		});
 	};
 	const handleFlipLower = async () => {
-		await controls.start({
-			zIndex: 20,
-			transition: { duration: 0.0 },
-		});
-		await controls.start({
-			x: -120,
-			y: 72,
-			scale: 1.5,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.5 },
-		});
-		await controls.start({
-			x: -120,
-			y: 72,
-			scale: 1.5,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.3 },
-		});
+		await animate(
+			scope.current,
+			{
+				x: -120,
+				y: 72,
+				scale: 1.5,
+				rotateY: 0,
+				zIndex: 20,
+			},
+			{ ease: 'linear', duration: 0.5 }
+		);
+		await animate(
+			scope.current,
+			{
+				x: -120,
+				y: 72,
+				scale: 1.5,
+				rotateY: 0,
+				zIndex: 20,
+			},
+			{ ease: 'linear', duration: 0.3 }
+		);
+		await animate(
+			scope.current,
+			{
+				x: 0,
+				y: 144.06,
+				scale: 1.0,
+				rotateY: 0,
+				zIndex: 20,
+			},
+			{ ease: 'linear', duration: 0.5 }
+		);
 		// Snap back to the original position
-		await controls.start({
-			x: 0,
-			y: 144.06,
-			scale: 1.0,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.5 },
-		});
 	};
 	const handleFlip2 = async () => {
-		await (controls.start({
-			zIndex: 20,
-			transition: { duration: 0.0 },
-		}),
-		controls2.start({
-			zIndex: 20,
-			transition: { duration: 0.0 },
-		}));
+		await (animate(
+			scope.current,
+			{
+				zIndex: 20,
+			},
+			{ ease: 'linear', duration: 0 }
+		),
+		animate2(
+			scope2.current,
+			{
+				zIndex: 20,
+			},
+			{ ease: 'linear', duration: 0 }
+		));
 
-		await (controls.start({
-			x: -120,
-			y: 72,
-			scale: 1.5,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.5 },
-		}),
-		controls2.start({
-			x: 120,
-			y: 72,
-			scale: 1.5,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.5 },
-		}));
-		await (controls.start({
-			x: -120,
-			y: 72,
-			scale: 1.5,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.3 },
-		}),
-		controls2.start({
-			x: 120,
-			y: 72,
-			scale: 1.5,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.3 },
-		}));
+		await (animate(
+			scope.current,
+			{
+				x: -120,
+				y: 72,
+				scale: 1.5,
+				rotateY: 0,
+				zIndex: 20,
+			},
+			{ ease: 'linear', duration: 0.5 }
+		),
+		animate2(
+			scope2.current,
+			{
+				x: 120,
+				y: 72,
+				scale: 1.5,
+				rotateY: 0,
+				zIndex: 20,
+			},
+			{ ease: 'linear', duration: 0.5 }
+		));
+		await (animate(
+			scope.current,
+			{
+				x: -120,
+				y: 72,
+				scale: 1.5,
+				rotateY: 0,
+				zIndex: 20,
+			},
+			{ ease: 'linear', duration: 0.3 }
+		),
+		animate2(
+			scope2.current,
+			{
+				x: 120,
+				y: 72,
+				scale: 1.5,
+				rotateY: 0,
+				zIndex: 20,
+			},
+			{ ease: 'linear', duration: 0.3 }
+		));
+		await (animate(
+			scope.current,
+			{
+				x: 0,
+				y: 144.06,
+				scale: 1.0,
+				rotateY: 0,
+				zIndex: 20,
+			},
+			{ ease: 'linear', duration: 0.5 }
+		),
+		animate2(
+			scope2.current,
+			{
+				x: 0,
+				y: 144.06,
+				scale: 1.0,
+				rotateY: 0,
+				zIndex: 20,
+			},
+			{ ease: 'linear', duration: 0.5 }
+		));
+
 		// Snap back to the original position
-		await (controls.start({
-			x: 0,
-			y: 144.06,
-			scale: 1.0,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.5 },
-		}),
-		controls2.start({
-			x: 0,
-			y: 144.06,
-			scale: 1.0,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.5 },
-		}));
 	};
 	useEffect(() => {
 		let player: any = players.find(
@@ -705,30 +764,21 @@ const Chat = () => {
 
 						<motion.div
 							className=' w-[90px]'
-							initial={{
-								x: 0,
-								y: 0,
-								scale: 1.0,
-								rotateY: 0,
-								zIndex: 0,
-							}}
-							animate={controls3}
+							ref={scope3}
 						>
-							<div className='front'>
-								{isShownFlipped ? (
-									<img
-										className=' w-[90px]'
-										src={`./${shownCard}.svg`}
-										alt=''
-									/>
-								) : (
-									<img
-										className=' w-[90px]'
-										src={`./blue2.svg`}
-										alt=''
-									/>
-								)}
-							</div>
+							{isShownFlipped ? (
+								<img
+									className=' w-[90px]'
+									src={`./${shownCard}.svg`}
+									alt=''
+								/>
+							) : (
+								<img
+									className=' w-[90px]'
+									src={`./blue2.svg`}
+									alt=''
+								/>
+							)}
 						</motion.div>
 						{turnScore >= 3 && (
 							<button
@@ -741,57 +791,39 @@ const Chat = () => {
 						)}
 						<motion.div
 							className='absolute w-[90px]'
-							initial={{
-								x: 0,
-								y: 0,
-								scale: 1.0,
-								rotateY: 180,
-								zIndex: 0,
-							}}
-							animate={controls}
+							ref={scope}
 						>
-							<div className='front'>
-								{isFlipped ? (
-									<img
-										className=' w-[90px]'
-										src={`./${nextCard}.svg`}
-										alt=''
-									/>
-								) : (
-									<img
-										className=' w-[90px]'
-										src={`./blue2.svg`}
-										alt=''
-									/>
-								)}
-							</div>
+							{isFlipped ? (
+								<img
+									className=' w-[90px]'
+									src={`./${nextCard}.svg`}
+									alt=''
+								/>
+							) : (
+								<img
+									className=' w-[90px]'
+									src={`./blue2.svg`}
+									alt=''
+								/>
+							)}
 						</motion.div>
 						<motion.div
 							className='absolute w-[90px]'
-							initial={{
-								x: 0,
-								y: 0,
-								scale: 1.0,
-								rotateY: 180,
-								zIndex: 0,
-							}}
-							animate={controls2}
+							ref={scope2}
 						>
-							<div className='front'>
-								{isFlipped ? (
-									<img
-										className=' w-[90px]'
-										src={`./${thirdCard}.svg`}
-										alt=''
-									/>
-								) : (
-									<img
-										className=' w-[90px]'
-										src={`./blue2.svg`}
-										alt=''
-									/>
-								)}
-							</div>
+							{isFlipped ? (
+								<img
+									className=' w-[90px]'
+									src={`./${thirdCard}.svg`}
+									alt=''
+								/>
+							) : (
+								<img
+									className=' w-[90px]'
+									src={`./blue2.svg`}
+									alt=''
+								/>
+							)}
 						</motion.div>
 					</div>
 
