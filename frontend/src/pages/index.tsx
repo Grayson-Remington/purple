@@ -129,7 +129,7 @@ const Chat = () => {
 				x: 0,
 				y: 0,
 				scale: 1.0,
-				rotateY: 180,
+				rotateY: 0,
 				zIndex: 0,
 			},
 			{ ease: 'linear', duration: 0 }
@@ -141,7 +141,7 @@ const Chat = () => {
 				x: 0,
 				y: 0,
 				scale: 1.0,
-				rotateY: 180,
+				rotateY: 0,
 				zIndex: 0,
 			},
 			{ ease: 'linear', duration: 0 }
@@ -247,7 +247,7 @@ const Chat = () => {
 				x: -120,
 				y: 72,
 				scale: 1.5,
-				rotateY: 0,
+				rotateY: 180,
 				zIndex: 20,
 			},
 			{ ease: 'linear', duration: 0.5 }
@@ -258,7 +258,7 @@ const Chat = () => {
 				x: 120,
 				y: 72,
 				scale: 1.5,
-				rotateY: 0,
+				rotateY: 180,
 				zIndex: 20,
 			},
 			{ ease: 'linear', duration: 0.5 }
@@ -777,7 +777,6 @@ const Chat = () => {
 					>
 						<motion.div
 							className=' w-[90px]'
-							ref={scope4}
 							initial={{ zIndex: 20 }}
 						>
 							<img
