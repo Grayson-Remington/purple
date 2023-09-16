@@ -103,7 +103,7 @@ const Chat = () => {
 				y: 0,
 				scale: 1.0,
 				rotateY: 180,
-				zIndex: 0,
+				zIndex: 10,
 			},
 			{ ease: 'linear', duration: 0 }
 		);
@@ -112,14 +112,14 @@ const Chat = () => {
 		await animate(
 			scope.current,
 			{
-				zIndex: 0,
+				zIndex: 10,
 			},
 			{ ease: 'linear', duration: 0 }
 		);
 		await animate2(
 			scope2.current,
 			{
-				zIndex: 0,
+				zIndex: 10,
 			},
 			{ ease: 'linear', duration: 0 }
 		);
@@ -130,7 +130,7 @@ const Chat = () => {
 				y: 0,
 				scale: 1.0,
 				rotateY: 180,
-				zIndex: 0,
+				zIndex: 10,
 			},
 			{ ease: 'linear', duration: 0 }
 		);
@@ -142,7 +142,7 @@ const Chat = () => {
 				y: 0,
 				scale: 1.0,
 				rotateY: 180,
-				zIndex: 0,
+				zIndex: 10,
 			},
 			{ ease: 'linear', duration: 0 }
 		);
