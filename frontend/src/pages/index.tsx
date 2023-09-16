@@ -777,7 +777,7 @@ const Chat = () => {
 					>
 						<motion.div
 							className=' w-[90px]'
-							initial={{ zIndex: 20 }}
+							initial={{ zIndex: 15 }}
 						>
 							<img
 								className=' w-[90px]'
