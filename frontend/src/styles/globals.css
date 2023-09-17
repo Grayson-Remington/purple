@@ -5,10 +5,6 @@ overscroll-behavior: none;
 #__next {
 	height: 100%;
 }
-.nextCard,
-.thirdCard {
-	transform: rotateY(180deg);
-}
 
 @keyframes flipCardLeft {
 	0% {
@@ -57,9 +53,7 @@ overscroll-behavior: none;
 		transform: translateX(0) translateY(0) scale(1) rotateY(180deg);
 	}
 }
-.nextCard {
-	transform: rotateY(180deg);
-}
+
 .flipCardAnimation {
 	animation-name: flipCard;
 	animation-duration: 4s;

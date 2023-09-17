@@ -350,16 +350,13 @@ const Chat = () => {
 				setTimeout(() => {
 					setNextCard(nextCard);
 					setThirdCard(thirdCard);
-				}, 1000);
-				setTimeout(() => {
-					setIsFlipped(false);
-					setIsAnimating(false);
-				}, 1000);
-				setTimeout(() => {
 					setShownCard(localThirdCard);
 					setAnimationNextCard('undefined');
 					setAnimationThirdCard('undefined');
+					setIsFlipped(false);
+					setIsAnimating(false);
 				}, 1000);
+
 				setAnimationNextCard('flipCardHigherAnimation');
 				setAnimationThirdCard('flipCardLowerAnimation');
 			} else if (guess == 'purple' && correct == 'purpleFalse') {
@@ -368,6 +365,11 @@ const Chat = () => {
 				}, 150);
 				setTimeout(() => {
 					setShownCard(localThirdCard);
+					setNextCard(nextCard);
+					setThirdCard(thirdCard);
+					setAnimationNextCard('undefined');
+					setAnimationThirdCard('undefined');
+					setAnimationShownCard('putAwayAndDrawAnimation');
 				}, 1000);
 
 				setTimeout(() => {
@@ -377,23 +379,11 @@ const Chat = () => {
 				setTimeout(() => {
 					setIsShownFlipped(true);
 				}, 1650);
-				setTimeout(() => {
-					setNextCard(nextCard);
-					setThirdCard(thirdCard);
-				}, 1000);
-				setTimeout(() => {
-					setIsFlipped(false);
-					setIsAnimating(false);
-				}, 2000);
-				setTimeout(() => {
-					setAnimationNextCard('undefined');
-					setAnimationThirdCard('undefined');
-				}, 1000);
-				setTimeout(() => {
-					setAnimationShownCard('putAwayAndDrawAnimation');
-				}, 1000);
+
 				setTimeout(() => {
 					setAnimationShownCard('undefined');
+					setIsFlipped(false);
+					setIsAnimating(false);
 				}, 2000);
 
 				setAnimationNextCard('flipCardHigherAnimation');
@@ -407,22 +397,23 @@ const Chat = () => {
 				setTimeout(() => {
 					setNextCard(nextCard);
 					setThirdCard(thirdCard);
-				}, 1000);
-				setTimeout(() => {
+					setShownCard(localNextCard);
+					setAnimationNextCard('undefined');
 					setIsFlipped(false);
 					setIsAnimating(false);
 				}, 1000);
-				setTimeout(() => {
-					setShownCard(localNextCard);
-					setAnimationNextCard('undefined');
-				}, 1000);
+
 				setAnimationNextCard('flipCardHigherAnimation');
 			} else if (guess == 'higher' && correct == 'false') {
 				setTimeout(() => {
 					setIsFlipped(true);
 				}, 150);
 				setTimeout(() => {
+					setAnimationNextCard('undefined');
+					setAnimationShownCard('putAwayAndDrawAnimation');
 					setShownCard(localNextCard);
+					setNextCard(nextCard);
+					setThirdCard(thirdCard);
 				}, 1000);
 
 				setTimeout(() => {
@@ -432,22 +423,11 @@ const Chat = () => {
 				setTimeout(() => {
 					setIsShownFlipped(true);
 				}, 1650);
-				setTimeout(() => {
-					setNextCard(nextCard);
-					setThirdCard(thirdCard);
-				}, 1000);
-				setTimeout(() => {
-					setIsFlipped(false);
-					setIsAnimating(false);
-				}, 2000);
-				setTimeout(() => {
-					setAnimationNextCard('undefined');
-				}, 1000);
-				setTimeout(() => {
-					setAnimationShownCard('putAwayAndDrawAnimation');
-				}, 1000);
+
 				setTimeout(() => {
 					setAnimationShownCard('undefined');
+					setIsFlipped(false);
+					setIsAnimating(false);
 				}, 2000);
 			}
 			setAnimationNextCard('flipCardHigherAnimation');
@@ -457,24 +437,25 @@ const Chat = () => {
 				}, 150);
 
 				setTimeout(() => {
+					setShownCard(localNextCard);
+					setAnimationNextCard('undefined');
 					setNextCard(nextCard);
 					setThirdCard(thirdCard);
-				}, 1000);
-				setTimeout(() => {
 					setIsFlipped(false);
 					setIsAnimating(false);
 				}, 1000);
-				setTimeout(() => {
-					setShownCard(localNextCard);
-					setAnimationNextCard('undefined');
-				}, 1000);
+
 				setAnimationNextCard('flipCardLowerAnimation');
 			} else if (guess == 'lower' && correct == 'false') {
 				setTimeout(() => {
 					setIsFlipped(true);
 				}, 150);
 				setTimeout(() => {
+					setAnimationNextCard('undefined');
+					setAnimationShownCard('putAwayAndDrawAnimation');
 					setShownCard(localNextCard);
+					setNextCard(nextCard);
+					setThirdCard(thirdCard);
 				}, 1000);
 
 				setTimeout(() => {
@@ -484,23 +465,13 @@ const Chat = () => {
 				setTimeout(() => {
 					setIsShownFlipped(true);
 				}, 1750);
+
 				setTimeout(() => {
-					setNextCard(nextCard);
-					setThirdCard(thirdCard);
-				}, 1000);
-				setTimeout(() => {
+					setAnimationShownCard('undefined');
 					setIsFlipped(false);
 					setIsAnimating(false);
 				}, 2000);
-				setTimeout(() => {
-					setAnimationNextCard('undefined');
-				}, 1000);
-				setTimeout(() => {
-					setAnimationShownCard('putAwayAndDrawAnimation');
-				}, 1000);
-				setTimeout(() => {
-					setAnimationShownCard('undefined');
-				}, 2000);
+
 				setAnimationNextCard('flipCardLowerAnimation');
 			}
 		});
@@ -754,7 +725,7 @@ const Chat = () => {
 						id='motion-container'
 						className='flex flex-col items-center relative gap-4 w-full py-4 justify-between'
 					>
-						<div className='deckCard z-10 w-[90px]'>
+						<div className=' z-10 w-[90px]'>
 							<img
 								style={{ width: '90px' }}
 								src={`./blue2.svg`}
@@ -762,7 +733,8 @@ const Chat = () => {
 							/>
 						</div>
 						<div
-							className={`nextCard absolute ${animationNextCard} ${
+							style={{ transform: 'rotateY(180deg)' }}
+							className={` absolute ${animationNextCard} ${
 								!(animationNextCard == 'undefined')
 									? 'z-20'
 									: ''
@@ -783,7 +755,8 @@ const Chat = () => {
 							)}
 						</div>
 						<div
-							className={`thirdCard absolute ${animationThirdCard} ${
+							style={{ transform: 'rotateY(180deg)' }}
+							className={` absolute ${animationThirdCard} ${
 								!(animationThirdCard == 'undefined')
 									? 'z-30'
 									: ''
@@ -804,7 +777,7 @@ const Chat = () => {
 							)}
 						</div>
 						<div
-							className={`shownCard ${animationShownCard} ${
+							className={` ${animationShownCard} ${
 								!(animationShownCard == 'undefined')
 									? 'z-20'
 									: ''
