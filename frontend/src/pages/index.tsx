@@ -1,8 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
-import { useAnimate, useAnimation } from 'framer-motion';
-import { motion } from 'framer-motion-3d';
-import next from 'next';
 
 const Chat = () => {
 	const [rules, setRules] = useState(false);
@@ -33,232 +30,12 @@ const Chat = () => {
 	const deathStackRef = useRef(0);
 	const [isFlipped, setIsFlipped] = useState(false);
 	const [isShownFlipped, setIsShownFlipped] = useState(true);
-	const controls = useAnimation();
-	const controls2 = useAnimation();
-	const controls3 = useAnimation();
+
 	const [isAnimating, setIsAnimating] = useState(false);
-	const [animationNextCard, setAnimationNextCard] =
-		useState<string>('undefined');
+	const [animationNextCard, setAnimationNextCard] = useState('undefined');
 	const [animationThirdCard, setAnimationThirdCard] = useState('undefined');
 	const [animationShownCard, setAnimationShownCard] = useState('undefined');
 
-	const toggleNextCardState = (animationState: string) => {
-		if (!(animationNextCard === 'undefined')) {
-			setAnimationNextCard('undefined');
-		} else {
-			setAnimationNextCard(animationState);
-		}
-	};
-	const toggleThirdCardState = (animationState: string) => {
-		if (!(animationNextCard === 'undefined')) {
-			setAnimationNextCard('undefined');
-		} else {
-			setAnimationNextCard(animationState);
-		}
-	};
-	const toggleShownCardState = (animationState: string) => {
-		if (!(animationNextCard === 'undefined')) {
-			setAnimationNextCard('undefined');
-		} else {
-			setAnimationNextCard(animationState);
-		}
-	};
-	const handleSingleFlip = async () => {
-		await controls3.start({
-			x: 0,
-			y: -144.06,
-			scale: 1.0,
-			rotateY: 180,
-			zIndex: 20,
-			transition: { duration: 0.0 },
-		});
-
-		// Snap back to the original position
-		await controls3.start({
-			x: 0,
-			y: 0,
-			scale: 1.0,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.5 },
-		});
-	};
-	const putAwayCards = async () => {
-		await controls3.start({
-			x: 0,
-			y: -144.06,
-			scale: 1.0,
-			rotateY: 180,
-			zIndex: 0,
-			transition: { duration: 0.5 },
-		});
-
-		// Snap back to the original position
-	};
-	const resetCardPosition = async () => {
-		await controls.start({
-			zIndex: 0,
-			transition: { duration: 0.0 },
-		});
-
-		await controls.start({
-			x: 0,
-			y: 0,
-			scale: 1.0,
-			rotateY: 180,
-			zIndex: 0,
-			transition: { duration: 0.0 },
-		});
-	};
-	const reset2Cards = async () => {
-		await (controls.start({
-			zIndex: 0,
-			transition: { duration: 0.0 },
-		}),
-		controls2.start({
-			zIndex: 0,
-			transition: { duration: 0.0 },
-		}));
-
-		await (controls.start({
-			x: 0,
-			y: 0,
-			scale: 1.0,
-			rotateY: 180,
-			zIndex: 0,
-			transition: { duration: 0.0 },
-		}),
-		controls2.start({
-			x: 0,
-			y: 0,
-			scale: 1.0,
-			rotateY: 180,
-			zIndex: 0,
-			transition: { duration: 0.0 },
-		}));
-	};
-	const handleFlipHigher = async () => {
-		await controls.start({
-			zIndex: 20,
-			transition: { duration: 0.0 },
-		});
-		await controls.start({
-			x: 120,
-			y: 72,
-			scale: 1.5,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.5 },
-		});
-		await controls.start({
-			x: 120,
-			y: 72,
-			scale: 1.5,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.3 },
-		});
-		// Snap back to the original position
-		await controls.start({
-			x: 0,
-			y: 144.06,
-			scale: 1.0,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.5 },
-		});
-	};
-	const handleFlipLower = async () => {
-		await controls.start({
-			zIndex: 20,
-			transition: { duration: 0.0 },
-		});
-		await controls.start({
-			x: -120,
-			y: 72,
-			scale: 1.5,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.5 },
-		});
-		await controls.start({
-			x: -120,
-			y: 72,
-			scale: 1.5,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.3 },
-		});
-		// Snap back to the original position
-		await controls.start({
-			x: 0,
-			y: 144.06,
-			scale: 1.0,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.5 },
-		});
-	};
-	const handleFlip2 = async () => {
-		await (controls.start({
-			zIndex: 20,
-			transition: { duration: 0.0 },
-		}),
-		controls2.start({
-			zIndex: 20,
-			transition: { duration: 0.0 },
-		}));
-
-		await (controls.start({
-			x: -120,
-			y: 72,
-			scale: 1.5,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.5 },
-		}),
-		controls2.start({
-			x: 120,
-			y: 72,
-			scale: 1.5,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.5 },
-		}));
-		await (controls.start({
-			x: -120,
-			y: 72,
-			scale: 1.5,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.3 },
-		}),
-		controls2.start({
-			x: 120,
-			y: 72,
-			scale: 1.5,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.3 },
-		}));
-		// Snap back to the original position
-		await (controls.start({
-			x: 0,
-			y: 144.06,
-			scale: 1.0,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.5 },
-		}),
-		controls2.start({
-			x: 0,
-			y: 144.06,
-			scale: 1.0,
-			rotateY: 0,
-			zIndex: 20,
-			transition: { duration: 0.5 },
-		}));
-	};
 	useEffect(() => {
 		let player: any = players.find(
 			(playerObj: any) => playerObj.name === playerName
@@ -733,16 +510,6 @@ const Chat = () => {
 						id='motion-container'
 						className='flex flex-col items-center relative gap-4 w-full py-4 justify-between'
 					>
-						<img
-							style={{
-								width: '90px',
-								zIndex: 10,
-								display: 'block',
-							}}
-							src={`./blue2.svg`}
-							alt=''
-						/>
-
 						<div
 							style={{
 								transform: 'rotateY(180deg)',
@@ -794,7 +561,7 @@ const Chat = () => {
 							)}
 						</div>
 						<div
-							className={`block ${animationShownCard} ${
+							className={`translate-y-[144.04px] block ${animationShownCard} ${
 								!(animationShownCard == 'undefined')
 									? 'z-20'
 									: ''
