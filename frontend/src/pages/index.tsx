@@ -508,14 +508,23 @@ const Chat = () => {
 					</div>
 					<div
 						id='motion-container'
-						className='flex flex-col items-center relative gap-4 w-full py-4 justify-between'
+						className='flex flex-col  items-center relative gap-4 w-full py-4 justify-between'
 					>
+						<img
+							style={{
+								width: '90px',
+								position: 'absolute',
+								zIndex: 10,
+							}}
+							src={`./blue2.svg`}
+							alt=''
+						/>
 						<div
 							style={{
-								transform: 'rotateY(180deg)',
-								opacity: 0,
+								transform: 'rotateY(180deg) ',
+								opacity: 100,
 							}}
-							className={`block absolute ${animationNextCard} ${
+							className={` relative block ${animationNextCard} ${
 								!(animationNextCard == 'undefined')
 									? 'z-20'
 									: ''
@@ -538,9 +547,10 @@ const Chat = () => {
 						<div
 							style={{
 								transform: 'rotateY(180deg)',
-								opacity: 0,
+								opacity: 100,
+								position: 'absolute',
 							}}
-							className={`block absolute ${animationThirdCard} ${
+							className={` block ${animationThirdCard} ${
 								!(animationThirdCard == 'undefined')
 									? 'z-30'
 									: ''
@@ -561,7 +571,11 @@ const Chat = () => {
 							)}
 						</div>
 						<div
-							className={`translate-y-[144.04px] block ${animationShownCard} ${
+							style={{
+								transform: ' ',
+								opacity: 100,
+							}}
+							className={`block ${animationShownCard} ${
 								!(animationShownCard == 'undefined')
 									? 'z-20'
 									: ''
