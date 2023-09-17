@@ -38,7 +38,7 @@ const Chat = () => {
 	const controls3 = useAnimation();
 	const [isAnimating, setIsAnimating] = useState(false);
 	const [animationNextCard, setAnimationNextCard] =
-		useState<string>('notSet');
+		useState<string>('undefined');
 	const [animationThirdCard, setAnimationThirdCard] = useState('undefined');
 	const [animationShownCard, setAnimationShownCard] = useState('undefined');
 
@@ -343,55 +343,66 @@ const Chat = () => {
 			let localThirdCard = thirdCardRef.current;
 
 			if (guess == 'purple' && correct == 'purpleTrue') {
-				console.log(localNextCard, localThirdCard);
 				setTimeout(() => {
 					setIsFlipped(true);
 				}, 150);
-				handleFlip2()
-					.then(() => setShownCard(localThirdCard))
-					.then(() => reset2Cards())
-					.then(() => {
-						setNextCard(nextCard), setThirdCard(thirdCard);
-					})
-					.then(() => {
-						setIsFlipped(false);
-						setIsAnimating(false);
-					});
+
+				setTimeout(() => {
+					setNextCard(nextCard);
+					setThirdCard(thirdCard);
+				}, 1000);
+				setTimeout(() => {
+					setIsFlipped(false);
+					setIsAnimating(false);
+				}, 1000);
+				setTimeout(() => {
+					setShownCard(localThirdCard);
+					setAnimationNextCard('undefined');
+					setAnimationThirdCard('undefined');
+				}, 1000);
+				setAnimationNextCard('flipCardLowerAnimation');
+				setAnimationThirdCard('flipCardHigherAnimation');
 			} else if (guess == 'purple' && correct == 'purpleFalse') {
-				console.log(localNextCard, localThirdCard);
 				setTimeout(() => {
 					setIsFlipped(true);
 				}, 150);
-				handleFlip2()
-					.then(() => setShownCard(localThirdCard))
-					.then(() => reset2Cards())
+				setTimeout(() => {
+					setShownCard(localThirdCard);
+				}, 1000);
 
-					.then(() =>
-						setTimeout(() => {
-							setIsShownFlipped(false);
-						}, 150)
-					)
-					.then(() => putAwayCards())
+				setTimeout(() => {
+					setIsShownFlipped(false);
+					setShownCard(currentCard);
+				}, 1150);
+				setTimeout(() => {
+					setIsShownFlipped(true);
+				}, 1650);
+				setTimeout(() => {
+					setNextCard(nextCard);
+					setThirdCard(thirdCard);
+				}, 1000);
+				setTimeout(() => {
+					setIsFlipped(false);
+					setIsAnimating(false);
+				}, 2000);
+				setTimeout(() => {
+					setAnimationNextCard('undefined');
+					setAnimationThirdCard('undefined');
+				}, 1000);
+				setTimeout(() => {
+					setAnimationShownCard('putAwayAndDrawAnimation');
+				}, 1000);
+				setTimeout(() => {
+					setAnimationShownCard('undefined');
+				}, 2000);
 
-					.then(() => setShownCard(currentCard))
-					.then(() =>
-						setTimeout(() => {
-							setIsShownFlipped(true);
-						}, 150)
-					)
-					.then(() => handleSingleFlip())
-					.then(() => {
-						setNextCard(nextCard), setThirdCard(thirdCard);
-					})
-					.then(() => {
-						setIsFlipped(false);
-						setIsAnimating(false);
-					});
+				setAnimationNextCard('flipCardLowerAnimation');
+				setAnimationThirdCard('flipCardHigherAnimation');
 			}
 			if (guess == 'higher' && correct == 'true') {
 				setTimeout(() => {
 					setIsFlipped(true);
-				}, 250);
+				}, 150);
 
 				setTimeout(() => {
 					setNextCard(nextCard);
@@ -405,11 +416,11 @@ const Chat = () => {
 					setShownCard(localNextCard);
 					setAnimationNextCard('undefined');
 				}, 1000);
-				setAnimationNextCard('flipCardHigherCorrectAnimation');
+				setAnimationNextCard('flipCardHigherAnimation');
 			} else if (guess == 'higher' && correct == 'false') {
 				setTimeout(() => {
 					setIsFlipped(true);
-				}, 250);
+				}, 150);
 				setTimeout(() => {
 					setShownCard(localNextCard);
 				}, 1000);
@@ -417,7 +428,59 @@ const Chat = () => {
 				setTimeout(() => {
 					setIsShownFlipped(false);
 					setShownCard(currentCard);
-				}, 1250);
+				}, 1150);
+				setTimeout(() => {
+					setIsShownFlipped(true);
+				}, 1650);
+				setTimeout(() => {
+					setNextCard(nextCard);
+					setThirdCard(thirdCard);
+				}, 1000);
+				setTimeout(() => {
+					setIsFlipped(false);
+					setIsAnimating(false);
+				}, 2000);
+				setTimeout(() => {
+					setAnimationNextCard('undefined');
+				}, 1000);
+				setTimeout(() => {
+					setAnimationShownCard('putAwayAndDrawAnimation');
+				}, 1000);
+				setTimeout(() => {
+					setAnimationShownCard('undefined');
+				}, 2000);
+			}
+			setAnimationNextCard('flipCardHigherAnimation');
+			if (guess == 'lower' && correct == 'true') {
+				setTimeout(() => {
+					setIsFlipped(true);
+				}, 150);
+
+				setTimeout(() => {
+					setNextCard(nextCard);
+					setThirdCard(thirdCard);
+				}, 1000);
+				setTimeout(() => {
+					setIsFlipped(false);
+					setIsAnimating(false);
+				}, 1000);
+				setTimeout(() => {
+					setShownCard(localNextCard);
+					setAnimationNextCard('undefined');
+				}, 1000);
+				setAnimationNextCard('flipCardLowerAnimation');
+			} else if (guess == 'lower' && correct == 'false') {
+				setTimeout(() => {
+					setIsFlipped(true);
+				}, 150);
+				setTimeout(() => {
+					setShownCard(localNextCard);
+				}, 1000);
+
+				setTimeout(() => {
+					setIsShownFlipped(false);
+					setShownCard(currentCard);
+				}, 1150);
 				setTimeout(() => {
 					setIsShownFlipped(true);
 				}, 1750);
@@ -438,50 +501,7 @@ const Chat = () => {
 				setTimeout(() => {
 					setAnimationShownCard('undefined');
 				}, 2000);
-			}
-			setAnimationNextCard('flipCardHigherWrongAnimation');
-			if (guess == 'lower' && correct == 'true') {
-				setTimeout(() => {
-					setIsFlipped(true);
-				}, 150);
-				handleFlipLower()
-					.then(() => setShownCard(localNextCard))
-					.then(() => resetCardPosition())
-					.then(() => {
-						setNextCard(nextCard), setThirdCard(thirdCard);
-					})
-					.then(() => {
-						setIsFlipped(false);
-						setIsAnimating(false);
-					});
-			} else if (guess == 'lower' && correct == 'false') {
-				setTimeout(() => {
-					setIsFlipped(true);
-				}, 150);
-				handleFlipLower()
-					.then(() => setShownCard(localNextCard))
-					.then(() => resetCardPosition())
-					.then(() =>
-						setTimeout(() => {
-							setIsShownFlipped(false);
-						}, 150)
-					)
-					.then(() => putAwayCards())
-
-					.then(() =>
-						setTimeout(() => {
-							setIsShownFlipped(true);
-							setShownCard(currentCard);
-						}, 150)
-					)
-					.then(() => handleSingleFlip())
-					.then(() => {
-						setNextCard(nextCard), setThirdCard(thirdCard);
-					})
-					.then(() => {
-						setIsFlipped(false);
-						setIsAnimating(false);
-					});
+				setAnimationNextCard('flipCardLowerAnimation');
 			}
 		});
 		newSocket.on('correct', (correct) => {
@@ -742,7 +762,11 @@ const Chat = () => {
 							/>
 						</div>
 						<div
-							className={`nextCard absolute ${animationNextCard} w-[90px]`}
+							className={`nextCard absolute ${animationNextCard} ${
+								!(animationNextCard == 'undefined')
+									? 'z-30'
+									: ''
+							} w-[90px]`}
 						>
 							{isFlipped ? (
 								<img
@@ -759,7 +783,11 @@ const Chat = () => {
 							)}
 						</div>
 						<div
-							className={`thirdCard absolute ${animationThirdCard} w-[90px]`}
+							className={`thirdCard absolute ${animationThirdCard} ${
+								!(animationThirdCard == 'undefined')
+									? 'z-20'
+									: ''
+							} w-[90px]`}
 						>
 							{isFlipped ? (
 								<img
@@ -776,7 +804,11 @@ const Chat = () => {
 							)}
 						</div>
 						<div
-							className={`shownCard ${animationShownCard} w-[90px]`}
+							className={`shownCard ${animationShownCard} ${
+								!(animationShownCard == 'undefined')
+									? 'z-20'
+									: ''
+							} w-[90px]`}
 						>
 							{isShownFlipped ? (
 								<img

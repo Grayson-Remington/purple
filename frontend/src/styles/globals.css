@@ -5,30 +5,31 @@ overscroll-behavior: none;
 #__next {
 	height: 100%;
 }
+.nextCard,
+.thirdCard {
+	transform: rotateY(180deg);
+}
 
 @keyframes flipCardLeft {
 	0% {
-		transform: translateX(0) translateY(0) scale(1) rotateZ(0deg);
+		transform: translateX(0) translateY(0) scale(1) rotateY(180deg);
 	}
 	50% {
-		transform: translateX(-120px) translateY(72px) scale(1.5)
-			rotateY(180deg);
+		transform: translateX(-120px) translateY(72px) scale(1.5) rotateY(0deg);
 	}
 	100% {
-		transform: translateX(0px) translateY(144.06px) scale(1) rotateY(180deg);
+		transform: translateX(0px) translateY(144.06px) scale(1) rotateY(0deg);
 	}
 }
 @keyframes flipCardRight {
 	0% {
-		transform: translateX(0) translateY(0) scale(1) rotateY(180deg)
-			translateZ(-20);
+		transform: translateX(0) translateY(0) scale(1) rotateY(180deg);
 	}
 	50% {
 		transform: translateX(120px) translateY(72px) scale(1.5) rotateY(0deg);
 	}
 	100% {
-		transform: translateX(0px) translateY(144.06px) scale(1) rotateY(0deg)
-			translateZ(0);
+		transform: translateX(0px) translateY(144.06px) scale(1) rotateY(0deg);
 	}
 }
 
@@ -87,7 +88,7 @@ overscroll-behavior: none;
 	transform-origin: center center;
 }
 
-.flipCardHigherCorrectAnimation {
+.flipCardHigherAnimation {
 	animation-name: flipCardRight, resetCard;
 	animation-duration: 1s, 0s;
 	animation-delay: 0ms, 2000ms;
@@ -96,8 +97,9 @@ overscroll-behavior: none;
 	animation-fill-mode: forwards, forwards;
 	transform-origin: center center;
 }
-.flipCardHigherWrongAnimation {
-	animation-name: flipCardRight, resetCard;
+
+.flipCardLowerAnimation {
+	animation-name: flipCardLeft, resetCard;
 	animation-duration: 1s, 0s;
 	animation-delay: 0ms, 2000ms;
 	animation-timing-function: linear, linear;
@@ -105,6 +107,7 @@ overscroll-behavior: none;
 	animation-fill-mode: forwards, forwards;
 	transform-origin: center center;
 }
+
 .putAwayAndDrawAnimation {
 	animation-name: putAwayAndDraw;
 	animation-duration: 1s;
