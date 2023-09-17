@@ -725,7 +725,11 @@ const Chat = () => {
 						className='flex flex-col items-center relative gap-4 w-full py-4 justify-between'
 					>
 						<img
-							style={{ width: '90px', zIndex: 10 }}
+							style={{
+								width: '90px',
+								zIndex: 10,
+								display: 'block',
+							}}
 							src={`./blue2.svg`}
 							alt=''
 						/>
