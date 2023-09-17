@@ -727,7 +727,7 @@ const Chat = () => {
 						<img
 							style={{
 								width: '90px',
-								zIndex: 10,
+								zIndex: 30,
 								display: 'block',
 							}}
 							src={`./blue2.svg`}
