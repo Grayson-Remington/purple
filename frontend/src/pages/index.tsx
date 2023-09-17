@@ -609,23 +609,23 @@ const Chat = () => {
 					{turn && turn == playerName && (
 						<div className='grid grid-cols-3 gap-4 p-4'>
 							<button
-								onClick={() => handleGuess('lower')}
+								onMouseDown={() => handleGuess('lower')}
 								disabled={isAnimating}
-								className='disabled:bg-red-500 bg-purple-400 hover:bg-purple-400 text-white font-bold py-2 px-4 border-b-4 border-purple-700 hover:border-purple-500 rounded'
+								className=' cursor-pointer disabled:bg-red-500 bg-purple-400 hover:bg-purple-400 text-white font-bold py-2 px-4 border-b-4 border-purple-700 hover:border-purple-500 rounded'
 							>
 								Lower
 							</button>
 							<button
-								onClick={() => handleGuess('purple')}
+								onMouseDown={() => handleGuess('purple')}
 								disabled={isAnimating}
-								className='disabled:bg-red-500 bg-purple-900 hover:bg-purple-400 text-white font-bold text-xl py-2 px-4 border-b-4 border-purple-950 hover:border-purple-500 rounded'
+								className=' cursor-pointer disabled:bg-red-500 bg-purple-900 hover:bg-purple-400 text-white font-bold text-xl py-2 px-4 border-b-4 border-purple-950 hover:border-purple-500 rounded'
 							>
 								Purple
 							</button>
 							<button
-								onClick={() => handleGuess('higher')}
+								onMouseDown={() => handleGuess('higher')}
 								disabled={isAnimating}
-								className='disabled:bg-red-500 bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 border-b-4 border-purple-700 hover:border-purple-500 rounded'
+								className='cursor-pointer disabled:bg-red-500 bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 border-b-4 border-purple-700 hover:border-purple-500 rounded'
 							>
 								Higher
 							</button>
