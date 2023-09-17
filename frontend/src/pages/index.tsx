@@ -289,6 +289,10 @@ const Chat = () => {
 		correct,
 		shownCard,
 	]);
+
+	function delay(ms: any) {
+		return new Promise((resolve) => setTimeout(resolve, ms));
+	}
 	useEffect(() => {
 		console.log('Connecting to WebSocket server...');
 		const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_SERVER_URL!, {
@@ -336,18 +340,20 @@ const Chat = () => {
 		newSocket.on('turnScore', (turnScore) => {
 			setTurnScore(turnScore);
 		});
-		newSocket.on('guess', (data) => {
+		newSocket.on('guess', async (data) => {
 			const { guess, currentCard, nextCard, thirdCard } = data;
 			let correct = correctRef.current;
 			let localNextCard = nextCardRef.current;
 			let localThirdCard = thirdCardRef.current;
 			setIsAnimating(true);
 			if (guess == 'purple' && correct == 'purpleTrue') {
-				setTimeout(() => {
+				setAnimationNextCard('flipCardHigherAnimation');
+				setAnimationThirdCard('flipCardLowerAnimation');
+				try {
+					await delay(150);
 					setIsFlipped(true);
-				}, 150);
 
-				setTimeout(() => {
+					await delay(850); // Adjust the delay as needed
 					setNextCard(nextCard);
 					setThirdCard(thirdCard);
 					setShownCard(localThirdCard);
@@ -355,124 +361,127 @@ const Chat = () => {
 					setAnimationThirdCard('undefined');
 					setIsFlipped(false);
 					setIsAnimating(false);
-				}, 1000);
-
+					// Adjust the delay as needed
+				} catch (error) {
+					console.error('An error occurred:', error);
+				}
+			} else if (guess == 'purple' && correct == 'purpleFalse') {
 				setAnimationNextCard('flipCardHigherAnimation');
 				setAnimationThirdCard('flipCardLowerAnimation');
-			} else if (guess == 'purple' && correct == 'purpleFalse') {
-				setTimeout(() => {
+				try {
+					await delay(150);
 					setIsFlipped(true);
-				}, 150);
-				setTimeout(() => {
+
+					await delay(850); // Adjust the delay as needed
 					setShownCard(localThirdCard);
 					setNextCard(nextCard);
 					setThirdCard(thirdCard);
 					setAnimationNextCard('undefined');
 					setAnimationThirdCard('undefined');
 					setAnimationShownCard('putAwayAndDrawAnimation');
-				}, 1000);
 
-				setTimeout(() => {
+					await delay(150);
 					setIsShownFlipped(false);
 					setShownCard(currentCard);
-				}, 1150);
-				setTimeout(() => {
+					await delay(500);
 					setIsShownFlipped(true);
-				}, 1650);
-
-				setTimeout(() => {
+					await delay(350);
 					setAnimationShownCard('undefined');
 					setIsFlipped(false);
 					setIsAnimating(false);
-				}, 2000);
-
-				setAnimationNextCard('flipCardHigherAnimation');
-				setAnimationThirdCard('flipCardLowerAnimation');
+					// Adjust the delay as needed
+				} catch (error) {
+					console.error('An error occurred:', error);
+				}
 			}
 			if (guess == 'higher' && correct == 'true') {
-				setTimeout(() => {
-					setIsFlipped(true);
-				}, 150);
-
-				setTimeout(() => {
-					setNextCard(nextCard);
-					setThirdCard(thirdCard);
-					setShownCard(localNextCard);
-					setAnimationNextCard('undefined');
-					setIsFlipped(false);
-					setIsAnimating(false);
-				}, 1000);
-
 				setAnimationNextCard('flipCardHigherAnimation');
+				try {
+					await delay(150);
+					setIsFlipped(true);
+
+					await delay(850); // Adjust the delay as needed
+					setNextCard(nextCard);
+					setThirdCard(thirdCard);
+					setShownCard(localNextCard);
+					setAnimationNextCard('undefined');
+					setIsFlipped(false);
+					setIsAnimating(false);
+					// Adjust the delay as needed
+				} catch (error) {
+					console.error('An error occurred:', error);
+				}
 			} else if (guess == 'higher' && correct == 'false') {
-				setTimeout(() => {
+				setAnimationNextCard('flipCardHigherAnimation');
+				try {
+					await delay(150);
 					setIsFlipped(true);
-				}, 150);
-				setTimeout(() => {
+
+					await delay(850); // Adjust the delay as needed
 					setAnimationNextCard('undefined');
 					setAnimationShownCard('putAwayAndDrawAnimation');
 					setShownCard(localNextCard);
 					setNextCard(nextCard);
 					setThirdCard(thirdCard);
-				}, 1000);
 
-				setTimeout(() => {
+					await delay(150);
 					setIsShownFlipped(false);
 					setShownCard(currentCard);
-				}, 1150);
-				setTimeout(() => {
+					await delay(500);
 					setIsShownFlipped(true);
-				}, 1650);
-
-				setTimeout(() => {
+					await delay(350);
 					setAnimationShownCard('undefined');
 					setIsFlipped(false);
 					setIsAnimating(false);
-				}, 2000);
+					// Adjust the delay as needed
+				} catch (error) {
+					console.error('An error occurred:', error);
+				}
 			}
-			setAnimationNextCard('flipCardHigherAnimation');
-			if (guess == 'lower' && correct == 'true') {
-				setTimeout(() => {
-					setIsFlipped(true);
-				}, 150);
 
-				setTimeout(() => {
-					setShownCard(localNextCard);
-					setAnimationNextCard('undefined');
+			if (guess == 'lower' && correct == 'true') {
+				setAnimationNextCard('flipCardLowerAnimation');
+				try {
+					await delay(150);
+					setIsFlipped(true);
+
+					await delay(850); // Adjust the delay as needed
 					setNextCard(nextCard);
 					setThirdCard(thirdCard);
+					setShownCard(localNextCard);
+					setAnimationNextCard('undefined');
 					setIsFlipped(false);
 					setIsAnimating(false);
-				}, 1000);
-
-				setAnimationNextCard('flipCardLowerAnimation');
+					// Adjust the delay as needed
+				} catch (error) {
+					console.error('An error occurred:', error);
+				}
 			} else if (guess == 'lower' && correct == 'false') {
-				setTimeout(() => {
+				setAnimationNextCard('flipCardLowerAnimation');
+				try {
+					await delay(150);
 					setIsFlipped(true);
-				}, 150);
-				setTimeout(() => {
+
+					await delay(850); // Adjust the delay as needed
 					setAnimationNextCard('undefined');
 					setAnimationShownCard('putAwayAndDrawAnimation');
 					setShownCard(localNextCard);
 					setNextCard(nextCard);
 					setThirdCard(thirdCard);
-				}, 1000);
 
-				setTimeout(() => {
+					await delay(150);
 					setIsShownFlipped(false);
 					setShownCard(currentCard);
-				}, 1150);
-				setTimeout(() => {
+					await delay(500);
 					setIsShownFlipped(true);
-				}, 1750);
-
-				setTimeout(() => {
+					await delay(350);
 					setAnimationShownCard('undefined');
 					setIsFlipped(false);
 					setIsAnimating(false);
-				}, 2000);
-
-				setAnimationNextCard('flipCardLowerAnimation');
+					// Adjust the delay as needed
+				} catch (error) {
+					console.error('An error occurred:', error);
+				}
 			}
 		});
 		newSocket.on('correct', (correct) => {
