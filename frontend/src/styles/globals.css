@@ -8,3 +8,108 @@ overscroll-behavior: none;
 #motion-container {
 	perspective: 1000px;
 }
+
+@keyframes flipCardLeft {
+	0% {
+		transform: translateX(0) translateY(0) scale(1) rotateZ(0deg);
+	}
+	50% {
+		transform: translateX(-120px) translateY(72px) scale(1.5)
+			rotateY(180deg);
+	}
+	100% {
+		transform: translateX(0px) translateY(144.06px) scale(1) rotateY(180deg);
+	}
+}
+@keyframes flipCardRight {
+	0% {
+		transform: translateX(0) translateY(0) scale(1) rotateZ(0deg);
+	}
+	50% {
+		transform: translateX(120px) translateY(72px) scale(1.5) rotateY(180deg);
+	}
+	100% {
+		transform: translateX(0px) translateY(144.06px) scale(1) rotateY(180deg);
+	}
+}
+
+@keyframes putAwayAndDraw {
+	0% {
+		transform: translateY(0) rotateY(0deg);
+	}
+	25% {
+		transform: translateY(-72px) rotateY(180deg);
+	}
+	50% {
+		transform: translateY(-144.06px) rotateY(180deg);
+	}
+	75% {
+		25% {
+			transform: translateY(-72px) rotateY(180deg);
+		}
+	}
+	100% {
+		transform: translateY(0px) rotateY(0deg);
+	}
+}
+@keyframes resetCard {
+	100% {
+		transform: translateX(0) translateY(0) scale(1) rotateY(0deg);
+	}
+}
+
+.flipCardAnimation {
+	animation-name: flipCard;
+	animation-duration: 4s;
+	animation-delay: 0ms;
+	animation-timing-function: linear;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
+	transform-origin: center center;
+}
+.putAwayAnimation {
+	animation-name: putAway;
+	animation-duration: 4s;
+	animation-delay: 0ms;
+	animation-timing-function: linear;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
+	transform-origin: center center;
+}
+.resetCardAnimation {
+	animation-name: resetCard;
+	animation-duration: 0s;
+	animation-delay: 0ms;
+	animation-timing-function: linear;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
+	transform-origin: center center;
+}
+
+.flipCardHigherCorrectAnimation {
+	animation-name: flipCardRight, resetCard;
+	animation-duration: 2s, 0s;
+	animation-delay: 0ms, 2000ms;
+	animation-timing-function: linear, linear;
+	animation-iteration-count: 1, 1;
+	animation-fill-mode: forwards, forwards;
+	transform-origin: center center;
+}
+.flipCardHigherWrongAnimation {
+	animation-name: flipCardRight, resetCard;
+	animation-duration: 2s, 0s;
+	animation-delay: 0ms, 2000ms;
+	animation-timing-function: linear, linear;
+	animation-iteration-count: 1, 1;
+	animation-fill-mode: forwards, forwards;
+	transform-origin: center center;
+}
+.putAwayAndDrawAnimation {
+	animation-name: putAwayAndDraw;
+	animation-duration: 2s;
+	animation-delay: 0ms;
+	animation-timing-function: linear;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
+	transform-origin: center center;
+}
