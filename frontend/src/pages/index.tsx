@@ -391,53 +391,53 @@ const Chat = () => {
 			if (guess == 'higher' && correct == 'true') {
 				setTimeout(() => {
 					setIsFlipped(true);
-				}, 150);
-				setTimeout(() => {
-					setShownCard(localNextCard);
-				}, 300);
+				}, 250);
+
 				setTimeout(() => {
 					setNextCard(nextCard);
 					setThirdCard(thirdCard);
-				}, 700);
+				}, 1000);
 				setTimeout(() => {
 					setIsFlipped(false);
 					setIsAnimating(false);
-				}, 1400);
+				}, 1000);
 				setTimeout(() => {
+					setShownCard(localNextCard);
 					setAnimationNextCard('undefined');
-				}, 2000);
+				}, 1000);
 				setAnimationNextCard('flipCardHigherCorrectAnimation');
 			} else if (guess == 'higher' && correct == 'false') {
 				setTimeout(() => {
 					setIsFlipped(true);
-				}, 150);
+				}, 250);
 				setTimeout(() => {
 					setShownCard(localNextCard);
-				}, 150);
+				}, 1000);
+
 				setTimeout(() => {
 					setIsShownFlipped(false);
-				}, 150);
+					setShownCard(currentCard);
+				}, 1250);
 				setTimeout(() => {
 					setIsShownFlipped(true);
-					setShownCard(currentCard);
-				}, 150);
+				}, 1750);
 				setTimeout(() => {
 					setNextCard(nextCard);
 					setThirdCard(thirdCard);
-				}, 150);
+				}, 1000);
 				setTimeout(() => {
 					setIsFlipped(false);
 					setIsAnimating(false);
-				}, 150);
+				}, 2000);
 				setTimeout(() => {
 					setAnimationNextCard('undefined');
-				}, 2000);
+				}, 1000);
 				setTimeout(() => {
 					setAnimationShownCard('putAwayAndDrawAnimation');
-				}, 2000);
+				}, 1000);
 				setTimeout(() => {
 					setAnimationShownCard('undefined');
-				}, 4000);
+				}, 2000);
 			}
 			setAnimationNextCard('flipCardHigherWrongAnimation');
 			if (guess == 'lower' && correct == 'true') {
@@ -734,7 +734,7 @@ const Chat = () => {
 						id='motion-container'
 						className='flex flex-col items-center relative gap-4 w-full py-4 justify-between'
 					>
-						<div className='deckCard w-[90px]'>
+						<div className='deckCard z-10 w-[90px]'>
 							<img
 								className=' w-[90px]'
 								src={`./blue2.svg`}
@@ -742,7 +742,7 @@ const Chat = () => {
 							/>
 						</div>
 						<div
-							className={`absolute ${animationNextCard} w-[90px]`}
+							className={`nextCard absolute ${animationNextCard} w-[90px]`}
 						>
 							{isFlipped ? (
 								<img
@@ -759,7 +759,7 @@ const Chat = () => {
 							)}
 						</div>
 						<div
-							className={`absolute ${animationThirdCard} w-[90px]`}
+							className={`thirdCard absolute ${animationThirdCard} w-[90px]`}
 						>
 							{isFlipped ? (
 								<img
@@ -775,7 +775,9 @@ const Chat = () => {
 								/>
 							)}
 						</div>
-						<div className={`${animationShownCard} w-[90px]`}>
+						<div
+							className={`shownCard ${animationShownCard} w-[90px]`}
+						>
 							{isShownFlipped ? (
 								<img
 									className=' w-[90px]'

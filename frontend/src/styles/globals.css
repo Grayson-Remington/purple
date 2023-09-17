@@ -5,9 +5,6 @@ overscroll-behavior: none;
 #__next {
 	height: 100%;
 }
-#motion-container {
-	perspective: 1000px;
-}
 
 @keyframes flipCardLeft {
 	0% {
@@ -23,13 +20,15 @@ overscroll-behavior: none;
 }
 @keyframes flipCardRight {
 	0% {
-		transform: translateX(0) translateY(0) scale(1) rotateZ(0deg);
+		transform: translateX(0) translateY(0) scale(1) rotateY(180deg)
+			translateZ(-20);
 	}
 	50% {
-		transform: translateX(120px) translateY(72px) scale(1.5) rotateY(180deg);
+		transform: translateX(120px) translateY(72px) scale(1.5) rotateY(0deg);
 	}
 	100% {
-		transform: translateX(0px) translateY(144.06px) scale(1) rotateY(180deg);
+		transform: translateX(0px) translateY(144.06px) scale(1) rotateY(0deg)
+			translateZ(0);
 	}
 }
 
@@ -54,10 +53,12 @@ overscroll-behavior: none;
 }
 @keyframes resetCard {
 	100% {
-		transform: translateX(0) translateY(0) scale(1) rotateY(0deg);
+		transform: translateX(0) translateY(0) scale(1) rotateY(180deg);
 	}
 }
-
+.nextCard {
+	transform: rotateY(180deg);
+}
 .flipCardAnimation {
 	animation-name: flipCard;
 	animation-duration: 4s;
@@ -88,7 +89,7 @@ overscroll-behavior: none;
 
 .flipCardHigherCorrectAnimation {
 	animation-name: flipCardRight, resetCard;
-	animation-duration: 2s, 0s;
+	animation-duration: 1s, 0s;
 	animation-delay: 0ms, 2000ms;
 	animation-timing-function: linear, linear;
 	animation-iteration-count: 1, 1;
@@ -97,7 +98,7 @@ overscroll-behavior: none;
 }
 .flipCardHigherWrongAnimation {
 	animation-name: flipCardRight, resetCard;
-	animation-duration: 2s, 0s;
+	animation-duration: 1s, 0s;
 	animation-delay: 0ms, 2000ms;
 	animation-timing-function: linear, linear;
 	animation-iteration-count: 1, 1;
@@ -106,7 +107,7 @@ overscroll-behavior: none;
 }
 .putAwayAndDrawAnimation {
 	animation-name: putAwayAndDraw;
-	animation-duration: 2s;
+	animation-duration: 1s;
 	animation-delay: 0ms;
 	animation-timing-function: linear;
 	animation-iteration-count: 1;
