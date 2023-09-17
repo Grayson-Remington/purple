@@ -360,8 +360,8 @@ const Chat = () => {
 					setAnimationNextCard('undefined');
 					setAnimationThirdCard('undefined');
 				}, 1000);
-				setAnimationNextCard('flipCardLowerAnimation');
-				setAnimationThirdCard('flipCardHigherAnimation');
+				setAnimationNextCard('flipCardHigherAnimation');
+				setAnimationThirdCard('flipCardLowerAnimation');
 			} else if (guess == 'purple' && correct == 'purpleFalse') {
 				setTimeout(() => {
 					setIsFlipped(true);
@@ -396,8 +396,8 @@ const Chat = () => {
 					setAnimationShownCard('undefined');
 				}, 2000);
 
-				setAnimationNextCard('flipCardLowerAnimation');
-				setAnimationThirdCard('flipCardHigherAnimation');
+				setAnimationNextCard('flipCardHigherAnimation');
+				setAnimationThirdCard('flipCardLowerAnimation');
 			}
 			if (guess == 'higher' && correct == 'true') {
 				setTimeout(() => {
@@ -756,7 +756,7 @@ const Chat = () => {
 					>
 						<div className='deckCard z-10 w-[90px]'>
 							<img
-								className=' w-[90px]'
+								style={{ width: '90px' }}
 								src={`./blue2.svg`}
 								alt=''
 							/>
@@ -764,19 +764,19 @@ const Chat = () => {
 						<div
 							className={`nextCard absolute ${animationNextCard} ${
 								!(animationNextCard == 'undefined')
-									? 'z-30'
+									? 'z-20'
 									: ''
 							} w-[90px]`}
 						>
 							{isFlipped ? (
 								<img
-									className=' w-[90px]'
+									style={{ width: '90px' }}
 									src={`./${nextCard}.svg`}
 									alt=''
 								/>
 							) : (
 								<img
-									className=' w-[90px]'
+									style={{ width: '90px' }}
 									src={`./blue2.svg`}
 									alt=''
 								/>
@@ -785,19 +785,19 @@ const Chat = () => {
 						<div
 							className={`thirdCard absolute ${animationThirdCard} ${
 								!(animationThirdCard == 'undefined')
-									? 'z-20'
+									? 'z-30'
 									: ''
 							} w-[90px]`}
 						>
 							{isFlipped ? (
 								<img
-									className=' w-[90px]'
+									style={{ width: '90px' }}
 									src={`./${thirdCard}.svg`}
 									alt=''
 								/>
 							) : (
 								<img
-									className=' w-[90px]'
+									style={{ width: '90px' }}
 									src={`./blue2.svg`}
 									alt=''
 								/>
@@ -812,13 +812,13 @@ const Chat = () => {
 						>
 							{isShownFlipped ? (
 								<img
-									className=' w-[90px]'
+									style={{ width: '90px' }}
 									src={`./${shownCard}.svg`}
 									alt=''
 								/>
 							) : (
 								<img
-									className=' w-[90px]'
+									style={{ width: '90px' }}
 									src={`./blue2.svg`}
 									alt=''
 								/>
