@@ -341,7 +341,7 @@ const Chat = () => {
 			let correct = correctRef.current;
 			let localNextCard = nextCardRef.current;
 			let localThirdCard = thirdCardRef.current;
-
+			setIsAnimating(true);
 			if (guess == 'purple' && correct == 'purpleTrue') {
 				setTimeout(() => {
 					setIsFlipped(true);
@@ -543,7 +543,6 @@ const Chat = () => {
 
 	const handleGuess = (guess: any) => {
 		if (socket) {
-			setIsAnimating(true);
 			socket.emit('guess', guess);
 		}
 	};
@@ -725,16 +724,17 @@ const Chat = () => {
 						id='motion-container'
 						className='flex flex-col items-center relative gap-4 w-full py-4 justify-between'
 					>
-						<div className=' z-10 w-[90px]'>
-							<img
-								style={{ width: '90px' }}
-								src={`./blue2.svg`}
-								alt=''
-							/>
-						</div>
+						<img
+							style={{ width: '90px', zIndex: 10 }}
+							src={`./blue2.svg`}
+							alt=''
+						/>
+
 						<div
-							style={{ transform: 'rotateY(180deg)' }}
-							className={` absolute ${animationNextCard} ${
+							style={{
+								transform: 'rotateY(180deg)',
+							}}
+							className={`block absolute ${animationNextCard} ${
 								!(animationNextCard == 'undefined')
 									? 'z-20'
 									: ''
@@ -755,8 +755,10 @@ const Chat = () => {
 							)}
 						</div>
 						<div
-							style={{ transform: 'rotateY(180deg)' }}
-							className={` absolute ${animationThirdCard} ${
+							style={{
+								transform: 'rotateY(180deg)',
+							}}
+							className={`block absolute ${animationThirdCard} ${
 								!(animationThirdCard == 'undefined')
 									? 'z-30'
 									: ''
@@ -777,7 +779,7 @@ const Chat = () => {
 							)}
 						</div>
 						<div
-							className={` ${animationShownCard} ${
+							className={`block ${animationShownCard} ${
 								!(animationShownCard == 'undefined')
 									? 'z-20'
 									: ''
