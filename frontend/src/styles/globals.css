@@ -131,48 +131,6 @@ overscroll-behavior: none;
 	-webkit-transform-origin: center center;
 }
 
-.putAwayAnimation {
-	animation-name: putAway;
-	animation-duration: 4s;
-	animation-delay: 0ms;
-	animation-timing-function: linear;
-	animation-iteration-count: 1;
-	animation-fill-mode: forwards;
-	transform-origin: center center;
-}
-
-/* -webkit- animation for older WebKit-based browsers */
-.putAwayAnimation {
-	-webkit-animation-name: putAway;
-	-webkit-animation-duration: 4s;
-	-webkit-animation-delay: 0ms;
-	-webkit-animation-timing-function: linear;
-	-webkit-animation-iteration-count: 1;
-	-webkit-animation-fill-mode: forwards;
-	-webkit-transform-origin: center center;
-}
-
-.resetCardAnimation {
-	animation-name: resetCard;
-	animation-duration: 0s;
-	animation-delay: 0ms;
-	animation-timing-function: linear;
-	animation-iteration-count: 1;
-	animation-fill-mode: forwards;
-	transform-origin: center center;
-}
-
-/* -webkit- animation for older WebKit-based browsers */
-.resetCardAnimation {
-	-webkit-animation-name: resetCard;
-	-webkit-animation-duration: 0s;
-	-webkit-animation-delay: 0ms;
-	-webkit-animation-timing-function: linear;
-	-webkit-animation-iteration-count: 1;
-	-webkit-animation-fill-mode: forwards;
-	-webkit-transform-origin: center center;
-}
-
 .flipCardHigherAnimation {
 	animation-name: flipCardRight, resetCard;
 	animation-duration: 1s, 0s;
@@ -202,4 +160,36 @@ overscroll-behavior: none;
 	animation-iteration-count: 1, 1;
 	animation-fill-mode: forwards, forwards;
 	transform-origin: center center;
+}
+
+/* -webkit- animation for older WebKit-based browsers */
+.flipCardLowerAnimation {
+	-webkit-animation-name: flipCardLeft, resetCard;
+	-webkit-animation-duration: 1s, 0s;
+	-webkit-animation-delay: 0ms, 2000ms;
+	-webkit-animation-timing-function: linear, linear;
+	-webkit-animation-iteration-count: 1, 1;
+	-webkit-animation-fill-mode: forwards, forwards;
+	-webkit-transform-origin: center center;
+}
+
+.putAwayAndDrawAnimation {
+	animation-name: putAwayAndDraw;
+	animation-duration: 1s;
+	animation-delay: 0ms;
+	animation-timing-function: linear;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
+	transform-origin: center center;
+}
+
+/* -webkit- animation for older WebKit-based browsers */
+.putAwayAndDrawAnimation {
+	-webkit-animation-name: putAwayAndDraw;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-delay: 0ms;
+	-webkit-animation-timing-function: linear;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-fill-mode: forwards;
+	-webkit-transform-origin: center center;
 }
