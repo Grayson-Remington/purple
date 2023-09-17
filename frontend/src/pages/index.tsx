@@ -727,7 +727,7 @@ const Chat = () => {
 						<img
 							style={{
 								width: '90px',
-								zIndex: 30,
+								zIndex: 10,
 								display: 'block',
 							}}
 							src={`./blue2.svg`}
@@ -737,6 +737,7 @@ const Chat = () => {
 						<div
 							style={{
 								transform: 'rotateY(180deg)',
+								opacity: 0,
 							}}
 							className={`block absolute ${animationNextCard} ${
 								!(animationNextCard == 'undefined')
@@ -761,6 +762,7 @@ const Chat = () => {
 						<div
 							style={{
 								transform: 'rotateY(180deg)',
+								opacity: 0,
 							}}
 							className={`block absolute ${animationThirdCard} ${
 								!(animationThirdCard == 'undefined')
