@@ -19,6 +19,8 @@ const Chat = () => {
 	const [deathStack, setDeathStack] = useState(0);
 	const [socket, setSocket] = useState<any>();
 	const [turn, setTurn] = useState(undefined);
+	const [gameOver, setGameOver] = useState(false);
+	const [voteTotal, setVoteTotal] = useState(0);
 	const turnRef = useRef();
 	const correctRef = useRef<string>();
 	const playerNameRef = useRef<string>();
@@ -79,8 +81,14 @@ const Chat = () => {
 		newSocket.on('connect', () => {
 			console.log('Connected to WebSocket server');
 		});
+		newSocket.on('gameOver', (gameOver) => {
+			setGameOver(gameOver);
+		});
 		newSocket.on('playerJoined', () => {
 			setConnectedToRoom(true);
+		});
+		newSocket.on('voteTotal', (voteTotal) => {
+			setVoteTotal(voteTotal);
 		});
 		newSocket.on('playerName', (playerName) => {
 			setPlayerName(playerName);
@@ -300,6 +308,7 @@ const Chat = () => {
 		return () => {
 			console.log('Disconnecting from WebSocket server...');
 			newSocket.disconnect();
+			setConnectedToRoom(false);
 		};
 	}, []);
 
@@ -323,8 +332,42 @@ const Chat = () => {
 			setTurnScore(0);
 		}
 	};
+	const handlePlayAgain = () => {
+		if (socket) {
+			socket.emit('playAgain');
+		}
+	};
 	return (
 		<div className='flex flex-col gap-4 w-full items-center h-full bg-gradient-to-b from-purple-400   to-purple-800  p-4 min-h-screen '>
+			{gameOver && (
+				<div className='absolute h-full w-full flex flex-col items-center z-50'>
+					<div className='absolute inset-0 bg-gradient-to-b from-purple-400 to-purple-800 opacity-95'></div>
+					<div className='absolute flex flex-col items-center max-w-4xl h-full w-full gap-4'>
+						<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl'>
+							Game Over
+						</h1>
+						<button
+							className='cursor-pointer disabled:bg-red-500 bg-purple-400 hover:bg-purple-400 text-white font-bold py-2 px-4 border-b-4 border-purple-700 hover:border-purple-500 rounded'
+							onClick={handlePlayAgain}
+						>
+							Play Again?
+						</button>
+						<h1>Votes Needed: {Math.ceil(players.length / 2)}</h1>
+						<h1>Vote Total: {voteTotal}</h1>
+						{players.map((player: any, index: number) => (
+							<div
+								key={index}
+								className='flex flex-col text-2xl text-center items-center'
+							>
+								<div className='flex w-full text-center justify-center'>
+									{index + 1}. {player.name}: {player.score}
+								</div>
+								<div></div>
+							</div>
+						))}
+					</div>
+				</div>
+			)}
 			{rules && (
 				<div className='absolute max-w-4xl h-full w-full bg-gradient-to-b from-purple-400 to-purple-800 z-50'>
 					<div className='relative max-w-xl mx-auto p-6 rounded-lg shadow-md'>
@@ -388,9 +431,8 @@ const Chat = () => {
 					</div>
 				</div>
 			)}
-
 			{!connectedToRoom ? (
-				<div className='max-w-4xl flex flex-col gap-2 uppercase font-bold h-full items-center'>
+				<div className='max-w-4xl flex flex-col gap-2 uppercase font-bold  items-center'>
 					<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl '>
 						Purple
 					</h1>
@@ -429,7 +471,7 @@ const Chat = () => {
 					</button>
 				</div>
 			) : (
-				<div className='flex flex-col items-center h-full w-full max-w-3xl'>
+				<div className='flex flex-col items-center h-full w-full max-w-3xl shadow-lg'>
 					<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl uppercase '>
 						Purple
 					</h1>
@@ -448,20 +490,41 @@ const Chat = () => {
 
 					<div className='flex  w-full text-center justify-center p-4 gap-4'>
 						{players
-							.slice(0, 3)
+							.slice(0, 1)
 							.map((player: any, index: number) => (
 								<div
 									key={index}
 									className='flex flex-col text-2xl text-center items-center'
 								>
 									{index == 0 && (
-										<h1 className='underline'>1st Place</h1>
+										<h1 className='underline'>First</h1>
+									)}
+
+									<div className='flex w-full text-center justify-center'>
+										{player.name}: {player.score}
+									</div>
+									<div></div>
+								</div>
+							))}
+						{players
+							.slice(-3, 3)
+							.map((player: any, index: number) => (
+								<div
+									key={index}
+									className='flex flex-col text-2xl text-center items-center'
+								>
+									{index == 0 && (
+										<h1 className='underline'>Last</h1>
 									)}
 									{index == 1 && (
-										<h1 className='underline'>2nd Place</h1>
+										<h1 className='underline'>
+											2nd to Last
+										</h1>
 									)}
 									{index == 2 && (
-										<h1 className='underline'>3rd Place</h1>
+										<h1 className='underline'>
+											3rd to Last
+										</h1>
 									)}
 									<div className='flex w-full text-center justify-center'>
 										{player.name}: {player.score}
@@ -575,7 +638,7 @@ const Chat = () => {
 								/>
 							)}
 						</div>
-						{turnScore >= 3 && (
+						{turn && turn == playerName && turnScore >= 3 && (
 							<button
 								onClick={() => handlePass(deathStack)}
 								disabled={isAnimating}
