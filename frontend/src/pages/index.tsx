@@ -338,7 +338,7 @@ const Chat = () => {
 		}
 	};
 	return (
-		<div className='flex flex-col gap-4 w-full items-center h-full bg-gradient-to-b from-purple-400   to-purple-800  p-4 min-h-screen '>
+		<div className='flex flex-col gap-4 w-full items-center min-h-screen h-fit bg-gradient-to-b from-purple-400 to-purple-800 p-4  '>
 			{gameOver && (
 				<div className='absolute h-full w-full flex flex-col items-center z-50'>
 					<div className='absolute inset-0 bg-gradient-to-b from-purple-400 to-purple-800 opacity-95'></div>
@@ -369,7 +369,8 @@ const Chat = () => {
 				</div>
 			)}
 			{rules && (
-				<div className='absolute max-w-4xl h-full w-full bg-gradient-to-b from-purple-400 to-purple-800 z-50'>
+				<div className='absolute h-fit min-h-screen w-full flex flex-col items-center z-50'>
+					<div className='absolute inset-0 bg-gradient-to-b from-purple-400 to-purple-800 opacity-95'></div>
 					<div className='relative max-w-xl mx-auto p-6 rounded-lg shadow-md'>
 						<button
 							className='absolute right-4 top-4'

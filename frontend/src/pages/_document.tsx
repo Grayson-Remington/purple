@@ -3,11 +3,11 @@ import { Html, Head, Main, NextScript } from 'next/document';
 export default function Document() {
 	return (
 		<Html
-			className=''
+			className='h-full'
 			lang='en'
 		>
 			<Head />
-			<body className=' '>
+			<body className='h-full '>
 				<Main />
 				<NextScript />
 			</body>
