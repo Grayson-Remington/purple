@@ -413,7 +413,7 @@ const Chat = () => {
 			)}
 
 			{!connectedToRoom ? (
-				<div className='max-w-4xl flex flex-col gap-2 uppercase font-bold h-full'>
+				<div className='max-w-4xl flex flex-col gap-2 uppercase font-bold h-full items-center'>
 					<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl '>
 						Purple
 					</h1>
@@ -453,7 +453,7 @@ const Chat = () => {
 				</div>
 			) : (
 				<div className='flex flex-col items-center h-full w-full max-w-4xl'>
-					<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl '>
+					<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl uppercase '>
 						Purple
 					</h1>
 					<div className='flex justify-between items-center w-full px-8'>
@@ -519,11 +519,7 @@ const Chat = () => {
 						className='flex flex-col  items-center relative gap-4 w-full py-4 justify-between'
 					>
 						<img
-							style={{
-								width: '90px',
-								position: 'absolute',
-								zIndex: 10,
-							}}
+							className='block z-10 w-[90px]'
 							src={`./blue2.svg`}
 							alt=''
 						/>
@@ -532,7 +528,7 @@ const Chat = () => {
 								transform: 'rotateY(180deg) ',
 								opacity: 100,
 							}}
-							className={` relative block ${animationNextCard} ${
+							className={`absolute block ${animationNextCard} ${
 								!(animationNextCard == 'undefined')
 									? 'z-20'
 									: ''
@@ -556,9 +552,8 @@ const Chat = () => {
 							style={{
 								transform: 'rotateY(180deg)',
 								opacity: 100,
-								position: 'absolute',
 							}}
-							className={` block ${animationThirdCard} ${
+							className={`block absolute ${animationThirdCard} ${
 								!(animationThirdCard == 'undefined')
 									? 'z-30'
 									: ''
