@@ -8,7 +8,32 @@ body,
 	display: block;
 	height: 100%;
 }
+/* width */
+::-webkit-scrollbar {
+	width: 10px;
+}
 
+/* Track */
+::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+
+.vertical-text {
+	writing-mode: vertical-rl;
+	text-orientation: upright;
+	/* You can add more styles here if needed */
+}
 @keyframes flipCardLeft {
 	0% {
 		transform: translateX(0) translateY(0) scale(1) rotateY(180deg);

@@ -338,7 +338,7 @@ const Chat = () => {
 		}
 	};
 	return (
-		<div className='flex flex-col gap-4 w-full items-center min-h-screen h-fit bg-gradient-to-b from-purple-400 to-purple-800 p-4  '>
+		<div className='flex flex-col gap-4 w-full items-center min-h-screen h-fit bg-gradient-to-b from-purple-400 to-purple-800'>
 			{gameOver && (
 				<div className='absolute h-full w-full flex flex-col items-center z-50'>
 					<div className='absolute inset-0 bg-gradient-to-b from-purple-400 to-purple-800 opacity-95'></div>
@@ -433,7 +433,7 @@ const Chat = () => {
 				</div>
 			)}
 			{!connectedToRoom ? (
-				<div className='max-w-4xl flex flex-col gap-2 uppercase font-bold  items-center'>
+				<div className='max-w-4xl flex flex-col gap-2 uppercase font-bold  items-center p-4'>
 					<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl '>
 						Purple
 					</h1>
@@ -472,7 +472,7 @@ const Chat = () => {
 					</button>
 				</div>
 			) : (
-				<div className='flex flex-col items-center h-full w-full max-w-3xl shadow-lg'>
+				<div className='flex flex-col items-center h-full w-full max-w-3xl shadow-lg p-4'>
 					<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl uppercase '>
 						Purple
 					</h1>
@@ -489,50 +489,24 @@ const Chat = () => {
 						</div>
 					</div>
 
-					<div className='flex  w-full text-center justify-center p-4 gap-4'>
-						{players
-							.slice(0, 1)
-							.map((player: any, index: number) => (
+					<div className='flex justify-between items-stretch rounded-t-lg bg-gray-400 text-black w-full overflow-x-auto text-center gap-4'>
+						<div className='vertical-text text-xs bg-white items-stretch'>
+							Last
+						</div>
+						<div className='flex text-xl gap-4'>
+							{players.map((player: any, index: number) => (
 								<div
 									key={index}
-									className='flex flex-col text-2xl text-center items-center'
+									className='flex flex-col w-full justify-center'
 								>
-									{index == 0 && (
-										<h1 className='underline'>First</h1>
-									)}
-
-									<div className='flex w-full text-center justify-center'>
-										{player.name}: {player.score}
-									</div>
-									<div></div>
+									<span>{player.name}</span>
+									<span>{player.score}</span>
 								</div>
 							))}
-						{players
-							.slice(-3, 3)
-							.map((player: any, index: number) => (
-								<div
-									key={index}
-									className='flex flex-col text-2xl text-center items-center'
-								>
-									{index == 0 && (
-										<h1 className='underline'>Last</h1>
-									)}
-									{index == 1 && (
-										<h1 className='underline'>
-											2nd to Last
-										</h1>
-									)}
-									{index == 2 && (
-										<h1 className='underline'>
-											3rd to Last
-										</h1>
-									)}
-									<div className='flex w-full text-center justify-center'>
-										{player.name}: {player.score}
-									</div>
-									<div></div>
-								</div>
-							))}
+						</div>
+						<div className='vertical-text text-xs  bg-white items-stretch'>
+							First
+						</div>
 					</div>
 
 					<div className='flex text-center w-full justify-between gap-4'>
