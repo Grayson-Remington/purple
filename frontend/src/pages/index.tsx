@@ -489,20 +489,23 @@ const Chat = () => {
 						</div>
 					</div>
 
-					<div className='flex justify-between items-stretch rounded-t-lg bg-gray-400 text-black w-full overflow-x-auto text-center gap-4'>
+					<div className='flex justify-between items-stretch rounded-t-lg bg-gray-400 text-black w-full overflow-x-auto gap-4'>
 						<div className='vertical-text text-xs bg-white items-stretch'>
 							Last
 						</div>
-						<div className='flex text-xl gap-4'>
-							{players.map((player: any, index: number) => (
-								<div
-									key={index}
-									className='flex flex-col w-full justify-center'
-								>
-									<span>{player.name}</span>
-									<span>{player.score}</span>
-								</div>
-							))}
+						<div className='flex w-full text-xl gap-4'>
+							{players
+								.sort((a: any, b: any) => b.score - a.score)
+								.reverse()
+								.map((player: any, index: number) => (
+									<div
+										key={index}
+										className='flex flex-col items-center justify-center'
+									>
+										<span>{player.name}</span>
+										<span>{player.score}</span>
+									</div>
+								))}
 						</div>
 						<div className='vertical-text text-xs  bg-white items-stretch'>
 							First

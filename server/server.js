@@ -310,7 +310,7 @@ io.on('connection', (socket) => {
 				rooms[roomId].currentPlayerIndex += 1;
 			}
 			rooms[roomId].players.forEach((player) => {
-				if (player.score < -10) {
+				if (player.score <= -20) {
 					rooms[roomId].gameOver = true;
 					io.to(roomId).emit('gameOver', rooms[roomId].gameOver);
 				}
