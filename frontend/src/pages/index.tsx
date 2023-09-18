@@ -118,10 +118,12 @@ const Chat = () => {
 			setTurnScore(turnScore);
 		});
 		newSocket.on('guess', async (data) => {
-			const { guess, currentCard, nextCard, thirdCard } = data;
-			let correct = correctRef.current;
+			const { guess, correct, currentCard, nextCard, thirdCard } = data;
+			setCorrect(correct);
 			let localNextCard = nextCardRef.current;
 			let localThirdCard = thirdCardRef.current;
+			const currentTurn = turnRef.current;
+			const currentPlayerName = playerNameRef.current;
 			setIsAnimating(true);
 			if (guess == 'purple' && correct == 'purpleTrue') {
 				setAnimationNextCard('flipCardHigherAnimation');
@@ -141,6 +143,16 @@ const Chat = () => {
 					// Adjust the delay as needed
 				} catch (error) {
 					console.error('An error occurred:', error);
+				}
+				if (
+					currentTurn &&
+					currentTurn === currentPlayerName &&
+					correct === 'purpleTrue'
+				) {
+					// Increase the score
+
+					setTurnScore((prevTurnScore) => prevTurnScore + 1);
+					setDeathStack((prevDeathStack) => prevDeathStack + 1);
 				}
 			} else if (guess == 'purple' && correct == 'purpleFalse') {
 				setAnimationNextCard('flipCardHigherAnimation');
@@ -169,6 +181,14 @@ const Chat = () => {
 					// Adjust the delay as needed
 				} catch (error) {
 					console.error('An error occurred:', error);
+				}
+				if (
+					currentTurn &&
+					currentTurn === currentPlayerName &&
+					correct === 'purpleFalse'
+				) {
+					setDeathStack(0);
+					setTurnScore(0);
 				}
 			}
 			if (guess == 'higher' && correct == 'true') {
@@ -213,6 +233,14 @@ const Chat = () => {
 					// Adjust the delay as needed
 				} catch (error) {
 					console.error('An error occurred:', error);
+				}
+				if (
+					currentTurn &&
+					currentTurn === currentPlayerName &&
+					correct === 'false'
+				) {
+					setDeathStack(0);
+					setTurnScore(0);
 				}
 			}
 
@@ -259,42 +287,22 @@ const Chat = () => {
 				} catch (error) {
 					console.error('An error occurred:', error);
 				}
+				if (
+					currentTurn &&
+					currentTurn === currentPlayerName &&
+					correct === 'false'
+				) {
+					setDeathStack(0);
+					setTurnScore(0);
+				}
 			}
 		});
 		newSocket.on('correct', (correct) => {
 			console.log('Received correct:', correct);
 			setCorrect(correct);
 
-			const currentTurn = turnRef.current;
-			const currentPlayerName = playerNameRef.current;
 			const currentTurnScore = turnScoreRef.current;
 			const currentDeathStack = deathStackRef.current;
-			if (
-				currentTurn &&
-				currentTurn === currentPlayerName &&
-				correct === 'purpleTrue'
-			) {
-				// Increase the score
-
-				setTurnScore((prevTurnScore) => prevTurnScore + 1);
-				setDeathStack((prevDeathStack) => prevDeathStack + 1);
-			}
-			if (
-				currentTurn &&
-				currentTurn === currentPlayerName &&
-				correct === 'false'
-			) {
-				setDeathStack(0);
-				setTurnScore(0);
-			}
-			if (
-				currentTurn &&
-				currentTurn === currentPlayerName &&
-				correct === 'purpleFalse'
-			) {
-				setDeathStack(0);
-				setTurnScore(0);
-			}
 		});
 		newSocket.on('currentRoom', (roomId) => {
 			setRoomId(roomId);
