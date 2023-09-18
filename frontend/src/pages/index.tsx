@@ -90,7 +90,6 @@ const Chat = () => {
 				(a: any, b: any) => b.score - a.score
 			);
 			setPlayers(sortedPlayers);
-			console.log(players);
 		});
 		newSocket.on('currentCard', (currentCard) => {
 			let localCurrentCardRef = currentCardRef.current;
@@ -118,8 +117,20 @@ const Chat = () => {
 			setTurnScore(turnScore);
 		});
 		newSocket.on('guess', async (data) => {
-			const { guess, correct, currentCard, nextCard, thirdCard } = data;
+			const {
+				guess,
+				correct,
+				turn,
+				turnScore,
+				deathStack,
+				currentCard,
+				nextCard,
+				thirdCard,
+			} = data;
 			setCorrect(correct);
+			setTurn(turn);
+			setTurnScore(turnScore);
+			setDeathStack(deathStack);
 			let localNextCard = nextCardRef.current;
 			let localThirdCard = thirdCardRef.current;
 			const currentTurn = turnRef.current;
@@ -143,16 +154,6 @@ const Chat = () => {
 					// Adjust the delay as needed
 				} catch (error) {
 					console.error('An error occurred:', error);
-				}
-				if (
-					currentTurn &&
-					currentTurn === currentPlayerName &&
-					correct === 'purpleTrue'
-				) {
-					// Increase the score
-
-					setTurnScore((prevTurnScore) => prevTurnScore + 1);
-					setDeathStack((prevDeathStack) => prevDeathStack + 1);
 				}
 			} else if (guess == 'purple' && correct == 'purpleFalse') {
 				setAnimationNextCard('flipCardHigherAnimation');
@@ -181,14 +182,6 @@ const Chat = () => {
 					// Adjust the delay as needed
 				} catch (error) {
 					console.error('An error occurred:', error);
-				}
-				if (
-					currentTurn &&
-					currentTurn === currentPlayerName &&
-					correct === 'purpleFalse'
-				) {
-					setDeathStack(0);
-					setTurnScore(0);
 				}
 			}
 			if (guess == 'higher' && correct == 'true') {
@@ -234,14 +227,6 @@ const Chat = () => {
 				} catch (error) {
 					console.error('An error occurred:', error);
 				}
-				if (
-					currentTurn &&
-					currentTurn === currentPlayerName &&
-					correct === 'false'
-				) {
-					setDeathStack(0);
-					setTurnScore(0);
-				}
 			}
 
 			if (guess == 'lower' && correct == 'true') {
@@ -286,14 +271,6 @@ const Chat = () => {
 					// Adjust the delay as needed
 				} catch (error) {
 					console.error('An error occurred:', error);
-				}
-				if (
-					currentTurn &&
-					currentTurn === currentPlayerName &&
-					correct === 'false'
-				) {
-					setDeathStack(0);
-					setTurnScore(0);
 				}
 			}
 		});
@@ -347,7 +324,7 @@ const Chat = () => {
 		}
 	};
 	return (
-		<div className='flex flex-col gap-4 w-full items-center h-full bg-gradient-to-b from-purple-400   to-purple-800  p-4 min-h-screen'>
+		<div className='flex flex-col gap-4 w-full items-center h-full bg-gradient-to-b from-purple-400   to-purple-800  p-4 min-h-screen '>
 			{rules && (
 				<div className='absolute max-w-4xl h-full w-full bg-gradient-to-b from-purple-400 to-purple-800 z-50'>
 					<div className='relative max-w-xl mx-auto p-6 rounded-lg shadow-md'>
@@ -452,7 +429,7 @@ const Chat = () => {
 					</button>
 				</div>
 			) : (
-				<div className='flex flex-col items-center h-full w-full max-w-4xl'>
+				<div className='flex flex-col items-center h-full w-full max-w-3xl'>
 					<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl uppercase '>
 						Purple
 					</h1>
@@ -519,14 +496,14 @@ const Chat = () => {
 						className='flex flex-col  items-center relative gap-4 w-full py-4 justify-between'
 					>
 						<img
-							className='block z-10 w-[90px]'
+							className='z-10 w-[90px]'
 							src={`./blue2.svg`}
 							alt=''
 						/>
 						<div
 							style={{
 								transform: 'rotateY(180deg) ',
-								opacity: 100,
+								opacity: 0,
 							}}
 							className={`absolute block ${animationNextCard} ${
 								!(animationNextCard == 'undefined')
@@ -551,9 +528,9 @@ const Chat = () => {
 						<div
 							style={{
 								transform: 'rotateY(180deg)',
-								opacity: 100,
+								opacity: 0,
 							}}
-							className={`block absolute ${animationThirdCard} ${
+							className={`absolute block ${animationThirdCard} ${
 								!(animationThirdCard == 'undefined')
 									? 'z-30'
 									: ''
