@@ -404,7 +404,7 @@ io.on('connection', (socket) => {
 		let currentPlayerIndex = rooms[roomId].currentPlayerIndex;
 		let players = rooms[roomId].players;
 		let deathStack = rooms[roomId].deathStack;
-		let turnScore = rooms[roomId].turnScore;
+
 		players[currentPlayerIndex].score =
 			players[currentPlayerIndex].score + turnScore;
 		rooms[roomId].deathStack = turnScore;
