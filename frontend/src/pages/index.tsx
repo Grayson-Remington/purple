@@ -388,15 +388,15 @@ const Chat = () => {
 						<span className='font-bold'>Guessing</span>
 						<ol className='list-disc pl-5 space-y-2'>
 							<li className='mb-2'>
-								Guessing higher or lower draws ONE card and
+								Guessing Higher or Lower draws ONE card and
 								compares it to the current card. If you get it
-								right, the card goes in the death stack.
+								right, the card goes in the Death Stack.
 							</li>
 							<li className='mb-2'>
 								Guessing Purple draws TWO cards and compares the
 								two suits. Red and blue need to combine to make
 								purple. If you get it right, both cards goes in
-								the death stack.
+								the Death Stack.
 							</li>
 						</ol>
 						<span className='font-bold'>Passing</span>
@@ -408,7 +408,8 @@ const Chat = () => {
 							</li>
 							<li className='mb-2'>
 								Passing the Death Stack earns you points equal
-								to the amount of cards in the death stack.
+								to the amount of cards you added to the Death
+								Stack.
 							</li>
 						</ol>
 						<span className='font-bold'>Earning Points</span>
@@ -420,17 +421,39 @@ const Chat = () => {
 							</li>
 							<li className='mb-2'>
 								Passing the Death Stack earns you points equal
-								to the amount of cards in the death stack.
+								to the amount of cards you added to the Death
+								Stack.
+							</li>
+						</ol>
+						<span className='font-bold'>Losing Points</span>
+						<ol className='list-disc pl-5 space-y-2'>
+							<li className='mb-2'>
+								When you get one wrong, you lose points equal to
+								the Death Stack AND the cards you were dealt.
 							</li>
 						</ol>
 						<span className='font-bold'>Getting it Wrong</span>
 						<ol className='list-disc pl-5 space-y-2'>
 							<li className='mb-2'>
-								Getting it wrong shuffles the deck
+								Getting it wrong shuffles the deck.
 							</li>
 							<li className='mb-2'>
 								When you get one wrong, you lose points equal to
-								the death stack AND the cards you were dealt
+								the death stack AND the cards you were dealt.
+							</li>
+						</ol>
+						<span className='font-bold'>Getting it Right</span>
+						<ol className='list-disc pl-5 space-y-2'>
+							<li className='mb-2'>
+								When you get one right, you add points to the
+								Death Stack and Turn Score equal to the amount
+								of cards you were dealt. Higher or Lower = 1
+								point, Purple = 2 points
+							</li>
+							<li className='mb-2'>
+								Add 3 cards to the Death Stack in a row and earn
+								the ability to pass to the death stack to the
+								next player.
 							</li>
 						</ol>
 					</div>
@@ -438,11 +461,12 @@ const Chat = () => {
 			)}
 			{!connectedToRoom ? (
 				<div className='max-w-3xl flex flex-col gap-2 uppercase font-bold  items-center p-4'>
-					<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl '>
+					<h1 className='text-4xl font-bold tracking-tight text-gray-900  '>
 						Purple
 					</h1>
 					<div className='items-center text-center'>
-						<h1>Room Id</h1>
+						<h1>Room Id </h1>
+
 						<input
 							required
 							className='border border-black text-center'
@@ -480,12 +504,12 @@ const Chat = () => {
 				</div>
 			) : (
 				<div className='flex flex-col items-center h-[700px] w-full max-w-2xl shadow-2xl rounded-lg p-4'>
-					<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl uppercase '>
+					<h1 className='text-4xl font-bold tracking-tight text-gray-900 uppercase '>
 						Purple
 					</h1>
 					<div className='flex justify-between items-center w-full px-8'>
 						<button
-							className='cursor-pointer bg-purple-400 hover:bg-purple-400 text-white font-bold py-2 px-4 border-b-4 border-purple-700 hover:border-purple-500 rounded'
+							className='cursor-pointer bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 border-b-4 border-purple-700 hover:border-purple-500 rounded'
 							onClick={() => setRules(!rules)}
 						>
 							Rules
@@ -530,17 +554,19 @@ const Chat = () => {
 
 					<div className='flex text-center w-full justify-between gap-4'>
 						<div className='font-bold w-full'>
-							<h1>Death Stack</h1>
-							<h1 className=' text-3xl font-semibold tracking-tight text-red-600 sm:text-5xl'>
-								{deathStack}
+							<h1>Turn Score</h1>
+							<h1 className=' text-3xl font-semibold tracking-tight text-green-900  sm:text-5xl'>
+								{turnScore}
 							</h1>
 						</div>
 						<div className='font-bold w-full'>
-							<h1>Cards Left</h1>
+							<h1>Death Stack </h1>
 							<h1 className=' text-3xl font-semibold tracking-tight text-red-600 sm:text-5xl'>
-								{deckSize}
+								{deathStack}
 							</h1>
+							(cards left {deckSize})
 						</div>
+
 						<div className='font-bold w-full'>
 							<h1>Your Score</h1>
 							<h1 className=' text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl'>
@@ -648,7 +674,7 @@ const Chat = () => {
 							<button
 								onMouseDown={() => handleGuess('lower')}
 								disabled={isAnimating}
-								className=' cursor-pointer disabled:bg-red-500 bg-purple-400 hover:bg-purple-400 text-white font-bold py-2 px-4 border-b-4 border-purple-700 hover:border-purple-500 rounded'
+								className=' cursor-pointer disabled:bg-red-500 bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 border-b-4 border-purple-700 hover:border-purple-500 rounded'
 							>
 								Lower
 							</button>
