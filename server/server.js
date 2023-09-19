@@ -115,6 +115,8 @@ io.on('connection', (socket) => {
 			rooms[roomId].players.some((player) => player.name === playerName)
 		) {
 			io.to(socket.id).emit('usernameAlreadyExists');
+		} else if (rooms[roomId].players.length >= 10) {
+			io.to(socket.id).emit('tooManyPlayers');
 		} else {
 			socket.join(roomId);
 			socket.roomId = roomId;
@@ -229,7 +231,7 @@ io.on('connection', (socket) => {
 				rooms[roomId].currentPlayerIndex += 1;
 			}
 			rooms[roomId].players.forEach((player) => {
-				if (player.score < -10) {
+				if (player.score <= -20) {
 					rooms[roomId].gameOver = true;
 					io.to(roomId).emit('gameOver', rooms[roomId].gameOver);
 				}

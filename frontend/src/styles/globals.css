@@ -34,6 +34,20 @@ body,
 	text-orientation: upright;
 	/* You can add more styles here if needed */
 }
+.animate-scale {
+	animation: scaleUpDown 1.5s infinite;
+}
+@keyframes scaleUpDown {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.1);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
 @keyframes flipCardLeft {
 	0% {
 		transform: translateX(0) translateY(0) scale(1) rotateY(180deg);

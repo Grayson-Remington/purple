@@ -7,6 +7,7 @@ const Chat = () => {
 	const [playerName, setPlayerName] = useState<string>('');
 	const [usernameAlreadyExists, setUsernameAlreadyExists] = useState(false);
 	const [players, setPlayers] = useState([]);
+	const [tooManyPlayers, setTooManyPlayers] = useState(false);
 	const [connectedToRoom, setConnectedToRoom] = useState(false);
 	const [deckSize, setDeckSize] = useState<string>();
 	const [shownCard, setShownCard] = useState<string>('');
@@ -111,6 +112,9 @@ const Chat = () => {
 		});
 		newSocket.on('deckSize', (deckSize) => {
 			setDeckSize(deckSize + 2);
+		});
+		newSocket.on('tooManyPlayers', () => {
+			setTooManyPlayers(true);
 		});
 		newSocket.on('nextCard', (nextCard) => {
 			setNextCard(nextCard);
@@ -340,8 +344,8 @@ const Chat = () => {
 	return (
 		<div className='flex flex-col gap-4 w-full items-center min-h-screen h-fit bg-gradient-to-b from-purple-400 to-purple-800'>
 			{gameOver && (
-				<div className='absolute h-full w-full flex flex-col items-center z-50'>
-					<div className='absolute inset-0 bg-gradient-to-b from-purple-400 to-purple-800 opacity-95'></div>
+				<div className='absolute h-[700px] min-h-full w-full flex flex-col items-center z-50'>
+					<div className='absolute inset-0 bg-gradient-to-b from-purple-400 to-purple-800 h-full opacity-95'></div>
 					<div className='absolute flex flex-col items-center max-w-4xl h-full w-full gap-4'>
 						<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl'>
 							Game Over
@@ -370,7 +374,7 @@ const Chat = () => {
 			)}
 			{rules && (
 				<div className='absolute h-fit min-h-screen w-full flex flex-col items-center z-50'>
-					<div className='absolute inset-0 bg-gradient-to-b from-purple-400 to-purple-800 opacity-95'></div>
+					<div className='absolute inset-0 bg-gradient-to-b from-purple-400 to-purple-800 '></div>
 					<div className='relative max-w-xl mx-auto p-6 rounded-lg shadow-md'>
 						<button
 							className='absolute right-4 top-4'
@@ -433,7 +437,7 @@ const Chat = () => {
 				</div>
 			)}
 			{!connectedToRoom ? (
-				<div className='max-w-4xl flex flex-col gap-2 uppercase font-bold  items-center p-4'>
+				<div className='max-w-3xl flex flex-col gap-2 uppercase font-bold  items-center p-4'>
 					<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl '>
 						Purple
 					</h1>
@@ -445,6 +449,9 @@ const Chat = () => {
 							type='input'
 							onChange={(e) => setRoomId(e.target.value)}
 						/>
+						{tooManyPlayers && (
+							<h1 className='text-red-800'>Room is Full</h1>
+						)}
 					</div>
 					<div className='items-center text-center'>
 						<h1>Username</h1>
@@ -472,12 +479,17 @@ const Chat = () => {
 					</button>
 				</div>
 			) : (
-				<div className='flex flex-col items-center h-full w-full max-w-3xl shadow-lg p-4'>
+				<div className='flex flex-col items-center h-[700px] w-full max-w-2xl shadow-2xl rounded-lg p-4'>
 					<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl uppercase '>
 						Purple
 					</h1>
 					<div className='flex justify-between items-center w-full px-8'>
-						<button onClick={() => setRules(!rules)}>Rules</button>
+						<button
+							className='cursor-pointer bg-purple-400 hover:bg-purple-400 text-white font-bold py-2 px-4 border-b-4 border-purple-700 hover:border-purple-500 rounded'
+							onClick={() => setRules(!rules)}
+						>
+							Rules
+						</button>
 
 						<div>
 							<h1 className='font-bold tracking-tight text-gray-900 text-xl '>
@@ -489,8 +501,8 @@ const Chat = () => {
 						</div>
 					</div>
 
-					<div className='flex justify-between items-stretch rounded-t-lg bg-gray-400 text-black w-full overflow-x-auto gap-4'>
-						<div className='vertical-text text-xs bg-white items-stretch'>
+					<div className='flex justify-between items-stretch rounded-t-lg bg-slate-200 text-purple-800 w-full overflow-x-auto overflow-y-hidden gap-4'>
+						<div className='vertical-text text-xs bg-white items-stretch font-bold'>
 							Last
 						</div>
 						<div className='flex w-full text-xl gap-4'>
@@ -500,14 +512,18 @@ const Chat = () => {
 								.map((player: any, index: number) => (
 									<div
 										key={index}
-										className='flex flex-col items-center justify-center'
+										className={`flex flex-col items-center justify-center ${
+											player.score < -10
+												? 'text-red-600 animate-scale'
+												: ''
+										}`}
 									>
 										<span>{player.name}</span>
 										<span>{player.score}</span>
 									</div>
 								))}
 						</div>
-						<div className='vertical-text text-xs  bg-white items-stretch'>
+						<div className='vertical-text text-xs font-bold  bg-white items-stretch'>
 							First
 						</div>
 					</div>
