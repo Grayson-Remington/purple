@@ -9,6 +9,8 @@ const Chat = () => {
 	const [players, setPlayers] = useState([]);
 	const [tooManyPlayers, setTooManyPlayers] = useState(false);
 	const [connectedToRoom, setConnectedToRoom] = useState(false);
+	const [isGameOverButtonDisabled, setIsGameOverButtonDisabled] =
+		useState(false);
 	const [deckSize, setDeckSize] = useState<string>();
 	const [shownCard, setShownCard] = useState<string>('');
 	const [currentCard, setCurrentCard] = useState<string>('');
@@ -338,6 +340,7 @@ const Chat = () => {
 	};
 	const handlePlayAgain = () => {
 		if (socket) {
+			setIsGameOverButtonDisabled(true);
 			socket.emit('playAgain');
 		}
 	};
@@ -351,8 +354,10 @@ const Chat = () => {
 							Game Over
 						</h1>
 						<button
+							id='gameOverButton'
 							className='cursor-pointer disabled:bg-red-500 bg-purple-400 hover:bg-purple-400 text-white font-bold py-2 px-4 border-b-4 border-purple-700 hover:border-purple-500 rounded'
 							onClick={handlePlayAgain}
+							disabled={isGameOverButtonDisabled}
 						>
 							Play Again?
 						</button>
