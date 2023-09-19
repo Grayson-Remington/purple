@@ -469,7 +469,7 @@ const Chat = () => {
 
 						<input
 							required
-							maxLength={8}
+							maxLength={12}
 							className='border border-black text-center'
 							type='input'
 							onChange={(e) => setRoomId(e.target.value)}
@@ -482,7 +482,7 @@ const Chat = () => {
 						<h1>Username</h1>
 						<input
 							required
-							maxLength={8}
+							maxLength={12}
 							className='border border-black text-center'
 							type='input'
 							onChange={(e) => {
