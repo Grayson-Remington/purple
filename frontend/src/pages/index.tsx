@@ -779,7 +779,7 @@ const Chat = () => {
 					</div>
 
 					<div className='flex justify-between items-stretch rounded-t-lg bg-slate-200 text-purple-800 w-full overflow-x-auto overflow-y-hidden gap-4 min-h-[85px]'>
-						<div className='vertical-text text-xs bg-white items-stretch font-bold'>
+						<div className='vertical-text text-xs bg-white items-stretch font-bold text-center'>
 							Last
 						</div>
 						<div className='flex w-full text-xl gap-4'>
@@ -800,7 +800,7 @@ const Chat = () => {
 									</div>
 								))}
 						</div>
-						<div className='vertical-text text-xs font-bold  bg-white items-stretch'>
+						<div className='vertical-text text-xs font-bold text-center bg-white items-stretch'>
 							First
 						</div>
 					</div>
