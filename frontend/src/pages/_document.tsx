@@ -6,7 +6,13 @@ export default function Document() {
 			className='h-full'
 			lang='en'
 		>
-			<Head />
+			<Head>
+				<link
+					rel='shortcut icon'
+					href='./blob.ico'
+					type='image/svg'
+				/>
+			</Head>
 			<body className='h-full '>
 				<Main />
 				<NextScript />

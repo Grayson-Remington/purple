@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
-
+import { motion, useAnimate } from 'framer-motion';
 const Chat = () => {
 	const [rules, setRules] = useState(false);
 	const [roomId, setRoomId] = useState<string>('');
@@ -40,6 +40,199 @@ const Chat = () => {
 	const [animationNextCard, setAnimationNextCard] = useState('undefined');
 	const [animationThirdCard, setAnimationThirdCard] = useState('undefined');
 	const [animationShownCard, setAnimationShownCard] = useState('undefined');
+	const [scope, animate] = useAnimate();
+	const [scope2, animate2] = useAnimate();
+	const [scope3, animate3] = useAnimate();
+	const [scope4, animate4] = useAnimate();
+	const [scope5, animate5] = useAnimate();
+	const [scope6, animate6] = useAnimate();
+	const [scope7, animate7] = useAnimate();
+
+	async function myAnimation() {
+		await animate(
+			scope.current,
+
+			{
+				pathLength: 1,
+				opacity: 1,
+			},
+			{ duration: 0.1 }
+		);
+		await animate2(
+			scope2.current,
+			{
+				pathLength: 1,
+				opacity: 1,
+			},
+			{ duration: 0.1 }
+		);
+
+		await animate(
+			scope.current,
+			{
+				rotateY: 180,
+				rotateX: 180,
+			},
+			{ duration: 0 }
+		);
+		await animate2(
+			scope2.current,
+			{
+				rotateY: 180,
+				rotateX: 180,
+			},
+			{ duration: 0 }
+		);
+		await animate(
+			scope.current,
+			{
+				pathLength: 0,
+				opacity: 0,
+			},
+			{ duration: 0.2 }
+		);
+		await animate2(
+			scope2.current,
+			{
+				pathLength: 0,
+				opacity: 0,
+			},
+			{ duration: 0.2 }
+		);
+		await animate(
+			scope.current,
+			{
+				rotateY: 0,
+				rotateX: 0,
+			},
+			{ duration: 0 }
+		);
+		await animate2(
+			scope2.current,
+			{
+				rotateY: 0,
+				rotateX: 0,
+			},
+			{ duration: 0 }
+		);
+	}
+	async function myAnimation2() {
+		await animate3(
+			scope3.current,
+
+			{
+				pathLength: 1,
+				opacity: 1,
+			},
+			{ duration: 0.1 }
+		);
+		await animate4(
+			scope4.current,
+			{
+				pathLength: 1,
+				opacity: 1,
+			},
+			{ duration: 0.1 }
+		);
+
+		await animate3(
+			scope3.current,
+			{
+				rotateY: 180,
+				rotateX: 180,
+			},
+			{ duration: 0 }
+		);
+		await animate4(
+			scope4.current,
+			{
+				rotateY: 180,
+				rotateX: 180,
+			},
+			{ duration: 0 }
+		);
+		await animate3(
+			scope3.current,
+			{
+				pathLength: 0,
+				opacity: 0,
+			},
+			{ duration: 0.2 }
+		);
+		await animate4(
+			scope4.current,
+			{
+				pathLength: 0,
+				opacity: 0,
+			},
+			{ duration: 0.2 }
+		);
+		await animate3(
+			scope3.current,
+			{
+				rotateY: 0,
+				rotateX: 0,
+			},
+			{ duration: 0 }
+		);
+		await animate4(
+			scope4.current,
+			{
+				rotateY: 0,
+				rotateX: 0,
+			},
+			{ duration: 0 }
+		);
+	}
+
+	async function myAnimation3() {
+		await Promise.all([
+			animate5(
+				scope5.current,
+				{
+					rotate: 0,
+				},
+				{ duration: 0 } // Change duration to 1000 milliseconds (1 second)
+			),
+			animate6(
+				scope6.current,
+				{
+					backgroundColor: '#ff0000',
+				},
+				{ duration: 0 } // Change duration to 1000 milliseconds (1 second)
+			),
+			animate7(
+				scope7.current,
+				{
+					backgroundColor: '#0000ff',
+				},
+				{ duration: 0 } // Change duration to 1000 milliseconds (1 second)
+			),
+		]);
+		await Promise.all([
+			animate5(
+				scope5.current,
+				{
+					rotate: 1080,
+				},
+				{ duration: 1 } // Change duration to 1000 milliseconds (1 second)
+			),
+			animate6(
+				scope6.current,
+				{
+					backgroundColor: '#800080',
+				},
+				{ duration: 1 } // Change duration to 1000 milliseconds (1 second)
+			),
+			animate7(
+				scope7.current,
+				{
+					backgroundColor: '#800080',
+				},
+				{ duration: 1 } // Change duration to 1000 milliseconds (1 second)
+			),
+		]);
+	}
 
 	useEffect(() => {
 		let player: any = players.find(
@@ -86,6 +279,9 @@ const Chat = () => {
 		});
 		newSocket.on('gameOver', (gameOver) => {
 			setGameOver(gameOver);
+			if (gameOver == false) {
+				setIsGameOverButtonDisabled(false);
+			}
 		});
 		newSocket.on('playerJoined', () => {
 			setConnectedToRoom(true);
@@ -140,11 +336,10 @@ const Chat = () => {
 				currentCard,
 				nextCard,
 				thirdCard,
+				players,
 			} = data;
 			setCorrect(correct);
-			setTurn(turn);
-			setTurnScore(turnScore);
-			setDeathStack(deathStack);
+
 			let localNextCard = nextCardRef.current;
 			let localThirdCard = thirdCardRef.current;
 			const currentTurn = turnRef.current;
@@ -156,15 +351,28 @@ const Chat = () => {
 				try {
 					await delay(150);
 					setIsFlipped(true);
-
-					await delay(850); // Adjust the delay as needed
+					await delay(185);
+					myAnimation();
+					myAnimation2();
+					setTimeout(() => {
+						myAnimation3();
+					}, 200);
+					await delay(665);
+					setShownCard(localThirdCard);
 					setNextCard(nextCard);
 					setThirdCard(thirdCard);
-					setShownCard(localThirdCard);
+
 					setAnimationNextCard('undefined');
 					setAnimationThirdCard('undefined');
+					setTurn(turn);
+					setTurnScore(turnScore);
+					setDeathStack(deathStack);
+					setPlayers(players);
+					await delay(10);
+
 					setIsFlipped(false);
 					setIsAnimating(false);
+
 					// Adjust the delay as needed
 				} catch (error) {
 					console.error('An error occurred:', error);
@@ -191,6 +399,12 @@ const Chat = () => {
 					setIsShownFlipped(true);
 					await delay(350);
 					setAnimationShownCard('undefined');
+					setTurn(turn);
+					setTurnScore(turnScore);
+					setDeathStack(deathStack);
+					setPlayers(players);
+					await delay(10);
+
 					setIsFlipped(false);
 					setIsAnimating(false);
 					// Adjust the delay as needed
@@ -204,14 +418,18 @@ const Chat = () => {
 					await delay(150);
 					setIsFlipped(true);
 
-					await delay(850); // Adjust the delay as needed
+					await delay(850);
 					setNextCard(nextCard);
 					setThirdCard(thirdCard);
 					setShownCard(localNextCard);
 					setAnimationNextCard('undefined');
+					setTurn(turn);
+					setTurnScore(turnScore);
+					setDeathStack(deathStack);
+					setPlayers(players);
+					await delay(10);
 					setIsFlipped(false);
 					setIsAnimating(false);
-					// Adjust the delay as needed
 				} catch (error) {
 					console.error('An error occurred:', error);
 				}
@@ -221,7 +439,7 @@ const Chat = () => {
 					await delay(150);
 					setIsFlipped(true);
 
-					await delay(850); // Adjust the delay as needed
+					await delay(850);
 					setAnimationNextCard('undefined');
 					setAnimationShownCard('putAwayAndDrawAnimation');
 					setShownCard(localNextCard);
@@ -235,6 +453,11 @@ const Chat = () => {
 					setIsShownFlipped(true);
 					await delay(350);
 					setAnimationShownCard('undefined');
+					setTurn(turn);
+					setTurnScore(turnScore);
+					setDeathStack(deathStack);
+					setPlayers(players);
+					await delay(10);
 					setIsFlipped(false);
 					setIsAnimating(false);
 					// Adjust the delay as needed
@@ -254,6 +477,11 @@ const Chat = () => {
 					setThirdCard(thirdCard);
 					setShownCard(localNextCard);
 					setAnimationNextCard('undefined');
+					setTurn(turn);
+					setTurnScore(turnScore);
+					setDeathStack(deathStack);
+					setPlayers(players);
+					await delay(10);
 					setIsFlipped(false);
 					setIsAnimating(false);
 					// Adjust the delay as needed
@@ -280,6 +508,11 @@ const Chat = () => {
 					setIsShownFlipped(true);
 					await delay(350);
 					setAnimationShownCard('undefined');
+					setTurn(turn);
+					setTurnScore(turnScore);
+					setDeathStack(deathStack);
+					setPlayers(players);
+					await delay(10);
 					setIsFlipped(false);
 					setIsAnimating(false);
 					// Adjust the delay as needed
@@ -466,9 +699,17 @@ const Chat = () => {
 			)}
 			{!connectedToRoom ? (
 				<div className='max-w-3xl flex flex-col gap-2 uppercase font-bold  items-center p-4'>
-					<h1 className='text-4xl font-bold tracking-tight text-gray-900  '>
-						Purple
-					</h1>
+					<div className='flex items-center'>
+						<img
+							src='./blob.svg'
+							className='h-20'
+							alt=''
+						/>
+						<h1 className='text-4xl italic tracking-tight text-gray-900 lowercase '>
+							Purple
+						</h1>
+					</div>
+
 					<div className='items-center text-center'>
 						<h1>Room Id </h1>
 
@@ -510,10 +751,17 @@ const Chat = () => {
 					</button>
 				</div>
 			) : (
-				<div className='flex flex-col items-center h-[700px] w-full max-w-2xl shadow-2xl rounded-lg p-4'>
-					<h1 className='text-4xl font-bold tracking-tight text-gray-900 uppercase '>
-						Purple
-					</h1>
+				<div className='flex flex-col gap-2 items-center h-[800px] w-full max-w-2xl shadow-2xl rounded-lg p-4'>
+					<div className='flex items-center'>
+						<img
+							src='./blob.svg'
+							className='h-20'
+							alt=''
+						/>
+						<h1 className='text-4xl font-bold italic tracking-tight text-gray-900 lowercase  '>
+							Purple
+						</h1>
+					</div>
 					<div className='flex justify-between items-center w-full px-8'>
 						<button
 							className='cursor-pointer bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 border-b-4 border-purple-700 hover:border-purple-500 rounded'
@@ -523,16 +771,16 @@ const Chat = () => {
 						</button>
 
 						<div>
-							<h1 className='font-bold tracking-tight text-gray-900 text-xl '>
+							<h1 className='font-bold tracking-tight text-gray-900 text-sm '>
 								Room: {roomId}
 							</h1>
-							<h1 className='font-bold tracking-tight text-gray-900 text-xl '>
+							<h1 className='font-bold tracking-tight text-gray-900 text-sm '>
 								Username: {playerName}
 							</h1>
 						</div>
 					</div>
 
-					<div className='flex justify-between items-stretch rounded-t-lg bg-slate-200 text-purple-800 w-full overflow-x-auto overflow-y-hidden gap-4'>
+					<div className='flex justify-between items-stretch rounded-t-lg bg-slate-200 text-purple-800 w-full overflow-x-auto overflow-y-hidden gap-4 min-h-[85px]'>
 						<div className='vertical-text text-xs bg-white items-stretch font-bold'>
 							Last
 						</div>
@@ -583,10 +831,78 @@ const Chat = () => {
 					</div>
 					<div
 						id='motion-container'
-						className='flex flex-col  items-center relative gap-4 w-full py-4 justify-between'
+						className='flex flex-col  items-center relative gap-4 w-full py-4 justify-between mb-6'
 					>
+						<svg
+							width='240'
+							height='200'
+							viewBox='0 0 240 200'
+							className='absolute translate-y-[150px]'
+						>
+							<motion.line
+								x1='0'
+								y1='0'
+								x2='0'
+								y2='150'
+								stroke='#FF0000'
+								initial={{ pathLength: 0, opacity: 0 }}
+								transition={{ ease: 'linear', duration: 250 }}
+								ref={scope}
+							/>
+							<motion.line
+								x1='0'
+								y1='150'
+								x2='120'
+								y2='150'
+								stroke='#FF0000'
+								initial={{ pathLength: 0, opacity: 0 }}
+								transition={{ ease: 'linear', duration: 250 }}
+								ref={scope2}
+							/>
+							<motion.line
+								x1='240'
+								y1='0'
+								x2='240'
+								y2='150'
+								stroke='#0000FF'
+								initial={{ pathLength: 0, opacity: 0 }}
+								transition={{ ease: 'linear', duration: 250 }}
+								ref={scope3}
+							/>
+							<motion.line
+								x1='240'
+								y1='150'
+								x2='120'
+								y2='150'
+								stroke='#0000FF'
+								initial={{ pathLength: 0, opacity: 0 }}
+								transition={{ ease: 'linear', duration: 250 }}
+								ref={scope4}
+							/>
+							<foreignObject
+								x='110'
+								y='140'
+								z='20'
+								width='20'
+								height='20'
+							>
+								<motion.div
+									ref={scope5}
+									className='swirling-div2'
+								>
+									<motion.div
+										ref={scope6}
+										className='red'
+									></motion.div>
+									<motion.div
+										ref={scope7}
+										className='blue'
+									></motion.div>
+								</motion.div>
+							</foreignObject>
+						</svg>
 						<img
-							className='z-10 w-[90px]'
+							className='z-10  w-[90px]'
 							src={`./blue2.svg`}
 							alt=''
 						/>
@@ -628,13 +944,11 @@ const Chat = () => {
 						>
 							{isFlipped ? (
 								<img
-									style={{ width: '90px' }}
 									src={`./${thirdCard}.svg`}
 									alt=''
 								/>
 							) : (
 								<img
-									style={{ width: '90px' }}
 									src={`./blue2.svg`}
 									alt=''
 								/>
@@ -649,17 +963,15 @@ const Chat = () => {
 								!(animationShownCard == 'undefined')
 									? 'z-20'
 									: ''
-							} w-[90px]`}
+							} w-[90px] `}
 						>
 							{isShownFlipped ? (
 								<img
-									style={{ width: '90px' }}
 									src={`./${shownCard}.svg`}
 									alt=''
 								/>
 							) : (
 								<img
-									style={{ width: '90px' }}
 									src={`./blue2.svg`}
 									alt=''
 								/>
@@ -677,7 +989,7 @@ const Chat = () => {
 					</div>
 
 					{turn && turn == playerName && (
-						<div className='grid grid-cols-3 gap-4 p-4'>
+						<div className='grid grid-cols-3 gap-4 p-4 z-20'>
 							<button
 								onMouseDown={() => handleGuess('lower')}
 								disabled={isAnimating}
@@ -686,7 +998,9 @@ const Chat = () => {
 								Lower
 							</button>
 							<button
-								onMouseDown={() => handleGuess('purple')}
+								onMouseDown={() => {
+									handleGuess('purple');
+								}}
 								disabled={isAnimating}
 								className=' cursor-pointer disabled:bg-red-500 bg-purple-900 hover:bg-purple-400 text-white font-bold text-xl py-2 px-4 border-b-4 border-purple-950 hover:border-purple-500 rounded'
 							>

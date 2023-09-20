@@ -192,10 +192,11 @@ io.on('connection', (socket) => {
 			rooms[roomId].thirdNumber = rooms[roomId].deck[1].number;
 			rooms[roomId].thirdSuite = rooms[roomId].deck[1].suite;
 			rooms[roomId].deck.splice(0, 2);
-			io.to(roomId).emit('players', rooms[roomId].players);
+
 			io.to(roomId).emit('guess', {
 				guess: guess,
 				correct: 'purpleTrue',
+				players: rooms[roomId].players,
 				turn: players[currentPlayerIndex].name,
 				turnScore: rooms[roomId].turnScore,
 				deathStack: rooms[roomId].deathStack,
@@ -238,10 +239,11 @@ io.on('connection', (socket) => {
 			});
 			rooms[roomId].turnScore = 0;
 			rooms[roomId].deathStack = 0;
-			io.to(roomId).emit('players', rooms[roomId].players);
+
 			io.to(roomId).emit('guess', {
 				guess: guess,
 				correct: 'purpleFalse',
+				players: rooms[roomId].players,
 				turn: players[rooms[roomId].currentPlayerIndex].name,
 				turnScore: rooms[roomId].turnScore,
 				deathStack: rooms[roomId].deathStack,
@@ -273,10 +275,11 @@ io.on('connection', (socket) => {
 			rooms[roomId].thirdSuite = rooms[roomId].deck[0].suite;
 			rooms[roomId].deck.splice(0, 1);
 			console.log(rooms[roomId].turnScore, rooms[roomId].deathStack);
-			io.to(roomId).emit('players', rooms[roomId].players);
+
 			io.to(roomId).emit('guess', {
 				guess: guess,
 				correct: 'true',
+				players: rooms[roomId].players,
 				turn: players[currentPlayerIndex].name,
 				turnScore: rooms[roomId].turnScore,
 				deathStack: rooms[roomId].deathStack,
@@ -320,10 +323,11 @@ io.on('connection', (socket) => {
 			rooms[roomId].turnScore = 0;
 			rooms[roomId].deathStack = 0;
 			console.log(rooms[roomId].turnScore, rooms[roomId].deathStack);
-			io.to(roomId).emit('players', rooms[roomId].players);
+
 			io.to(roomId).emit('guess', {
 				guess: guess,
 				correct: 'false',
+				players: rooms[roomId].players,
 				turn: players[rooms[roomId].currentPlayerIndex].name,
 				turnScore: rooms[roomId].turnScore,
 				deathStack: rooms[roomId].deathStack,

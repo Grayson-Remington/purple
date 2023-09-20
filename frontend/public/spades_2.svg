@@ -124,43 +124,43 @@
       <g
          transform="matrix(0.07348588,0,0,0.07370838,-248.01731,933.60062)"
          id="g4233"
-         style="fill:none;stroke:#000000;stroke-width:3.18132639;stroke-opacity:1" />
+         style="fill:none;stroke:#2563eb;stroke-width:3.18132639;stroke-opacity:1" />
       <g
          clip-path="none"
-         style="fill:none;stroke:#000000;stroke-width:3.18132639;stroke-opacity:1"
+         style="fill:none;stroke:#2563eb;stroke-width:3.18132639;stroke-opacity:1"
          id="g4211"
          transform="matrix(0.07348588,0,0,0.07370838,-248.01728,933.60062)" />
       <g
          transform="matrix(0.07348588,0,0,0.07370838,-248.01731,933.60062)"
          id="g4227"
-         style="fill:none;stroke:#000000;stroke-width:3.18132639;stroke-opacity:1" />
+         style="fill:none;stroke:#2563eb;stroke-width:3.18132639;stroke-opacity:1" />
       <path
          sodipodi:nodetypes="cccccccccccccccc"
          inkscape:connector-curvature="0"
          id="path2985-3-11"
          d="m 12.898825,780.70209 c 0,-0.55605 -0.03079,-0.95768 -0.03079,-1.51377 1.149566,0 2.395148,0 3.544708,0 0,-1.3218 0,-1.41528 0,-2.73712 -2.243931,0.0723 -4.67246,0.23894 -6.7739019,-0.687 -1.6266179,-0.89273 -2.075448,-2.97087 -1.7474947,-4.67934 0.2807048,-1.92755 1.3522742,-3.6393 2.7501936,-4.95764 1.819108,-1.94577 4.139071,-3.2593 6.561151,-4.31616 2.472354,1.07475 4.843466,2.43125 6.685643,4.42831 1.659299,1.55933 2.764852,3.76316 2.730888,6.0706 0.03599,1.6655 -0.995685,3.42548 -2.697384,3.78891 -1.903705,0.52719 -3.830472,0.43365 -5.784745,0.35232 0,1.32184 0,1.41532 0,2.73712 1.14956,0 2.203119,0 3.352688,0 0,0.55609 0.03079,0.95772 0.03079,1.51377 -2.632285,-0.0186 -5.778625,-0.0186 -8.621752,0 z"
-         style="fill:#000000;stroke:none;stroke-width:1" />
+         style="fill:#2563eb;stroke:none;stroke-width:1" />
       <path
          sodipodi:nodetypes="cccccccccccccccc"
          inkscape:connector-curvature="0"
          id="path2985-3-11-7"
          d="m 212.48766,991.02222 c 0,0.55606 -0.0308,0.95768 -0.0308,1.51377 1.14955,0 2.39513,0 3.54471,0 0,1.3218 0,1.41528 0,2.73712 -2.24393,-0.0723 -4.67248,-0.23894 -6.77391,0.687 -1.62662,0.89273 -2.07544,2.97087 -1.7475,4.67939 0.28071,1.9275 1.35228,3.6392 2.75018,4.9576 1.81912,1.9458 4.13909,3.2593 6.56118,4.3161 2.47235,-1.0747 4.84345,-2.4312 6.68563,-4.4283 1.65931,-1.5593 2.76487,-3.7631 2.73088,-6.07056 0.036,-1.6655 -0.99569,-3.42548 -2.69737,-3.78891 -1.90372,-0.52719 -3.83047,-0.43365 -5.78475,-0.35232 0,-1.32184 0,-1.41532 0,-2.73712 1.14955,0 2.20314,0 3.35269,0 0,-0.55609 0.0307,-0.95771 0.0307,-1.51377 -2.63231,0.0186 -5.77863,0.0186 -8.62177,0 z"
-         style="fill:#000000;stroke:none;stroke-width:1" />
+         style="fill:#2563eb;stroke:none;stroke-width:1" />
       <path
          sodipodi:nodetypes="cccccccccccccccc"
          inkscape:connector-curvature="0"
          id="path2985-3-3"
          d="m 104.07979,814.07624 c 0,-1.66823 -0.0924,-2.87307 -0.0924,-4.5413 3.44871,0 7.18544,0 10.63413,0 0,-3.96545 0,-4.24592 0,-8.2114 -6.7318,0.2169 -14.01738,0.71685 -20.321707,-2.06095 -4.879853,-2.67821 -6.226347,-8.91266 -5.242483,-14.03808 0.842117,-5.78261 4.056819,-10.91785 8.25058,-14.87291 5.45732,-5.83729 12.41721,-9.77784 19.68345,-12.94844 7.41706,3.22422 14.5304,7.29373 20.05693,13.28492 4.97789,4.67796 8.29456,11.2895 8.19266,18.21177 0.10797,4.99649 -2.98706,10.27644 -8.09215,11.36674 -5.71111,1.58155 -11.49141,1.30096 -17.35423,1.05695 0,3.96548 0,4.24595 0,8.2114 3.44868,0 6.60935,0 10.05806,0 0,1.66823 0.0924,2.87307 0.0924,4.5413 -7.89686,-0.0556 -17.33588,-0.0556 -25.86526,0 z"
-         style="fill:#000000;stroke:none;stroke-width:1" />
+         style="fill:#2563eb;stroke:none;stroke-width:1" />
       <path
          sodipodi:nodetypes="cccccccccccccccc"
          inkscape:connector-curvature="0"
          id="path2985-3-38-2"
          d="m 104.07979,957.64807 c 0,1.66823 -0.0924,2.87307 -0.0924,4.54131 3.44871,0 7.18544,0 10.63413,0 0,3.96548 0,4.24591 0,8.21139 -6.7318,-0.2169 -14.01738,-0.71685 -20.321707,2.06098 -4.879853,2.67818 -6.226347,8.91263 -5.242483,14.03805 0.842117,5.78261 4.056819,10.91788 8.25058,14.8729 5.45732,5.8373 12.41721,9.7779 19.68345,12.9485 7.41706,-3.2242 14.5304,-7.2937 20.05693,-13.285 4.97789,-4.67793 8.29456,-11.28947 8.19266,-18.21174 0.10797,-4.99646 -2.98706,-10.27644 -8.09215,-11.3667 -5.71111,-1.58159 -11.49141,-1.301 -17.35423,-1.05699 0,-3.96548 0,-4.24591 0,-8.21139 3.44868,0 6.60935,0 10.05806,0 0,-1.66824 0.0924,-2.87308 0.0924,-4.54131 -7.89686,0.0556 -17.33588,0.0556 -25.86526,0 z"
-         style="fill:#000000;stroke:none;stroke-width:1" />
+         style="fill:#2563eb;stroke:none;stroke-width:1" />
       <g
          id="text3755-0"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.77201176px;line-height:0%;font-family:'Levenim MT';-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.77201176px;line-height:0%;font-family:'Levenim MT';-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#2563eb;fill-opacity:1;stroke:none;stroke-width:1"
          transform="scale(0.98105485,1.019311)"
          aria-label="2">
         <path
@@ -170,7 +170,7 @@
       </g>
       <g
          id="text3755-2-2"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.77201176px;line-height:0%;font-family:'Levenim MT';-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.77201176px;line-height:0%;font-family:'Levenim MT';-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#2563eb;fill-opacity:1;stroke:none;stroke-width:1"
          transform="scale(-0.98105494,-1.0193109)"
          aria-label="2">
         <path
