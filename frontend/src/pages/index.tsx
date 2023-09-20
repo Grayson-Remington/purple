@@ -342,21 +342,19 @@ const Chat = () => {
 
 			let localNextCard = nextCardRef.current;
 			let localThirdCard = thirdCardRef.current;
-			const currentTurn = turnRef.current;
-			const currentPlayerName = playerNameRef.current;
+
 			setIsAnimating(true);
 			if (guess == 'purple' && correct == 'purpleTrue') {
-				setAnimationNextCard('flipCardHigherAnimation');
-				setAnimationThirdCard('flipCardLowerAnimation');
 				try {
+					setAnimationNextCard('flipCardHigherAnimation');
+					setAnimationThirdCard('flipCardLowerAnimation');
 					await delay(150);
 					setIsFlipped(true);
 					await delay(185);
 					myAnimation();
 					myAnimation2();
-					setTimeout(() => {
-						myAnimation3();
-					}, 200);
+					myAnimation3();
+
 					await delay(665);
 					setShownCard(localThirdCard);
 					setNextCard(nextCard);
@@ -378,9 +376,9 @@ const Chat = () => {
 					console.error('An error occurred:', error);
 				}
 			} else if (guess == 'purple' && correct == 'purpleFalse') {
-				setAnimationNextCard('flipCardHigherAnimation');
-				setAnimationThirdCard('flipCardLowerAnimation');
 				try {
+					setAnimationNextCard('flipCardHigherAnimation');
+					setAnimationThirdCard('flipCardLowerAnimation');
 					await delay(150);
 					setIsFlipped(true);
 
@@ -413,8 +411,8 @@ const Chat = () => {
 				}
 			}
 			if (guess == 'higher' && correct == 'true') {
-				setAnimationNextCard('flipCardHigherAnimation');
 				try {
+					setAnimationNextCard('flipCardHigherAnimation');
 					await delay(150);
 					setIsFlipped(true);
 
@@ -434,8 +432,8 @@ const Chat = () => {
 					console.error('An error occurred:', error);
 				}
 			} else if (guess == 'higher' && correct == 'false') {
-				setAnimationNextCard('flipCardHigherAnimation');
 				try {
+					setAnimationNextCard('flipCardHigherAnimation');
 					await delay(150);
 					setIsFlipped(true);
 
@@ -467,8 +465,8 @@ const Chat = () => {
 			}
 
 			if (guess == 'lower' && correct == 'true') {
-				setAnimationNextCard('flipCardLowerAnimation');
 				try {
+					setAnimationNextCard('flipCardLowerAnimation');
 					await delay(150);
 					setIsFlipped(true);
 
@@ -489,8 +487,8 @@ const Chat = () => {
 					console.error('An error occurred:', error);
 				}
 			} else if (guess == 'lower' && correct == 'false') {
-				setAnimationNextCard('flipCardLowerAnimation');
 				try {
+					setAnimationNextCard('flipCardLowerAnimation');
 					await delay(150);
 					setIsFlipped(true);
 
