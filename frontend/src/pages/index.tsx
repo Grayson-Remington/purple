@@ -664,6 +664,9 @@ const Chat = () => {
 						<span className='font-bold'>Losing Points</span>
 						<ol className='list-disc pl-5 space-y-2'>
 							<li className='mb-2'>
+								The game ends when one person gets below -20
+							</li>
+							<li className='mb-2'>
 								When you get one wrong, you lose points equal to
 								the Death Stack AND the cards you were dealt.
 							</li>
