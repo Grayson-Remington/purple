@@ -900,7 +900,7 @@ const Chat = () => {
 							</foreignObject>
 						</svg>
 						<img
-							className='z-10  w-[90px]'
+							className='z-10 h-[128.06px] w-[90px]'
 							src={`./blue2.svg`}
 							alt=''
 						/>
@@ -913,17 +913,17 @@ const Chat = () => {
 								!(animationNextCard == 'undefined')
 									? 'z-20'
 									: ''
-							} w-[90px]`}
+							}`}
 						>
 							{isFlipped ? (
 								<img
-									style={{ width: '90px' }}
+									className='w-[90px] h-[128.06px]'
 									src={`./${nextCard}.svg`}
 									alt=''
 								/>
 							) : (
 								<img
-									style={{ width: '90px' }}
+									className='w-[90px] h-[128.06px]'
 									src={`./blue2.svg`}
 									alt=''
 								/>
@@ -938,15 +938,17 @@ const Chat = () => {
 								!(animationThirdCard == 'undefined')
 									? 'z-30'
 									: ''
-							} w-[90px]`}
+							}`}
 						>
 							{isFlipped ? (
 								<img
+									className='w-[90px] h-[128.06px]'
 									src={`./${thirdCard}.svg`}
 									alt=''
 								/>
 							) : (
 								<img
+									className='w-[90px] h-[128.06px]'
 									src={`./blue2.svg`}
 									alt=''
 								/>
@@ -961,15 +963,17 @@ const Chat = () => {
 								!(animationShownCard == 'undefined')
 									? 'z-20'
 									: ''
-							} w-[90px] `}
+							}  `}
 						>
 							{isShownFlipped ? (
 								<img
+									className='w-[90px] h-[128.06px]'
 									src={`./${shownCard}.svg`}
 									alt=''
 								/>
 							) : (
 								<img
+									className='w-[90px] h-[128.06px]'
 									src={`./blue2.svg`}
 									alt=''
 								/>
