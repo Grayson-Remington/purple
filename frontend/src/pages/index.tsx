@@ -634,7 +634,7 @@ const Chat = () => {
 				</div>
 			)}
 			{chat && (
-				<div className='fixed h-full min-h-screen w-full flex flex-col items-center justify-center z-50'>
+				<div className='fixed h-full min-h-[900px] w-full flex flex-col items-center justify-center z-50'>
 					<div className='absolute h-full inset-0 bg-gradient-to-b from-purple-400 to-purple-800 '></div>
 					<div className='relative max-w-xl w-full mx-auto  h-full pt-10 p-6 rounded-lg shadow-md'>
 						<div className='flex flex-col items-center h-full max-w-xl w-full rounded-lg'>
@@ -685,7 +685,7 @@ const Chat = () => {
 				</div>
 			)}
 			{rules && (
-				<div className='absolute h-fit min-h-[950px] w-full flex flex-col items-center z-50'>
+				<div className='absolute h-fit min-h-[1000px] w-full flex flex-col items-center z-50'>
 					<div className='absolute inset-0 bg-gradient-to-b from-purple-400 to-purple-800 '></div>
 					<div className='relative max-w-xl mx-auto p-6 rounded-lg shadow-md'>
 						<button
