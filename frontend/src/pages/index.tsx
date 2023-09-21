@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import { motion, useAnimate } from 'framer-motion';
+import toast, { Toaster } from 'react-hot-toast';
 const Chat = () => {
 	const [rules, setRules] = useState(false);
 	const [chat, setChat] = useState(false);
@@ -237,7 +238,12 @@ const Chat = () => {
 			),
 		]);
 	}
-
+	useEffect(() => {
+		// Set the scrollTop to the maximum to keep the newest message visible
+		if (turn == playerName) {
+			toast('Your Turn!');
+		}
+	}, [turn]);
 	useEffect(() => {
 		// Set the scrollTop to the maximum to keep the newest message visible
 		if (messageContainerRef.current) {
@@ -595,6 +601,7 @@ const Chat = () => {
 	};
 	return (
 		<div className='flex flex-col gap-4 w-full items-center min-h-screen h-fit bg-gradient-to-b from-purple-400 to-purple-800'>
+			<Toaster />
 			{gameOver && (
 				<div className='absolute h-[900px] min-h-full w-full flex flex-col items-center z-50'>
 					<div className='absolute inset-0 bg-gradient-to-b from-purple-400 to-purple-800 h-full opacity-95'></div>
@@ -627,11 +634,11 @@ const Chat = () => {
 				</div>
 			)}
 			{chat && (
-				<div className='absolute h-full min-h-screen w-full flex flex-col items-center justify-center  z-50'>
+				<div className='fixed h-full min-h-screen w-full flex flex-col items-center justify-center z-50'>
 					<div className='absolute h-full inset-0 bg-gradient-to-b from-purple-400 to-purple-800 '></div>
-					<div className='relative max-w-xl w-full mx-auto max-h-[600px] h-full pt-10 p-6 rounded-lg shadow-md'>
+					<div className='relative max-w-xl w-full mx-auto  h-full pt-10 p-6 rounded-lg shadow-md'>
 						<div className='flex flex-col items-center h-full max-w-xl w-full rounded-lg'>
-							<div className='flex flex-col justify-end overflow-y-auto break-words w-full h-full'>
+							<div className='overflow-y-auto overflow-x-clip break-words w-full h-[500px] relative'>
 								{messages &&
 									messages.map((message, index) => (
 										<div
@@ -678,7 +685,7 @@ const Chat = () => {
 				</div>
 			)}
 			{rules && (
-				<div className='absolute h-fit min-h-screen w-full flex flex-col items-center z-50'>
+				<div className='absolute h-fit min-h-[950px] w-full flex flex-col items-center z-50'>
 					<div className='absolute inset-0 bg-gradient-to-b from-purple-400 to-purple-800 '></div>
 					<div className='relative max-w-xl mx-auto p-6 rounded-lg shadow-md'>
 						<button
@@ -790,7 +797,11 @@ const Chat = () => {
 							className='border border-black text-center'
 							type='input'
 							onChange={(e) =>
-								setRoomId(e.target.value.toUpperCase())
+								setRoomId(
+									e.target.value
+										.toUpperCase()
+										.replace(/\s/g, '')
+								)
 							}
 						/>
 						{tooManyPlayers && (
@@ -901,11 +912,8 @@ const Chat = () => {
 						</div>
 					</div>
 
-					<div className='flex justify-between items-stretch rounded-t-lg bg-slate-200 text-purple-800 w-full overflow-x-auto overflow-y-hidden gap-4 min-h-[85px]'>
-						<div className='vertical-text text-xs bg-white items-stretch font-bold text-center'>
-							Last
-						</div>
-						<div className='flex w-full text-xl gap-4'>
+					<div className='flex justify-between items-stretch rounded-lg bg-slate-200 text-purple-800 w-full overflow-x-auto overflow-y-hidden gap-4 min-h-[85px]'>
+						<div className='flex w-full text-xl gap-4 px-2'>
 							{players.map((player: any, index: number) => (
 								<div
 									key={index}
@@ -927,9 +935,6 @@ const Chat = () => {
 									<span>{player.score}</span>
 								</div>
 							))}
-						</div>
-						<div className='vertical-text text-xs font-bold text-center bg-white items-stretch'>
-							First
 						</div>
 					</div>
 
