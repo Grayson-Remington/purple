@@ -3,7 +3,10 @@ import io from 'socket.io-client';
 import { motion, useAnimate } from 'framer-motion';
 const Chat = () => {
 	const [rules, setRules] = useState(false);
+	const [chat, setChat] = useState(false);
 	const [roomId, setRoomId] = useState<string>('');
+	const [messages, setMessages] = useState([]);
+	const [message, setMessage] = useState('');
 	const [playerName, setPlayerName] = useState<string>('');
 	const [usernameAlreadyExists, setUsernameAlreadyExists] = useState(false);
 	const [players, setPlayers] = useState([]);
@@ -33,6 +36,7 @@ const Chat = () => {
 	const thirdCardRef = useRef<string>('');
 	const turnScoreRef = useRef(0);
 	const deathStackRef = useRef(0);
+	const messageContainerRef = useRef<HTMLDivElement | null>(null);
 	const [isFlipped, setIsFlipped] = useState(false);
 	const [isShownFlipped, setIsShownFlipped] = useState(true);
 
@@ -235,6 +239,13 @@ const Chat = () => {
 	}
 
 	useEffect(() => {
+		// Set the scrollTop to the maximum to keep the newest message visible
+		if (messageContainerRef.current) {
+			messageContainerRef.current.scrollTop =
+				messageContainerRef.current.scrollHeight;
+		}
+	}, [messages]);
+	useEffect(() => {
 		let player: any = players.find(
 			(playerObj: any) => playerObj.name === playerName
 		);
@@ -283,6 +294,9 @@ const Chat = () => {
 				setIsGameOverButtonDisabled(false);
 			}
 		});
+		newSocket.on('messages', (messages) => {
+			setMessages(messages);
+		});
 		newSocket.on('playerJoined', () => {
 			setConnectedToRoom(true);
 		});
@@ -293,10 +307,7 @@ const Chat = () => {
 			setPlayerName(playerName);
 		});
 		newSocket.on('players', (players) => {
-			let sortedPlayers = players.sort(
-				(a: any, b: any) => b.score - a.score
-			);
-			setPlayers(sortedPlayers);
+			setPlayers(players);
 		});
 		newSocket.on('currentCard', (currentCard) => {
 			let localCurrentCardRef = currentCardRef.current;
@@ -575,10 +586,17 @@ const Chat = () => {
 			socket.emit('playAgain');
 		}
 	};
+	const sendMessage = () => {
+		if (socket) {
+			let newMessage = playerName + ': ' + message;
+			socket.emit('message', newMessage);
+			setMessage('');
+		}
+	};
 	return (
 		<div className='flex flex-col gap-4 w-full items-center min-h-screen h-fit bg-gradient-to-b from-purple-400 to-purple-800'>
 			{gameOver && (
-				<div className='absolute h-[700px] min-h-full w-full flex flex-col items-center z-50'>
+				<div className='absolute h-[900px] min-h-full w-full flex flex-col items-center z-50'>
 					<div className='absolute inset-0 bg-gradient-to-b from-purple-400 to-purple-800 h-full opacity-95'></div>
 					<div className='absolute flex flex-col items-center max-w-4xl h-full w-full gap-4'>
 						<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl'>
@@ -608,12 +626,63 @@ const Chat = () => {
 					</div>
 				</div>
 			)}
+			{chat && (
+				<div className='absolute h-full min-h-screen w-full flex flex-col items-center justify-center  z-50'>
+					<div className='absolute h-full inset-0 bg-gradient-to-b from-purple-400 to-purple-800 '></div>
+					<div className='relative max-w-xl w-full mx-auto max-h-[600px] h-full pt-10 p-6 rounded-lg shadow-md'>
+						<div className='flex flex-col items-center h-full max-w-xl w-full rounded-lg'>
+							<div className='flex flex-col justify-end overflow-y-auto break-words w-full h-full'>
+								{messages &&
+									messages.map((message, index) => (
+										<div
+											key={index}
+											className=' break-words'
+										>
+											{message}
+										</div>
+									))}
+							</div>
+							<div className='flex gap-1 w-full'>
+								<input
+									type='text'
+									maxLength={120}
+									className='w-full rounded-lg'
+									value={message}
+									onChange={(e: any) => {
+										setMessage(e.target.value);
+									}}
+									onKeyDown={(
+										e: React.KeyboardEvent<HTMLInputElement>
+									) => {
+										if (e.key === 'Enter') {
+											e.preventDefault(); // Prevent the default form submission
+											sendMessage();
+										}
+									}}
+								/>
+								<button
+									className=' cursor-pointer bg-purple-500 hover:bg-purple-400 text-white font-bold p-1 border-b-4 border-purple-700 hover:border-purple-500 rounded'
+									onClick={sendMessage}
+								>
+									Send
+								</button>
+							</div>
+						</div>
+						<button
+							className='absolute right-4 top-4 cursor-pointer bg-purple-500 hover:bg-purple-400 text-white font-bold p-1 border-b-4 border-purple-700 hover:border-purple-500 rounded'
+							onClick={() => setChat(!chat)}
+						>
+							Close
+						</button>
+					</div>
+				</div>
+			)}
 			{rules && (
 				<div className='absolute h-fit min-h-screen w-full flex flex-col items-center z-50'>
 					<div className='absolute inset-0 bg-gradient-to-b from-purple-400 to-purple-800 '></div>
 					<div className='relative max-w-xl mx-auto p-6 rounded-lg shadow-md'>
 						<button
-							className='absolute right-4 top-4'
+							className='absolute right-4 top-4 cursor-pointer bg-purple-500 hover:bg-purple-400 text-white font-bold p-1 border-b-4 border-purple-700 hover:border-purple-500 rounded'
 							onClick={() => setRules(!rules)}
 						>
 							Close
@@ -716,10 +785,13 @@ const Chat = () => {
 
 						<input
 							required
+							value={roomId}
 							maxLength={12}
 							className='border border-black text-center'
 							type='input'
-							onChange={(e) => setRoomId(e.target.value)}
+							onChange={(e) =>
+								setRoomId(e.target.value.toUpperCase())
+							}
 						/>
 						{tooManyPlayers && (
 							<h1 className='text-red-800'>Room is Full</h1>
@@ -729,6 +801,7 @@ const Chat = () => {
 						<h1>Username</h1>
 						<input
 							required
+							value={playerName}
 							maxLength={12}
 							className='border border-black text-center'
 							type='input'
@@ -752,7 +825,7 @@ const Chat = () => {
 					</button>
 				</div>
 			) : (
-				<div className='flex flex-col gap-2 items-center h-[800px] w-full max-w-2xl shadow-2xl rounded-lg p-4'>
+				<div className='flex flex-col gap-2 items-center h-[950px] w-full max-w-2xl shadow-2xl rounded-lg p-4'>
 					<div className='flex items-center'>
 						<img
 							src='./blob.svg'
@@ -762,6 +835,53 @@ const Chat = () => {
 						<h1 className='text-4xl font-bold italic tracking-tight text-gray-900 lowercase  '>
 							Purple
 						</h1>
+					</div>
+					<div className='flex flex-col relative items-center max-w-lg w-full border rounded-lg p-1'>
+						<div
+							className='overflow-y-auto overflow-x-clip break-words w-full h-32 relative'
+							ref={messageContainerRef}
+						>
+							{messages &&
+								messages.map((message, index) => (
+									<div
+										key={index}
+										className=' break-words'
+									>
+										{message}
+									</div>
+								))}
+						</div>
+						<div className='flex w-full gap-1'>
+							<input
+								type='text'
+								maxLength={120}
+								className='w-full rounded-lg'
+								value={message}
+								onChange={(e: any) => {
+									setMessage(e.target.value);
+								}}
+								onKeyDown={(
+									e: React.KeyboardEvent<HTMLInputElement>
+								) => {
+									if (e.key === 'Enter') {
+										e.preventDefault(); // Prevent the default form submission
+										sendMessage();
+									}
+								}}
+							/>
+							<button
+								className='w-full max-w-fit cursor-pointer bg-purple-500 hover:bg-purple-400 text-white font-bold p-1 border-b-4 border-purple-700 hover:border-purple-500 rounded'
+								onClick={sendMessage}
+							>
+								Send
+							</button>
+							<button
+								className='w-full max-w-fit cursor-pointer bg-purple-500 hover:bg-purple-400 text-white font-bold p-1 border-b-4 border-purple-700 hover:border-purple-500 rounded z-30'
+								onClick={() => setChat(!chat)}
+							>
+								All Chat
+							</button>
+						</div>
 					</div>
 					<div className='flex justify-between items-center w-full px-8'>
 						<button
@@ -786,22 +906,27 @@ const Chat = () => {
 							Last
 						</div>
 						<div className='flex w-full text-xl gap-4'>
-							{players
-								.sort((a: any, b: any) => b.score - a.score)
-								.reverse()
-								.map((player: any, index: number) => (
-									<div
-										key={index}
-										className={`flex flex-col items-center justify-center ${
-											player.score < -10
-												? 'text-red-600 animate-scale'
-												: ''
-										}`}
-									>
-										<span>{player.name}</span>
-										<span>{player.score}</span>
-									</div>
-								))}
+							{players.map((player: any, index: number) => (
+								<div
+									key={index}
+									className={`flex flex-col items-center ${
+										player.name == turn
+											? 'bg-purple-400'
+											: ''
+									} justify-center ${
+										player.score < -10
+											? 'text-red-600 animate-scale'
+											: ''
+									} ${
+										player.name == turn
+											? 'font-extrabold'
+											: ''
+									}`}
+								>
+									<span>{player.name}</span>
+									<span>{player.score}</span>
+								</div>
+							))}
 						</div>
 						<div className='vertical-text text-xs font-bold text-center bg-white items-stretch'>
 							First

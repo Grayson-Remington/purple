@@ -39,6 +39,7 @@ console.log(unshuffledDeck);
 class Room {
 	constructor(roomId) {
 		this.roomId = roomId;
+		this.messages = [];
 		this.players = [];
 		this.currentPlayerIndex = 0;
 		this.deck = shuffleDeck(unshuffledDeck);
@@ -130,6 +131,7 @@ io.on('connection', (socket) => {
 			console.log(player.name);
 			io.to(socket.id).emit('playerName', player.name);
 			io.to(socket.id).emit('currentRoom', roomId);
+
 			io.to(socket.id).emit(
 				'currentCard',
 				rooms[roomId].currentSuite +
@@ -158,6 +160,7 @@ io.on('connection', (socket) => {
 			io.to(socket.id).emit('deckSize', rooms[roomId].deck.length);
 			io.to(roomId).emit('playerJoined', player.name);
 			io.to(roomId).emit('players', rooms[roomId].players);
+			io.to(socket.id).emit('messages', rooms[roomId].messages);
 		}
 	});
 
@@ -438,6 +441,11 @@ io.on('connection', (socket) => {
 				players[rooms[roomId].currentPlayerIndex].name
 			);
 		}
+	});
+	socket.on('message', (message) => {
+		const roomId = socket.roomId;
+		rooms[roomId].messages.push(message);
+		io.to(roomId).emit('messages', rooms[roomId].messages);
 	});
 	// Handle disconnection
 	socket.on('disconnect', () => {
