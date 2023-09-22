@@ -638,6 +638,7 @@ const Chat = () => {
 						</button>
 						<h1>Votes Needed: {Math.ceil(players.length / 2)}</h1>
 						<h1>Vote Total: {voteTotal}</h1>
+						<div className='font-bold'>Round {round}</div>
 						{players.map((player: any, index: number) => (
 							<div
 								key={index}
