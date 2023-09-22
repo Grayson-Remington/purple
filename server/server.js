@@ -378,6 +378,7 @@ io.on('connection', (socket) => {
 			rooms[roomId].deathStack = 0;
 			rooms[roomId].turnScore = 0;
 			rooms[roomId].gameOver = false;
+			rooms[roomId].round = 1;
 			rooms[roomId].deck.splice(0, 3);
 			rooms[roomId].voteTotal = 0;
 			rooms[roomId].players.forEach((player, index) => {
