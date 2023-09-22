@@ -624,7 +624,7 @@ const Chat = () => {
 			{gameOver && (
 				<div className='fixed h-[1000px] w-full flex flex-col items-center z-50'>
 					<div className='absolute inset-0 bg-gradient-to-b from-purple-400 to-purple-800 h-full opacity-95'></div>
-					<div className='absolute flex flex-col items-center max-w-4xl h-full w-full gap-4'>
+					<div className='relative flex flex-col items-center max-w-4xl h-full w-full gap-4'>
 						<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl'>
 							Game Over
 						</h1>
@@ -704,7 +704,7 @@ const Chat = () => {
 				</div>
 			)}
 			{rules && (
-				<div className='fixed h-[1000px] w-full flex flex-col items-center z-50'>
+				<div className='absolute h-[1000px] w-full flex flex-col items-center z-50'>
 					<div className='absolute inset-0 bg-gradient-to-b from-purple-400 to-purple-800 '></div>
 					<div className='absolute max-w-xl mx-auto p-6 rounded-lg shadow-md'>
 						<button
@@ -855,7 +855,7 @@ const Chat = () => {
 					</button>
 				</div>
 			) : (
-				<div className='flex flex-col gap-2 items-center h-[1100px] w-full max-w-2xl shadow-2xl rounded-lg p-4'>
+				<div className='flex flex-col gap-2 items-center h-[1000px] w-full max-w-2xl shadow-2xl rounded-lg p-4'>
 					<div className='flex items-center'>
 						<img
 							src='./blob.svg'
@@ -930,7 +930,7 @@ const Chat = () => {
 							</h1>
 						</div>
 					</div>
-					<div className='font-bold'>Round {round}</div>
+
 					<div className='flex justify-between items-stretch rounded-lg bg-slate-200 text-purple-800 w-full overflow-x-auto overflow-y-hidden gap-4 min-h-[85px]'>
 						<div className='flex w-full text-xl gap-4 px-2'>
 							{players.map((player: any, index: number) => (
@@ -956,7 +956,7 @@ const Chat = () => {
 							))}
 						</div>
 					</div>
-
+					<div className='font-bold'>Round {round}</div>
 					<div className='flex text-center w-full justify-between gap-4'>
 						<div className='font-bold w-full'>
 							<h1>Turn Score</h1>
