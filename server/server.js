@@ -51,6 +51,7 @@ class Room {
 		this.thirdSuite = this.deck[2].suite;
 		this.deathStack = 0;
 		this.turnScore = 0;
+		this.round = 1;
 		this.gameOver = false;
 		this.voteTotal = 0;
 		this.deck.splice(0, 3);
@@ -199,6 +200,8 @@ io.on('connection', (socket) => {
 			io.to(roomId).emit('guess', {
 				guess: guess,
 				correct: 'purpleTrue',
+				round: rooms[roomId].round,
+				gameOver: rooms[roomId].gameOver,
 				players: rooms[roomId].players,
 				turn: players[currentPlayerIndex].name,
 				turnScore: rooms[roomId].turnScore,
@@ -230,6 +233,7 @@ io.on('connection', (socket) => {
 				players[currentPlayerIndex].score - deathStack - 2;
 
 			if (currentPlayerIndex == players.length - 1) {
+				rooms[roomId].round = rooms[roomId].round + 1;
 				rooms[roomId].currentPlayerIndex = 0;
 			} else {
 				rooms[roomId].currentPlayerIndex += 1;
@@ -237,7 +241,6 @@ io.on('connection', (socket) => {
 			rooms[roomId].players.forEach((player) => {
 				if (player.score <= -20) {
 					rooms[roomId].gameOver = true;
-					io.to(roomId).emit('gameOver', rooms[roomId].gameOver);
 				}
 			});
 			rooms[roomId].turnScore = 0;
@@ -246,6 +249,8 @@ io.on('connection', (socket) => {
 			io.to(roomId).emit('guess', {
 				guess: guess,
 				correct: 'purpleFalse',
+				round: rooms[roomId].round,
+				gameOver: rooms[roomId].gameOver,
 				players: rooms[roomId].players,
 				turn: players[rooms[roomId].currentPlayerIndex].name,
 				turnScore: rooms[roomId].turnScore,
@@ -282,6 +287,8 @@ io.on('connection', (socket) => {
 			io.to(roomId).emit('guess', {
 				guess: guess,
 				correct: 'true',
+				round: rooms[roomId].round,
+				gameOver: rooms[roomId].gameOver,
 				players: rooms[roomId].players,
 				turn: players[currentPlayerIndex].name,
 				turnScore: rooms[roomId].turnScore,
@@ -313,6 +320,7 @@ io.on('connection', (socket) => {
 				players[currentPlayerIndex].score - deathStack - 1;
 
 			if (currentPlayerIndex == players.length - 1) {
+				rooms[roomId].round = rooms[roomId].round + 1;
 				rooms[roomId].currentPlayerIndex = 0;
 			} else {
 				rooms[roomId].currentPlayerIndex += 1;
@@ -320,7 +328,6 @@ io.on('connection', (socket) => {
 			rooms[roomId].players.forEach((player) => {
 				if (player.score <= -20) {
 					rooms[roomId].gameOver = true;
-					io.to(roomId).emit('gameOver', rooms[roomId].gameOver);
 				}
 			});
 			rooms[roomId].turnScore = 0;
@@ -330,6 +337,8 @@ io.on('connection', (socket) => {
 			io.to(roomId).emit('guess', {
 				guess: guess,
 				correct: 'false',
+				round: rooms[roomId].round,
+				gameOver: rooms[roomId].gameOver,
 				players: rooms[roomId].players,
 				turn: players[rooms[roomId].currentPlayerIndex].name,
 				turnScore: rooms[roomId].turnScore,
@@ -419,28 +428,20 @@ io.on('connection', (socket) => {
 		rooms[roomId].deathStack = turnScore;
 		rooms[roomId].turnScore = 0;
 		if (currentPlayerIndex == players.length - 1) {
+			rooms[roomId].round = rooms[roomId].round + 1;
+			io.to(roomId).emit('round', rooms[roomId].round);
 			rooms[roomId].currentPlayerIndex = 0;
 		} else {
 			rooms[roomId].currentPlayerIndex += 1;
 		}
-		if (players.length == 1) {
-			rooms[roomId].deathStack = 0;
-			io.to(roomId).emit('players', rooms[roomId].players);
-			io.to(roomId).emit('deathStack', 0);
-			io.to(roomId).emit('turnScore', 0);
-			io.to(roomId).emit(
-				'turn',
-				players[rooms[roomId].currentPlayerIndex].name
-			);
-		} else {
-			io.to(roomId).emit('players', rooms[roomId].players);
-			io.to(roomId).emit('deathStack', deathStack);
-			io.to(roomId).emit('turnScore', 0);
-			io.to(roomId).emit(
-				'turn',
-				players[rooms[roomId].currentPlayerIndex].name
-			);
-		}
+
+		io.to(roomId).emit('players', rooms[roomId].players);
+		io.to(roomId).emit('deathStack', deathStack);
+		io.to(roomId).emit('turnScore', 0);
+		io.to(roomId).emit(
+			'turn',
+			players[rooms[roomId].currentPlayerIndex].name
+		);
 	});
 	socket.on('message', (message) => {
 		const roomId = socket.roomId;

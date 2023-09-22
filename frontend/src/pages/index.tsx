@@ -27,6 +27,7 @@ const Chat = () => {
 	const [socket, setSocket] = useState<any>();
 	const [turn, setTurn] = useState(undefined);
 	const [gameOver, setGameOver] = useState(false);
+	const [round, setRound] = useState(1);
 	const [voteTotal, setVoteTotal] = useState(0);
 	const turnRef = useRef();
 	const correctRef = useRef<string>();
@@ -296,12 +297,12 @@ const Chat = () => {
 		});
 		newSocket.on('gameOver', (gameOver) => {
 			setGameOver(gameOver);
-			if (gameOver == false) {
-				setIsGameOverButtonDisabled(false);
-			}
 		});
 		newSocket.on('messages', (messages) => {
 			setMessages(messages);
+		});
+		newSocket.on('round', (round) => {
+			setRound(round);
 		});
 		newSocket.on('playerJoined', () => {
 			setConnectedToRoom(true);
@@ -354,6 +355,8 @@ const Chat = () => {
 				nextCard,
 				thirdCard,
 				players,
+				gameOver,
+				round,
 			} = data;
 			setCorrect(correct);
 
@@ -363,8 +366,8 @@ const Chat = () => {
 			setIsAnimating(true);
 			if (guess == 'purple' && correct == 'purpleTrue') {
 				try {
-					setAnimationNextCard('flipCardHigherAnimation');
-					setAnimationThirdCard('flipCardLowerAnimation');
+					setAnimationNextCard('flipCardLowerAnimation');
+					setAnimationThirdCard('flipCardHigherAnimation');
 					await delay(150);
 					setIsFlipped(true);
 					await delay(185);
@@ -394,8 +397,8 @@ const Chat = () => {
 				}
 			} else if (guess == 'purple' && correct == 'purpleFalse') {
 				try {
-					setAnimationNextCard('flipCardHigherAnimation');
-					setAnimationThirdCard('flipCardLowerAnimation');
+					setAnimationNextCard('flipCardLowerAnimation');
+					setAnimationThirdCard('flipCardHigherAnimation');
 					await delay(150);
 					setIsFlipped(true);
 
@@ -422,6 +425,11 @@ const Chat = () => {
 
 					setIsFlipped(false);
 					setIsAnimating(false);
+					setRound(round);
+					setGameOver(gameOver);
+					if (gameOver == false) {
+						setIsGameOverButtonDisabled(false);
+					}
 					// Adjust the delay as needed
 				} catch (error) {
 					console.error('An error occurred:', error);
@@ -473,8 +481,14 @@ const Chat = () => {
 					setDeathStack(deathStack);
 					setPlayers(players);
 					await delay(10);
+
 					setIsFlipped(false);
 					setIsAnimating(false);
+					setRound(round);
+					setGameOver(gameOver);
+					if (gameOver == false) {
+						setIsGameOverButtonDisabled(false);
+					}
 					// Adjust the delay as needed
 				} catch (error) {
 					console.error('An error occurred:', error);
@@ -530,6 +544,11 @@ const Chat = () => {
 					await delay(10);
 					setIsFlipped(false);
 					setIsAnimating(false);
+					setRound(round);
+					setGameOver(gameOver);
+					if (gameOver == false) {
+						setIsGameOverButtonDisabled(false);
+					}
 					// Adjust the delay as needed
 				} catch (error) {
 					console.error('An error occurred:', error);
@@ -603,7 +622,7 @@ const Chat = () => {
 		<div className='flex flex-col gap-4 w-full items-center min-h-screen h-fit bg-gradient-to-b from-purple-400 to-purple-800'>
 			<Toaster />
 			{gameOver && (
-				<div className='absolute h-[900px] min-h-full w-full flex flex-col items-center z-50'>
+				<div className='absolute h-[1000px] min-h-full w-full flex flex-col items-center z-50'>
 					<div className='absolute inset-0 bg-gradient-to-b from-purple-400 to-purple-800 h-full opacity-95'></div>
 					<div className='absolute flex flex-col items-center max-w-4xl h-full w-full gap-4'>
 						<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl'>
@@ -634,7 +653,7 @@ const Chat = () => {
 				</div>
 			)}
 			{chat && (
-				<div className='fixed h-full min-h-[900px] w-full flex flex-col items-center justify-center z-50'>
+				<div className='fixed h-[1000px] w-full flex flex-col items-center justify-center z-50'>
 					<div className='absolute h-full inset-0 bg-gradient-to-b from-purple-400 to-purple-800 '></div>
 					<div className='relative max-w-xl w-full mx-auto  h-full pt-10 p-6 rounded-lg shadow-md'>
 						<div className='flex flex-col items-center h-full max-w-xl w-full rounded-lg'>
@@ -685,9 +704,9 @@ const Chat = () => {
 				</div>
 			)}
 			{rules && (
-				<div className='absolute h-fit min-h-[1000px] w-full flex flex-col items-center z-50'>
+				<div className='fixed h-[1000px] w-full flex flex-col items-center z-50'>
 					<div className='absolute inset-0 bg-gradient-to-b from-purple-400 to-purple-800 '></div>
-					<div className='relative max-w-xl mx-auto p-6 rounded-lg shadow-md'>
+					<div className='absolute max-w-xl mx-auto p-6 rounded-lg shadow-md'>
 						<button
 							className='absolute right-4 top-4 cursor-pointer bg-purple-500 hover:bg-purple-400 text-white font-bold p-1 border-b-4 border-purple-700 hover:border-purple-500 rounded'
 							onClick={() => setRules(!rules)}
@@ -836,7 +855,7 @@ const Chat = () => {
 					</button>
 				</div>
 			) : (
-				<div className='flex flex-col gap-2 items-center h-[950px] w-full max-w-2xl shadow-2xl rounded-lg p-4'>
+				<div className='flex flex-col gap-2 items-center h-[1100px] w-full max-w-2xl shadow-2xl rounded-lg p-4'>
 					<div className='flex items-center'>
 						<img
 							src='./blob.svg'
@@ -911,7 +930,7 @@ const Chat = () => {
 							</h1>
 						</div>
 					</div>
-
+					<div className='font-bold'>Round {round}</div>
 					<div className='flex justify-between items-stretch rounded-lg bg-slate-200 text-purple-800 w-full overflow-x-auto overflow-y-hidden gap-4 min-h-[85px]'>
 						<div className='flex w-full text-xl gap-4 px-2'>
 							{players.map((player: any, index: number) => (
