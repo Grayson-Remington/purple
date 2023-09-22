@@ -622,7 +622,7 @@ const Chat = () => {
 		<div className='flex flex-col gap-4 w-full items-center min-h-screen h-fit bg-gradient-to-b from-purple-400 to-purple-800'>
 			<Toaster />
 			{gameOver && (
-				<div className='absolute h-[1000px] min-h-full w-full flex flex-col items-center z-50'>
+				<div className='fixed h-[1000px] w-full flex flex-col items-center z-50'>
 					<div className='absolute inset-0 bg-gradient-to-b from-purple-400 to-purple-800 h-full opacity-95'></div>
 					<div className='absolute flex flex-col items-center max-w-4xl h-full w-full gap-4'>
 						<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl'>
