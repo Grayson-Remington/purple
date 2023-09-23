@@ -35,13 +35,14 @@ function getRandomSuite() {
 	const randomIndex = Math.floor(Math.random() * suites.length);
 	return suites[randomIndex];
 }
-console.log(unshuffledDeck);
+
 class Room {
 	constructor(roomId) {
 		this.roomId = roomId;
 		this.messages = [];
 		this.players = [];
 		this.currentPlayerIndex = 0;
+		this.currentPlayer = '';
 		this.deck = shuffleDeck(unshuffledDeck);
 		this.currentNumber = this.deck[0].number;
 		this.currentSuite = this.deck[0].suite;
@@ -102,7 +103,6 @@ function generateRandomName() {
 	return name;
 }
 io.on('connection', (socket) => {
-	console.log('A user connected');
 	socket.on('joinRoom', (data) => {
 		const { requestedRoomId, playerName } = data;
 		let roomId = requestedRoomId;
@@ -129,7 +129,7 @@ io.on('connection', (socket) => {
 			if (player.name == '') {
 				player.name = generateRandomName();
 			}
-			console.log(player.name);
+
 			io.to(socket.id).emit('playerName', player.name);
 			io.to(socket.id).emit('currentRoom', roomId);
 
@@ -152,6 +152,8 @@ io.on('connection', (socket) => {
 					rooms[roomId].thirdNumber.toString()
 			);
 			rooms[roomId].addPlayer(player);
+			rooms[roomId].currentPlayer =
+				rooms[roomId].players[rooms[roomId].currentPlayerIndex].name;
 			io.to(socket.id).emit(
 				'turn',
 				rooms[roomId].players[rooms[roomId].currentPlayerIndex].name
@@ -196,7 +198,8 @@ io.on('connection', (socket) => {
 			rooms[roomId].thirdNumber = rooms[roomId].deck[1].number;
 			rooms[roomId].thirdSuite = rooms[roomId].deck[1].suite;
 			rooms[roomId].deck.splice(0, 2);
-
+			rooms[roomId].currentPlayer =
+				rooms[roomId].players[rooms[roomId].currentPlayerIndex].name;
 			io.to(roomId).emit('guess', {
 				guess: guess,
 				correct: 'purpleTrue',
@@ -245,7 +248,8 @@ io.on('connection', (socket) => {
 			});
 			rooms[roomId].turnScore = 0;
 			rooms[roomId].deathStack = 0;
-
+			rooms[roomId].currentPlayer =
+				rooms[roomId].players[rooms[roomId].currentPlayerIndex].name;
 			io.to(roomId).emit('guess', {
 				guess: guess,
 				correct: 'purpleFalse',
@@ -282,8 +286,9 @@ io.on('connection', (socket) => {
 			rooms[roomId].thirdNumber = rooms[roomId].deck[0].number;
 			rooms[roomId].thirdSuite = rooms[roomId].deck[0].suite;
 			rooms[roomId].deck.splice(0, 1);
-			console.log(rooms[roomId].turnScore, rooms[roomId].deathStack);
 
+			rooms[roomId].currentPlayer =
+				rooms[roomId].players[rooms[roomId].currentPlayerIndex].name;
 			io.to(roomId).emit('guess', {
 				guess: guess,
 				correct: 'true',
@@ -332,8 +337,9 @@ io.on('connection', (socket) => {
 			});
 			rooms[roomId].turnScore = 0;
 			rooms[roomId].deathStack = 0;
-			console.log(rooms[roomId].turnScore, rooms[roomId].deathStack);
 
+			rooms[roomId].currentPlayer =
+				rooms[roomId].players[rooms[roomId].currentPlayerIndex].name;
 			io.to(roomId).emit('guess', {
 				guess: guess,
 				correct: 'false',
@@ -404,7 +410,8 @@ io.on('connection', (socket) => {
 					'_' +
 					rooms[roomId].thirdNumber.toString()
 			);
-
+			rooms[roomId].currentPlayer =
+				rooms[roomId].players[rooms[roomId].currentPlayerIndex].name;
 			io.to(roomId).emit(
 				'turn',
 				rooms[roomId].players[rooms[roomId].currentPlayerIndex].name
@@ -439,6 +446,8 @@ io.on('connection', (socket) => {
 		io.to(roomId).emit('players', rooms[roomId].players);
 		io.to(roomId).emit('deathStack', deathStack);
 		io.to(roomId).emit('turnScore', 0);
+		rooms[roomId].currentPlayer =
+			rooms[roomId].players[rooms[roomId].currentPlayerIndex].name;
 		io.to(roomId).emit(
 			'turn',
 			players[rooms[roomId].currentPlayerIndex].name
@@ -452,19 +461,59 @@ io.on('connection', (socket) => {
 	// Handle disconnection
 	socket.on('disconnect', () => {
 		const roomId = socket.roomId;
-		console.log(rooms);
+
 		if (rooms[roomId]) {
 			rooms[roomId].removePlayer(socket.id);
-			io.to(roomId).emit('players', rooms[roomId].players);
 			if (rooms[roomId].players.length === 0) {
 				// If the room is empty, remove it
 				delete rooms[roomId];
 			} else {
+				if (
+					rooms[roomId].players.indexOf(
+						rooms[roomId].currentPlayer
+					) == -1
+				) {
+					if (
+						rooms[roomId].currentPlayerIndex >=
+						rooms[roomId].players.length - 1
+					) {
+						rooms[roomId].round = rooms[roomId].round + 1;
+						io.to(roomId).emit('round', rooms[roomId].round);
+						rooms[roomId].currentPlayerIndex = 0;
+					} else {
+						rooms[roomId].currentPlayerIndex += 1;
+					}
+					io.to(roomId).emit('players', rooms[roomId].players);
+					io.to(roomId).emit(
+						'turn',
+						rooms[roomId].players[rooms[roomId].currentPlayerIndex]
+							.name
+					);
+				} else {
+					rooms[roomId].currentPlayerIndex = rooms[
+						roomId
+					].players.indexOf(rooms[roomId].currentPlayer);
+					if (
+						rooms[roomId].currentPlayerIndex ==
+						rooms[roomId].players.length - 1
+					) {
+						rooms[roomId].round = rooms[roomId].round + 1;
+						io.to(roomId).emit('round', rooms[roomId].round);
+						rooms[roomId].currentPlayerIndex = 0;
+					} else {
+						rooms[roomId].currentPlayerIndex += 1;
+					}
+					io.to(roomId).emit('players', rooms[roomId].players);
+					io.to(roomId).emit(
+						'turn',
+						rooms[roomId].players[rooms[roomId].currentPlayerIndex]
+							.name
+					);
+				}
 				// If there are still players in the room, notify them about the disconnected player
 				io.to(roomId).emit('playerLeft', socket.id);
 			}
 		}
-		console.log('A user disconnected');
 	});
 });
 
