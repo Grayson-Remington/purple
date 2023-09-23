@@ -433,7 +433,7 @@ io.on('connection', (socket) => {
 
 		players[currentPlayerIndex].score =
 			players[currentPlayerIndex].score + turnScore;
-		rooms[roomId].deathStack = turnScore;
+
 		rooms[roomId].turnScore = 0;
 		if (currentPlayerIndex == players.length - 1) {
 			rooms[roomId].round = rooms[roomId].round + 1;

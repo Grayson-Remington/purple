@@ -1136,7 +1136,7 @@ const Chat = () => {
 						</div>
 						{turn && turn == playerName && turnScore >= 3 && (
 							<button
-								onClick={() => handlePass(deathStack)}
+								onClick={() => handlePass(turnScore)}
 								disabled={isAnimating}
 								className='disabled:bg-red-500 bg-purple-500 hover:bg-purple-400 text-white font-bold py-2 px-4 border-b-4 border-purple-700 hover:border-purple-500 rounded col-span-3 absolute z-40 translate-y-52'
 							>
