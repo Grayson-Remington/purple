@@ -721,7 +721,7 @@ const Chat = () => {
 				</div>
 			)}
 			{rules && (
-				<div className='absolute h-min w-full flex flex-col items-center z-50'>
+				<div className='absolute h-min min-h-[1000px] w-full flex flex-col items-center z-50'>
 					<div className='absolute h-full inset-0 bg-gradient-to-b from-purple-400 to-purple-800 '></div>
 					<div className='relative h-full max-w-xl mx-auto p-6 rounded-lg shadow-md'>
 						<button
