@@ -622,12 +622,30 @@ const Chat = () => {
 		<div className='flex flex-col gap-4 w-full items-center min-h-screen h-fit bg-gradient-to-b from-purple-400 to-purple-800'>
 			<Toaster />
 			{gameOver && (
-				<div className='fixed h-[1000px] w-full flex flex-col items-center z-50'>
+				<div className='fixed min-h-[1000px] h-full w-full flex flex-col items-center z-50'>
 					<div className='absolute inset-0 bg-gradient-to-b from-purple-400 to-purple-800 h-full opacity-95'></div>
 					<div className='relative flex flex-col items-center max-w-4xl h-full w-full gap-4'>
 						<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl'>
 							Game Over
 						</h1>
+
+						<h1>Votes Needed: {Math.ceil(players.length / 2)}</h1>
+						<h1>Vote Total: {voteTotal}</h1>
+						<div className='font-bold'>Round {round}</div>
+						{players
+							.sort((a: any, b: any) => b.score - a.score)
+							.map((player: any, index: number) => (
+								<div
+									key={index}
+									className='flex flex-col text-2xl text-center items-center'
+								>
+									<div className='flex w-full text-center justify-center'>
+										{index + 1}. {player.name}:{' '}
+										{player.score}
+									</div>
+									<div></div>
+								</div>
+							))}
 						<button
 							id='gameOverButton'
 							className='cursor-pointer disabled:bg-red-500 bg-purple-400 hover:bg-purple-400 text-white font-bold py-2 px-4 border-b-4 border-purple-700 hover:border-purple-500 rounded'
@@ -636,27 +654,13 @@ const Chat = () => {
 						>
 							Play Again?
 						</button>
-						<h1>Votes Needed: {Math.ceil(players.length / 2)}</h1>
-						<h1>Vote Total: {voteTotal}</h1>
-						<div className='font-bold'>Round {round}</div>
-						{players.map((player: any, index: number) => (
-							<div
-								key={index}
-								className='flex flex-col text-2xl text-center items-center'
-							>
-								<div className='flex w-full text-center justify-center'>
-									{index + 1}. {player.name}: {player.score}
-								</div>
-								<div></div>
-							</div>
-						))}
 					</div>
 				</div>
 			)}
 			{chat && (
-				<div className='fixed h-[1000px] w-full flex flex-col items-center justify-center z-50'>
+				<div className='fixed min-h-[1000px] h-full w-full flex flex-col items-center justify-center z-50'>
 					<div className='absolute h-full inset-0 bg-gradient-to-b from-purple-400 to-purple-800 '></div>
-					<div className='relative max-w-xl w-full mx-auto  h-full pt-10 p-6 rounded-lg shadow-md'>
+					<div className='relative max-w-xl w-full mx-auto h-full pt-10 p-6 rounded-lg shadow-md'>
 						<div className='flex flex-col items-center h-full max-w-xl w-full rounded-lg'>
 							<div className='overflow-y-auto overflow-x-clip break-words w-full h-[500px] relative'>
 								{messages &&
@@ -847,8 +851,9 @@ const Chat = () => {
 							</h1>
 						)}
 					</div>
-					<div className='text-center mt-4'>
-						Leave these blank for a random room and username
+					<div className='text-center mt-1 max-w-xs text-sm'>
+						If left blank, a random room and username will be
+						created for you
 					</div>
 					<button
 						className='uppercase font-bold border rounded-full bg-white text-purple-900 hover:scale-105 p-2 mt-4'

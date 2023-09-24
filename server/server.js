@@ -387,6 +387,9 @@ io.on('connection', (socket) => {
 			rooms[roomId].round = 1;
 			rooms[roomId].deck.splice(0, 3);
 			rooms[roomId].voteTotal = 0;
+			rooms[roomId].players = rooms[roomId].players.sort(
+				(a, b) => b.score - a.score
+			);
 			rooms[roomId].players.forEach((player, index) => {
 				rooms[roomId].players[index].score = 0;
 			});
@@ -418,12 +421,14 @@ io.on('connection', (socket) => {
 			);
 
 			// Emit an event to the room to update all clients about the new player
+
 			io.to(roomId).emit('deckSize', rooms[roomId].deck.length);
 			io.to(roomId).emit('gameOver', rooms[roomId].gameOver);
 			io.to(roomId).emit('players', rooms[roomId].players);
 		} else {
 			io.to(roomId).emit('voteTotal', rooms[roomId].voteTotal);
 		}
+		console.log(rooms[roomId].players);
 	});
 	socket.on('pass', (turnScore) => {
 		let roomId = socket.roomId;
