@@ -635,7 +635,7 @@ const Chat = () => {
 			<Toaster />
 			{gameOver && (
 				<div className='fixed min-h-[1000px] h-full w-full flex flex-col items-center z-50'>
-					<div className='absolute inset-0 bg-gradient-to-b from-purple-400 to-purple-800 h-[full] opacity-95'></div>
+					<div className='absolute inset-0 bg-gradient-to-b from-purple-400 to-purple-800 h-full opacity-95'></div>
 					<div className='relative flex flex-col items-center max-w-4xl h-full w-full gap-4'>
 						<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl'>
 							Game Over
@@ -721,9 +721,9 @@ const Chat = () => {
 				</div>
 			)}
 			{rules && (
-				<div className='absolute h-min min-h-fit w-full flex flex-col items-center z-50'>
+				<div className='fixed h-full  w-full flex flex-col items-center z-50'>
 					<div className='absolute h-full inset-0 bg-gradient-to-b from-purple-400 to-purple-800 '></div>
-					<div className='relative h-full max-w-xl mx-auto p-6 rounded-lg shadow-md'>
+					<div className='relative h-full overflow-y-scroll max-w-xl mx-auto p-6 rounded-lg shadow-md'>
 						<button
 							className='absolute right-4 top-4 cursor-pointer bg-purple-500 hover:bg-purple-400 text-white font-bold p-1 border-b-4 border-purple-700 hover:border-purple-500 rounded'
 							onClick={() => setRules(!rules)}
