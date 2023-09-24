@@ -613,9 +613,11 @@ const Chat = () => {
 	};
 	const sendMessage = () => {
 		if (socket) {
-			let newMessage = playerName + ': ' + message;
-			socket.emit('message', newMessage);
-			setMessage('');
+			if (message !== '') {
+				let newMessage = playerName + ': ' + message;
+				socket.emit('message', newMessage);
+				setMessage('');
+			}
 		}
 	};
 	return (
