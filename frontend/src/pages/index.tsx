@@ -636,7 +636,7 @@ const Chat = () => {
 			{gameOver && (
 				<div className='fixed min-h-[1000px] h-full w-full flex flex-col items-center z-50'>
 					<div className='absolute inset-0 bg-gradient-to-b from-purple-400 to-purple-800 h-full opacity-95'></div>
-					<div className='relative flex flex-col items-center max-w-4xl h-full w-full gap-4'>
+					<div className='relative flex flex-col items-center max-w-4xl pb-20 h-full w-full gap-4'>
 						<h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl'>
 							Game Over
 						</h1>
@@ -672,7 +672,7 @@ const Chat = () => {
 			{chat && (
 				<div className='fixed min-h-[1000px] h-full w-full flex flex-col items-center justify-center z-50'>
 					<div className='absolute h-full inset-0 bg-gradient-to-b from-purple-400 to-purple-800 '></div>
-					<div className='relative max-w-xl w-full mx-auto h-full pt-10 p-6 rounded-lg shadow-md'>
+					<div className='relative max-w-xl w-full mx-auto h-full pt-10 pb-20 rounded-lg shadow-md'>
 						<div className='flex flex-col items-center h-full max-w-xl w-full rounded-lg'>
 							<div className='overflow-y-auto overflow-x-clip break-words w-full h-[500px] relative'>
 								{messages &&
