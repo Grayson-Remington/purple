@@ -733,6 +733,16 @@ const Chat = () => {
 						<h1 className='text-2xl font-semibold mb-4'>
 							Purple Instructions
 						</h1>
+						<span className='font-bold'>Aces</span>
+						<ol className='list-disc pl-5 space-y-2'>
+							<li className='mb-2'>Aces are low.</li>
+						</ol>
+						<span className='font-bold'>Losing</span>
+						<ol className='list-disc pl-5 space-y-2'>
+							<li className='mb-2'>
+								The game ends when one person gets below -20.
+							</li>
+						</ol>
 						<span className='font-bold'>Guessing</span>
 						<ol className='list-disc pl-5 space-y-2'>
 							<li className='mb-2'>
